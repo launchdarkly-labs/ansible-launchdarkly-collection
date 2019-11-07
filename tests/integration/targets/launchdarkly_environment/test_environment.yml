@@ -1,0 +1,56 @@
+---
+- name: Test Ansible Collection
+  hosts: localhost
+  gather_facts: no
+
+  tasks:
+  - name: Create Environment
+    launchdarkly_environment:
+      state: present
+      environment_key: env_1
+      project_key: dano-test-project
+      name: envdan-display
+      color: C9C9C9
+      secure_mode: true
+      require_comments: true
+      confirm_changes: true
+      default_track_events: true
+      tags:
+        - test
+        - test2
+
+  - name: Idempotent Environment
+    launchdarkly_environment:
+      state: present
+      environment_key: env_1
+      project_key: dano-test-project
+      name: envdan-display
+      color: C9C9C9
+      secure_mode: true
+      require_comments: true
+      confirm_changes: true
+      default_track_events: true
+      tags:
+        - test
+        - test2
+
+  - name: Update Environment
+    launchdarkly_environment:
+      state: present
+      environment_key: env_1
+      project_key: dano-test-project
+      name: envdan-display
+      color: C9C9C9
+      secure_mode: false
+      require_comments: false
+      confirm_changes: false
+      default_track_events: false
+      tags:
+        - test
+        - test3
+
+  - name: Remove Environment
+    launchdarkly_environment:
+      state: absent
+      environment_key: env_1
+      project_key: dano-test-project

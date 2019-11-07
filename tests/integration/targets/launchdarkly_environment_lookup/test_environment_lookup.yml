@@ -1,0 +1,24 @@
+---
+- name: Test Ansible Collection
+  hosts: localhost
+  gather_facts: no
+
+  tasks:
+  - name: Create Environment
+    launchdarkly_environment:
+      state: present
+      environment_key: env_1
+      project_key: dano-test-project
+      name: envdan-display
+      color: C9C9C9
+      secure_mode: true
+      require_comments: true
+      confirm_changes: true
+      default_track_events: true
+      tags:
+        - test
+        - test
+
+  - name: Lookup environment
+    debug:
+      msg: '{{ lookup("launchdarkly.collection.launchdarkly_environment", "dano-test-project", "env_1") }}'

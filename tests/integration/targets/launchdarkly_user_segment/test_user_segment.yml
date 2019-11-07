@@ -1,0 +1,93 @@
+---
+- name: Test Ansible Collection
+  hosts: localhost
+  gather_facts: no
+
+  tasks:
+  - name: Create User Segment
+    launchdarkly_user_segment:
+      state: present
+      project_key: ansible-int-proj
+      environment_key: production
+      user_segment_key: test-group
+      name: Test Group
+      description: This is the test segment
+      rules:
+      - clauses:
+        - attribute: test-attribute
+          op: contains
+          values:
+            - 2
+            - 3
+          negate: True
+      tags:
+        - blue
+        - green
+      included:
+        - test1@example.com
+        - test2@example.com
+      excluded:
+        - test3@example.com
+        - test4@example.com
+
+  - name: Idempotent User Segment
+    launchdarkly_user_segment:
+      state: present
+      project_key: ansible-int-proj
+      environment_key: production
+      user_segment_key: test-group
+      name: Test Group
+      description: This is the test segment
+      rules:
+      - clauses:
+        - attribute: test-attribute
+          op: contains
+          values:
+            - 2
+            - 3
+          negate: True
+      tags:
+        - blue
+        - green
+      included:
+        - test1@example.com
+        - test2@example.com
+      excluded:
+        - test3@example.com
+        - test4@example.com
+
+  - name: Updates User Segment
+    launchdarkly_user_segment:
+      state: present
+      project_key: ansible-int-proj
+      environment_key: production
+      user_segment_key: test-group
+      name: Test Group - Updated
+      description: This is the test segment - updated
+      rules:
+      - clauses:
+        - attribute: test-attribute
+          op: contains
+          values:
+            - 2
+            - 3
+          negate: True
+        - attribute: test-attribute2
+          op: contains
+          values:
+            - 4
+            - 5
+      tags:
+        - blue
+        - green
+      included:
+        - test1@example.com
+      excluded:
+        - test3@example.com
+
+  - name: Delete User Segment
+    launchdarkly_user_segment:
+      state: absent
+      project_key: ansible-int-proj
+      environment_key: production
+      user_segment_key: test-group

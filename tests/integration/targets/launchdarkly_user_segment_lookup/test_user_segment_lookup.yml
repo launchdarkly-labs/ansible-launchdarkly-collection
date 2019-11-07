@@ -1,0 +1,71 @@
+---
+- name: Test Ansible Collection
+  hosts: localhost
+  gather_facts: no
+
+  tasks:
+  - name: Create User Segment
+    launchdarkly_user_segment:
+      state: present
+      environment_key: env_1
+      project_key: dano-test-project
+      user_segment_key: test-segment
+      tags: ['blue', 'green']
+      description: "This is the test segment"
+      rules:
+        - clauses:
+          - attribute: test-attribute
+            op: contains
+            values:
+              - 2
+              - 3
+            negate: true
+      included:
+        - test1@example.com
+        - test2@example.com
+      excluded:
+        - test3@example.com
+        - test4@example.com
+
+  - name: Update User Segment
+    launchdarkly_user_segment:
+      state: present
+      environment_key: env_1
+      project_key: dano-test-project
+      user_segment_key: test-segment
+      tags: ['blue', 'orange']
+      excluded:
+        - test5@example.com
+
+  - name: Idempotent User Segment
+    launchdarkly_user_segment:
+      state: present
+      environment_key: env_1
+      project_key: dano-test-project
+      user_segment_key: test-segment
+      tags: ['blue', 'orange']
+      description: "This is the test segment"
+      rules:
+        - clauses:
+          - attribute: test-attribute
+            op: contains
+            values:
+              - 2
+              - 3
+            negate: true
+      included:
+        - test1@example.com
+        - test2@example.com
+      excluded:
+        - test5@example.com
+
+  - name: Lookup segment
+    debug:
+      msg: '{{ lookup("launchdarkly.collection.launchdarkly_user_segments", "dano-test-project", "production") }}'
+
+  - name: Delete User Segment
+    launchdarkly_user_segment:
+      state: absent
+      environment_key: env_1
+      project_key: dano-test-project
+      user_segment_key: test-segment

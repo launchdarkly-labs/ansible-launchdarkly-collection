@@ -1,0 +1,23 @@
+---
+- name: Test Ansible Collection
+  hosts: localhost
+  gather_facts: no
+
+  tasks:
+  - name: Create Custom Role
+    launchdarkly_custom_role:
+      state: present
+      name: "My Custom Role"
+      key: "ans-test-custom-role"
+      policy:
+        - resources:
+            - "proj/*:env/*:flag/*"
+          actions:
+            - "*"
+          effect: "allow"
+    register: response
+
+  - name: Delete Custom Role
+    launchdarkly_custom_role:
+      state: absent
+      key: "ans-test-custom-role"

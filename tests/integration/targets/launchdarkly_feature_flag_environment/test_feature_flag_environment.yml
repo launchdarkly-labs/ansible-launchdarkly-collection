@@ -1,0 +1,168 @@
+---
+- name: Test Ansible Collection
+  hosts: localhost
+  gather_facts: no
+
+  tasks:
+  - name: Create Feature Flag
+    launchdarkly_feature_flag:
+      kind: bool
+      state: present
+      key: example_test_flag
+      project_key: dano-test-project
+      tags: ["yellow", "green"]
+      name: ansible-random-new-name
+      include_in_snippet: true
+      description: "This is an awesome feature that will be implemented."
+
+  - name: Set Feature Flag Environment
+    launchdarkly_feature_flag_environment:
+      state: "enabled"
+      flag_key: example_test_flag
+      project_key: dano-test-project
+      environment_key: production
+      comment: "testing updated flag environment"
+      targets:
+        - variation: 1
+          values:
+            - "test@example1.com"
+            - "test2@example.com"
+      rules:
+        - variation: 1
+          clauses:
+            - attribute: test-attribute
+              op: contains
+              values:
+                - 2
+                - 3
+              negate: true
+      fallthrough:
+        variation: 1
+    register: results
+
+  - assert:
+      that:
+        - results.changed == true
+
+  - name: Update Feature Flag Environment
+    launchdarkly_feature_flag_environment:
+      state: "enabled"
+      flag_key: example_test_flag
+      project_key: dano-test-project
+      environment_key: production
+      comment: "testing updated flag environment"
+      targets:
+        - variation: 1
+          values:
+            - "test3@examplettt.com"
+          state: add
+      rules:
+        - variation: 1
+          clauses:
+            - attribute: test-attribute
+              op: contains
+              values:
+                - 2
+                - 3
+              negate: true
+        - variation: 0
+          clauses:
+          - attribute: test-attribute2
+            op: startsWith
+            values:
+              - 4
+              - 5
+      fallthrough:
+        variation: 1
+
+  - name: Idempotent Feature Flag Environment
+    launchdarkly_feature_flag_environment:
+      state: "enabled"
+      flag_key: example_test_flag
+      project_key: dano-test-project
+      environment_key: production
+      comment: "testing idempotent flag environment - should not appear"
+      targets:
+        - variation: 1
+          values:
+            - "test3@examplettt.com"
+          state: add
+      rules:
+        - variation: 1
+          clauses:
+            - attribute: test-attribute
+              op: "contains"
+              values:
+                - 2
+                - 3
+              negate: true
+        - variation: 0
+          clauses:
+          - attribute: test-attribute2
+            op: startsWith
+            values:
+              - 4
+              - 5
+      fallthrough:
+        variation: 1
+    register: results
+
+  # - debug: var=results.changed
+
+  - assert:
+      that: results.changed == false
+
+  - name: Remove Feature Flag Rule
+    launchdarkly_feature_flag_environment:
+      state: "enabled"
+      flag_key: example_test_flag
+      project_key: dano-test-project
+      environment_key: production
+      comment: "testing updated flag environment"
+      targets:
+        - variation: 1
+          values:
+            - "test3@examplettt.com"
+          state: add
+      rules:
+        - variation: 0
+          clauses:
+          - attribute: test-attribute2
+            op: startsWith
+            values:
+              - 4
+              - 5
+      fallthrough:
+        variation: 1
+
+  - name: Remove Feature Flag Rule
+    launchdarkly_feature_flag_environment:
+      flag_key: example_test_flag
+      project_key: dano-test-project
+      environment_key: production
+      comment: "state should not change, change variation to rollout"
+      targets:
+        - variation: 1
+          values:
+            - "test3@examplettt.com"
+          state: add
+      rules:
+        - rollout:
+            - variation: 0
+              weight: 50000
+            - variation: 1
+              weight: 50000
+          clauses:
+          - attribute: test-attribute2
+            op: startsWith
+            values:
+              - 4
+              - 5
+      fallthrough:
+        variation: 1
+
+  - name: Delete flag
+    launchdarkly_feature_flag:
+      state: absent
+      key: example_test_flag
+      project_key: dano-test-project

@@ -1,0 +1,26 @@
+---
+- name: Test Ansible Collection
+  hosts: localhost
+  gather_facts: no
+
+  tasks:
+  - name: Create Webhook
+    launchdarkly_webhook:
+      url: http://webhooks.com/webhook
+      state: enabled
+      name: Test Webhook
+      tags:
+        - blue
+        - green
+      statements:
+        - resources:
+            - "proj/*:env/*:flag/*"
+          actions:
+            - "*"
+          effect: "allow"
+    register: webhook
+
+  - name: Delete webhook
+    launchdarkly_webhook:
+      state: absent
+      webhook_id: "{{ webhook.content.id }}"

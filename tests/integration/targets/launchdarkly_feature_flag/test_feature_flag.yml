@@ -1,0 +1,101 @@
+---
+- name: Test Ansible Collection
+  hosts: localhost
+  gather_facts: no
+
+  tasks:
+  - name: Create Feature Flag
+    launchdarkly_feature_flag:
+      kind: bool
+      state: present
+      key: example_test_flag
+      project_key: dano-test-project
+      tags: ["yellow", "green"]
+      name: ansible-random-new-name
+      include_in_snippet: true
+      description: "This is an awesome feature that will be implemented."
+
+  - name: Update Feature Flag
+    launchdarkly_feature_flag:
+      kind: bool
+      state: present
+      key: example_test_flag
+      project_key: dano-test-project
+      tags: ["yellow", "blue"]
+      name: ansible-integration-test
+      include_in_snippet: false
+      description: "This is an awesome feature that is updated."
+      comment: "testing updated flag"
+
+  - name: Idempotent Feature Flag
+    launchdarkly_feature_flag:
+      kind: bool
+      state: present
+      key: example_test_flag
+      project_key: dano-test-project
+      tags: ["yellow", "blue"]
+      name: ansible-integration-test
+      include_in_snippet: false
+      description: "This is an awesome feature that is updated."
+
+  - name: Delete flag
+    launchdarkly_feature_flag:
+      state: absent
+      key: example_test_flag
+      project_key: dano-test-project
+
+  - name: JSON Feature Flag
+    launchdarkly_feature_flag:
+      kind: json
+      state: present
+      key: example_test_flag_1
+      project_key: dano-test-project
+      tags: ["yellow", "blue"]
+      name: ansible-integration-test
+      include_in_snippet: false
+      description: "This is an awesome feature that is updated."
+      variations:
+        - name: "test JSON"
+          description: "testing description"
+          value: {"test": "test"}
+        - name: "test2 JSON"
+          description: "testing description 2"
+          value: {"test2": "test2"}
+
+  - name: JSON Feature Flag Add Variation
+    launchdarkly_feature_flag:
+      state: present
+      key: example_test_flag_1
+      project_key: dano-test-project
+      variations:
+      - name: "test JSON"
+        description: "testing description"
+        value: {"test": "test"}
+      - name: "test2 JSON"
+        description: "testing description 2"
+        value: {"test2": "test2"}
+      - name: "test3 JSON"
+        description: "testing description 3"
+        value: {"test3": "test3"}
+
+  - name: JSON Feature Flag Update Variation
+    launchdarkly_feature_flag:
+      state: present
+      key: example_test_flag_1
+      project_key: dano-test-project
+      variations:
+      - name: "test JSON - new"
+        description: "testing description - new"
+        value: {"test": "test"}
+      - name: "test2 JSON"
+        description: "testing description 2"
+        value: {"testNew": "testNew"}
+      - name: "test3 JSON"
+        description: "testing description 3"
+        value: {"test3": "test3"}
+
+  - name: Delete JSON Feature Flag
+    launchdarkly_feature_flag:
+      state: absent
+      key: example_test_flag_1
+      project_key: dano-test-project

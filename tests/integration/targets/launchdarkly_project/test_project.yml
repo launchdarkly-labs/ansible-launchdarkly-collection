@@ -1,0 +1,39 @@
+---
+- name: Test Ansible Collection
+  hosts: localhost
+  gather_facts: no
+
+  tasks:
+  - name: Create Project
+    launchdarkly_project:
+      state: present
+      project_key: ansible-int-proj
+      name: "Ansible Integration Project"
+      tags:
+        - yellow
+        - red
+      environments:
+      - key: "test-env-ans"
+        color: "FFFFFF"
+        name: "test-env-ans"
+
+  - name: Idempotent Project
+    launchdarkly_project:
+      state: present
+      project_key: ansible-int-proj
+      name: "Ansible Integration Project"
+      tags:
+        - yellow
+        - red
+
+  - name: Update Project
+    launchdarkly_project:
+      state: present
+      project_key: ansible-int-proj
+      name: "Ansible Integration Project - Updated"
+
+
+  - name: Delete Project
+    launchdarkly_project:
+      state: absent
+      project_key: ansible-int-proj
