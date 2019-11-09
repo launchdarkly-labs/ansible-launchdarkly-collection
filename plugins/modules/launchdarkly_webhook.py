@@ -5,18 +5,18 @@ from __future__ import absolute_import, division, print_function
 __metaclass__ = type
 
 ANSIBLE_METADATA = {
-    "metadata_version": "0.1",
+    "metadata_version": "0.1.0",
     "status": ["preview"],
     "supported_by": "community",
 }
 
-DOCUMENTATION = r"""
+DOCUMENTATION = r'''
 ---
 module: launchdarkly_webhook
 short_description: Manage LaunchDarkly Webhooks
 description:
      - Manage LaunchDarkly Webhooks
-version_added: "2.9"
+version_added: "0.1.0"
 options:
     state:
         description:
@@ -49,9 +49,9 @@ options:
         description:
             - Whether this webhook is enabled or not.
         type: bool
-"""
+'''
 
-EXAMPLES = r"""
+EXAMPLES = r'''
 # Create a new LaunchDarkly Environment
 - launchdarkly_webhook:
     state: present
@@ -77,7 +77,10 @@ EXAMPLES = r"""
     excluded:
       - test3
       - test4
-"""
+'''
+
+RETURN='''
+'''
 
 import inspect
 import traceback

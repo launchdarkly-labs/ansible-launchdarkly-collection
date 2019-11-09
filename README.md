@@ -1,10 +1,14 @@
 # Ansible collection for LaunchDarkly
 
+*This version of the Ansible Collection is an **alpha** version and should not be considered ready for production use while this message is visible.*
+
 This collection provides a series of Ansible modules and plugins for interacting with [LaunchDarkly](https://www.launchdarkly.com).
 
 ## Requirements
 
 - ansible version >= 2.9
+- launchdarkly-api >= 2.0.20
+- dictdiffer == 0.8.0
 
 ## Installation
 
@@ -22,11 +26,11 @@ To use a module from LaunchDarkly collection, please reference the full namespac
   hosts: localhost
   tasks:
     - launchdarkly.collection.launchdarkly_feature_flag:
-        name: "example"
-        kind: "bool"
+        name: example
+        kind: bool
         state: present
         temporary: false
-        key: "example_flag_creation"
+        key: example_flag_creation
 ```
 
 Or you can add full namepsace and collecton name in the `collections` element:
@@ -39,11 +43,11 @@ Or you can add full namepsace and collecton name in the `collections` element:
     - launchdarkly.collection
   tasks:
     - launchdarkly_feature_flag:
-        name: "example"
-        kind: "bool"
+        name: example
+        kind: bool
         state: present
         temporary: false
-        key: "example_flag_creation"
+        key: example_flag_creation
 ```
 
 ## Resource Supported

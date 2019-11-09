@@ -5,18 +5,18 @@ from __future__ import absolute_import, division, print_function
 __metaclass__ = type
 
 ANSIBLE_METADATA = {
-    "metadata_version": "0.1",
+    "metadata_version": "0.1.0",
     "status": ["preview"],
     "supported_by": "community",
 }
 
-DOCUMENTATION = r"""
+DOCUMENTATION = r'''
 ---
 module: launchdarkly_project
 short_description: Create Project
 description:
      - Manage LaunchDarkly Projects.
-version_added: "2.9"
+version_added: "0.1.0"
 options:
     state:
         description:
@@ -51,9 +51,9 @@ options:
             - Whether or not all flags in project should be made available to the client-side JavaScript SDK.
         required: no
         type: bool
-"""
+'''
 
-EXAMPLES = r"""
+EXAMPLES = r'''
 # Create a new LaunchDarkly Environment
 - project:
     state: present
@@ -64,7 +64,10 @@ EXAMPLES = r"""
       - ops
       - frontend
     include_in_snippet_by_default: false
-"""
+'''
+
+RETURN = r'''
+'''
 
 import inspect
 import traceback

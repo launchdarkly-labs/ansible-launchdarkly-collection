@@ -5,18 +5,18 @@ from __future__ import absolute_import, division, print_function
 __metaclass__ = type
 
 ANSIBLE_METADATA = {
-    "metadata_version": "0.1",
+    "metadata_version": "0.1.0",
     "status": ["preview"],
     "supported_by": "community",
 }
 
-DOCUMENTATION = r"""
+DOCUMENTATION = r'''
 ---
 module: launchdarkly_user_segment
 short_description: Manage User Segments
 description:
      - Manage LaunchDarkly User Segments
-version_added: "2.9"
+version_added: "0.1.0"
 options:
     state:
         description:
@@ -65,15 +65,15 @@ options:
             - Manage a list of excluded users for the user segment.
         required: no
         type: list
-"""
+'''
 
-EXAMPLES = r"""
+EXAMPLES = r'''
 # Create a new LaunchDarkly Environment
 - launchdarkly_user_segment:
     state: present
-    project_key: "test-project-1"
-    environment_key: "test-environment-1"
-    user_segment_key: "test-key-1"
+    project_key: test-project-1
+    environment_key: test-environment-1
+    user_segment_key: test-key-1
     name: "Test Segment"
     description: "This is a testing segment"
     rules:
@@ -93,10 +93,10 @@ EXAMPLES = r"""
     excluded:
       - test3@example.com
       - test4@example.com
-"""
+'''
 
-RETURN = r"""
-"""
+RETURN = r'''
+'''
 
 import inspect
 import traceback

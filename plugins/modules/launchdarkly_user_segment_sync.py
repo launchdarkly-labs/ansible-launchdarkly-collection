@@ -4,18 +4,18 @@ from __future__ import absolute_import, division, print_function
 __metaclass__ = type
 
 ANSIBLE_METADATA = {
-    "metadata_version": "0.1",
+    "metadata_version": "0.1.0",
     "status": ["preview"],
     "supported_by": "community",
 }
 
-DOCUMENTATION = r"""
+DOCUMENTATION = r'''
 ---
 module: launchdarkly_feature_flag_sync
 short_description: Sync LaunchDarkly Feature Flags across Environments
 description:
      - Sync LaunchDarkly Feature Flags across Environments
-version_added: "2.9"
+version_added: "0.1.0"
 options:
     api_key:
         description:
@@ -54,12 +54,12 @@ options:
     version:
         description:
             - Version lock to ensure there have been no updates since request
-"""
+'''
 
-EXAMPLES = r"""
+EXAMPLES = r'''
 # Create a new LaunchDarkly Environment
 - launchdarkly_feature_flag_sync:
-    environment_key: test-environment-1"
+    environment_key: test-environment-1
     environment_targets:
         - dev
         - staging
@@ -68,7 +68,10 @@ EXAMPLES = r"""
     includedActions:
       - updateOn
       - updateRules
-"""
+'''
+
+RETURN = r'''
+'''
 
 import inspect
 import traceback

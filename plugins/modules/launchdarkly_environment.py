@@ -5,18 +5,18 @@ from __future__ import absolute_import, division, print_function
 __metaclass__ = type
 
 ANSIBLE_METADATA = {
-    "metadata_version": "0.1",
+    "metadata_version": "0.1.0",
     "status": ["preview"],
     "supported_by": "community",
 }
 
-DOCUMENTATION = r"""
+DOCUMENTATION = r'''
 ---
 module: launchdarkly_environment
 short_description: Create Launchdarkly Project specific Environment
 description:
      - Manage LaunchDarkly Project specific Environments.
-version_added: "2.9"
+version_added: "0.1.0"
 options:
     state:
         description:
@@ -70,27 +70,29 @@ options:
         description:
             - Determines if this environment requires confirmation for flag and segment changes.
         type: bool
-"""
+'''
 
-EXAMPLES = r"""
+EXAMPLES = r'''
 ---
 # Create a new LaunchDarkly Environment
 - launchdarkly_environment:
     state: present
-    project_key: "test-project-1"
-    environment_key: "test_environment-1"
-    color: "C9C9C9"
+    project_key: test-project-1
+    environment_key: test_environment-1
+    color: C9C9C9
 
 # Create a new LaunchDarkly Environmnet and tag it
 - launchdarkly_environment:
     state: present
-    project_key: "test-project-1"
-    environment_key: "test_environment-1"
-    color: "C9C9C9"
-    tags: ["blue","green"]
-"""
+    project_key: test-project-1
+    environment_key: test_environment-1
+    color: C9C9C9
+    tags:
+      - blue
+      - green
+'''
 
-RETURN = r"""
+RETURN = r'''
 environment:
     description: Return dictionary containg LaunchDarkly Environment
     type: dict
@@ -105,7 +107,7 @@ environment:
         color: 417505
         defaultTtl: 0
         secureMode: false
-"""
+'''
 
 import inspect
 import traceback

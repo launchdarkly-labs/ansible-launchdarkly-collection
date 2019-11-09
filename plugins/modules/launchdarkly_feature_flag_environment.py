@@ -5,17 +5,17 @@ from __future__ import absolute_import, division, print_function
 __metaclass__ = type
 
 ANSIBLE_METADATA = {
-    "metadata_version": "0.1",
+    "metadata_version": "0.1.0",
     "status": ["preview"],
     "supported_by": "community",
 }
 
-DOCUMENTATION = r"""
+DOCUMENTATION = r'''
 module: launchdarkly_feature_flag_environment
 short_description: Create Environment specific flag targeting
 description:
      - Manage LaunchDarkly manage feature flags and account settings.
-version_added: "2.9"
+version_added: "0.1.0"
 options:
     state:
         description:
@@ -53,10 +53,9 @@ options:
         description: >-
             Nested dictionary describing the default variation to serve if no 'prerequisites',
             'targets', or 'rules' apply.
+'''
 
-"""
-
-EXAMPLES = r"""
+EXAMPLES = r'''
 ---
 # Create a new flag
 - launchdarkly_feature_flag_environment:
@@ -89,17 +88,16 @@ EXAMPLES = r"""
     prerequisites:
       - variation: 0
         key: example_flag
-"""
+'''
 
-RETURN = r"""
+RETURN = r'''
 ---
 feature_flag_environment:
     description: Dictionary containing environment specific configuration
     type: dict
     returned: always
-    sample:
-        test: test
-"""
+'''
+
 import inspect
 import traceback
 from operator import itemgetter

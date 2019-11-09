@@ -5,18 +5,18 @@ from __future__ import absolute_import, division, print_function
 __metaclass__ = type
 
 ANSIBLE_METADATA = {
-    "metadata_version": "0.1",
+    "metadata_version": "0.1.0",
     "status": ["preview"],
     "supported_by": "community",
 }
 
-DOCUMENTATION = r"""
+DOCUMENTATION = r'''
 ---
 module: feature_flag
 short_description: Interact with projects, flags of LaunchDarkly
 description:
      - Manage LaunchDarkly manage feature flags and account settings.
-version_added: "2.9"
+version_added: "0.1.0"
 options:
     state:
         description:
@@ -63,26 +63,29 @@ options:
             - Whether or not this flag should be made available to the client-side JavaScript SDK
         required: no
         type: bool
-"""
+'''
 
-EXAMPLES = r"""
+EXAMPLES = r'''
 # Create a new flag
 - launchdarkly_feature_flag:
-    name: "example"
-    kind: "bool"
+    name: example
+    kind: bool
     state: present
     temporary: false
-    key: "example_flag_creation"
+    key: example_flag_creation
 
 - launchdarkly_feature_flag:
-    name: "example"
-    kind: "bool"
+    name: example
+    kind: bool
     state: present
     tags:
      - tag1
      - tag2
     include_in_snippet: true
-"""
+'''
+
+RETURN = r'''
+'''
 
 import inspect
 import traceback
