@@ -79,7 +79,12 @@ EXAMPLES = r'''
       - test4
 '''
 
-RETURN='''
+RETURN=r'''
+---
+webhook:
+    description: Dictionary containing a L(Webhook, https://github.com/launchdarkly/api-client-python/blob/2.0.21/docs/Webhook.md)
+    type: dict
+    returned: on success
 '''
 
 import inspect
@@ -207,10 +212,10 @@ def _create_webhook(module, api_instance):
         module.params["webhook_id"] = api_response.id
     except ApiException as e:
         err = json.loads(str(e.body))
-        module.exit_json(msg=err)
+        module.exit_json(msg=to_native(err))
 
     module.exit_json(
-        changed=True, msg="webhook created", content=api_response.to_dict()
+        changed=True, msg="webhook created", webhook=api_response.to_dict()
     )
 
 
@@ -267,7 +272,7 @@ def _configure_webhook(module, api_instance, webhook=None):
             module.exit_json(msg=err)
 
     module.exit_json(
-        msg="webhook successfully configured", content=api_response.to_dict()
+        msg="webhook successfully configured", webhook=api_response.to_dict()
     )
 
 

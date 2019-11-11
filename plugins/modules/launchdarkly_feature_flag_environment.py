@@ -93,9 +93,9 @@ EXAMPLES = r'''
 RETURN = r'''
 ---
 feature_flag_environment:
-    description: Dictionary containing environment specific configuration
+    description: Dictionary containing a L(Feature Flag Config, https://github.com/launchdarkly/api-client-python/blob/2.0.21/docs/FeatureFlagConfig.md)
     type: dict
-    returned: always
+    returned: on success
 '''
 
 import inspect
@@ -458,7 +458,6 @@ def _configure_feature_flag_env(module, api_instance, feature_flag=None):
         ):
             patches.append(_parse_flag_param(module, key))
 
-    # print(patches)
     if len(patches) > 0:
         comment = _build_comment(module)
         comments = dict(comment=comment, patch=patches)
@@ -474,10 +473,10 @@ def _configure_feature_flag_env(module, api_instance, feature_flag=None):
         module.exit_json(
             changed=True,
             msg="flag environment successfully configured",
-            content=api_response.to_dict(),
+            feature_flag_environment=api_response.to_dict(),
         )
 
-    module.exit_json(changed=False, msg="flag environment unchanged")
+    module.exit_json(changed=False, msg="flag environment unchanged", feature_flag_environment=feature_flag)
 
 
 def _build_rules(rule):
