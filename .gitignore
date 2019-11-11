@@ -1,0 +1,6 @@
+*.pyc
+/tests/output/
+plugins/modules/*.json
+**/env.sh
+docs/build
+**/__pycache__
