@@ -3,4 +3,5 @@
 plugins/modules/*.json
 **/env.sh
 docs/build
+docs/source/modules/*.rst
 **/__pycache__
