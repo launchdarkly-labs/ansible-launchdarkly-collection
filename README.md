@@ -1,6 +1,6 @@
 # Ansible collection for LaunchDarkly
 
-*This version of the Ansible Collection is an **alpha** version and should not be considered ready for production use while this message is visible.*
+*This version of the Ansible Collection is a **beta** version and should not be considered ready for production use while this message is visible.*
 
 This collection provides a series of Ansible modules and plugins for interacting with [LaunchDarkly](https://www.launchdarkly.com).
 
