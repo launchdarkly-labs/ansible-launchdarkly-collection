@@ -50,9 +50,9 @@ options:
             - Target users based on user attributes
         type: list
     fallthrough:
-        description: >-
-            Nested dictionary describing the default variation to serve if no 'prerequisites',
-            'targets', or 'rules' apply.
+        description: |
+            - Nested dictionary describing the default variation to serve if no 'prerequisites',
+            - 'targets', or 'rules' apply.
 '''
 
 EXAMPLES = r'''

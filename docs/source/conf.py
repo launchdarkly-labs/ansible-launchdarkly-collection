@@ -29,6 +29,7 @@ version = '0.1.0'
 # extensions coming with Sphinx (named 'sphinx.ext.*') or your custom
 # ones.
 extensions = [
+    'sphinx.ext.githubpages'
 ]
 
 # Add any paths that contain templates here, relative to this directory.
@@ -64,6 +65,6 @@ html_context = {
     'latest_version': '0.1.0',
     # list specifically out of order to make latest work
     'available_versions': ('latest', '0.1.0'),
-    'css_files': ('_static/ansible.css',  # overrides to the standard theme
-                  ),
+    #'css_files': ('static/ansible.css',  # overrides to the standard theme
+    #             ),
 }

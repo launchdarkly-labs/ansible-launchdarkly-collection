@@ -38,7 +38,15 @@ then
     esac
     done
 	mv "${buildDirectory}"/* . && rm -rf "${buildDirectory}"
-	touch .nojeykll
+	touch .nojekyll
+cat <<EOF > _config.yaml
+include:
+    - _images
+    - _sources
+    - _static
+    - _modules
+    - _templates
+EOF
 	git add .
 	git commit -m "new pages version $(date)"
 	git push origin gh-pages
