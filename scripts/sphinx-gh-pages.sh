@@ -22,8 +22,8 @@ then
 	git stash
 	git checkout $branch_name
 	git pull origin $branch_name
-	git stash apply
-	git checkout stash -- . # force git stash to overwrite added files
+	git stash apply && :
+	git checkout stash -- . && : # force git stash to overwrite added files
 else
 	git checkout --orphan "$branch_name"
 fi
@@ -38,6 +38,7 @@ then
     esac
     done
 	mv "${buildDirectory}"/* . && rm -rf "${buildDirectory}"
+	touch .nojeykll
 	git add .
 	git commit -m "new pages version $(date)"
 	git push origin gh-pages
