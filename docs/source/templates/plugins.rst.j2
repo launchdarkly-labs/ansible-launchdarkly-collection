@@ -100,9 +100,6 @@ Parameters
         <tr>
             <th colspan="@{ from_kludge_ns('maxdepth') }@">Parameter</th>
             <th>Choices/<font color="blue">Defaults</font></th>
-            {% if plugin_type != 'module' %}
-                <th>Configuration</th>
-            {% endif %}
             <th width="100%">Comments</th>
         </tr>
         {% for key, value in options|dictsort recursive %}
@@ -155,28 +152,6 @@ Parameters
                         <b>Default:</b><br/><div style="color: blue">@{ value.default | tojson | escape }@</div>
                     {% endif %}
                 </td>
-                {# configuration #}
-                {% if plugin_type != 'module' %}
-                    <td>
-                        {% if 'ini' in value %}
-                            <div> ini entries:
-                                {% for ini in value.ini %}
-                                    <p>[@{ ini.section }@]<br>@{ ini.key }@ = @{ value.default | default('VALUE') }@</p>
-                                {% endfor %}
-                            </div>
-                        {% endif %}
-                        {% if 'env' in value %}
-                            {% for env in value.env %}
-                                <div>env:@{ env.name }@</div>
-                            {% endfor %}
-                        {% endif %}
-                        {% if 'vars' in value %}
-                            {% for myvar in value.vars %}
-                                <div>var: @{ myvar.name }@</div>
-                            {% endfor %}
-                        {% endif %}
-                    </td>
-                {% endif %}
                 {# description #}
                 <td>
                     {% for desc in value.description %}

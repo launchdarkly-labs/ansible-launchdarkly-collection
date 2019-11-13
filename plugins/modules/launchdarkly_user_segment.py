@@ -25,7 +25,7 @@ options:
         default: present
     api_key:
         description:
-            - LaunchDarkly API Key
+            - LaunchDarkly API Key. May be set as LAUNCHDARKLY_ACCESS_TOKEN environment variable.
         type: str
         required: yes
     project_key:
