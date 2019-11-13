@@ -34,7 +34,7 @@ then
     do
     case $f in
         *_build) true;;
-        *) ls "$f";;
+        *) rm -rf "$f";;
     esac
     done
 	mv "${buildDirectory}"/* . && rm -rf "${buildDirectory}"
