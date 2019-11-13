@@ -7,7 +7,7 @@
   {%- set titlesuffix = "" %}
 {%- endif %}
 {%- set lang_attr = 'en' if language == None else (language | replace('_', '-')) %}
-<META HTTP-EQUIV='Content-Security-Policy' CONTENT="default-src 'self' ; style-src-elem 'self' cdnjs.cloudflare.com fonts.googleapis.com;">
+<META HTTP-EQUIV='Content-Security-Policy' CONTENT="default-src 'self' ; style-src-elem 'self' 'cdnjs.cloudflare.com' 'fonts.googleapis.com'; script-src 'self' 'unsafe-inline'">
 <!DOCTYPE html>
 <!--[if IE 8]><html class="no-js lt-ie9" lang="{{ lang_attr }}" > <![endif]-->
 <!--[if gt IE 8]><!--> <html class="no-js" lang="{{ lang_attr }}" > <!--<![endif]-->
