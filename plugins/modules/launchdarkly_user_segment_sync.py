@@ -11,7 +11,7 @@ ANSIBLE_METADATA = {
 
 DOCUMENTATION = r'''
 ---
-module: launchdarkly_feature_flag_sync
+module: launchdarkly_user_segment_sync
 short_description: Sync LaunchDarkly Feature Flags across Environments
 description:
      - Sync LaunchDarkly Feature Flags across Environments
@@ -58,7 +58,7 @@ options:
 
 EXAMPLES = r'''
 # Create a new LaunchDarkly Environment
-- launchdarkly_feature_flag_sync:
+- launchdarkly_user_segment_sync:
     environment_key: test-environment-1
     environment_targets:
         - dev

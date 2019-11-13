@@ -109,6 +109,9 @@ environment:
         secureMode: false
 '''
 
+RETURN = r'''
+'''
+
 import inspect
 import traceback
 

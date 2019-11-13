@@ -12,7 +12,7 @@ ANSIBLE_METADATA = {
 
 DOCUMENTATION = r"""
 ---
-module: custom_role
+module: launchdarkly_custom_role
 short_description: Manage LaunchDarkly Custom Roles
 description:
     - Manager LaunchDarkly Custom Roles
@@ -43,7 +43,7 @@ options:
 """
 
 EXAMPLES = r"""
-- custom_role:
+- launchdarkly_custom_role:
     state: present
     name: "My Custom Role"
     policies:
@@ -53,6 +53,9 @@ EXAMPLES = r"""
           - "*"
         effect: allow
 """
+
+RETURN = '''
+'''
 
 import inspect
 import traceback

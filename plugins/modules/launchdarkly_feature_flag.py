@@ -12,7 +12,7 @@ ANSIBLE_METADATA = {
 
 DOCUMENTATION = r'''
 ---
-module: feature_flag
+module: launchdarkly_feature_flag
 short_description: Interact with projects, flags of LaunchDarkly
 description:
      - Manage LaunchDarkly manage feature flags and account settings.
