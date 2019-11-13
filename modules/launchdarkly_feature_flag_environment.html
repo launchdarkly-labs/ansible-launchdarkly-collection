@@ -1,0 +1,613 @@
+
+<META HTTP-EQUIV='Content-Security-Policy' CONTENT="default-src 'self' ; style-src-elem 'self' 'unsafe-inline' cdnjs.cloudflare.com fonts.googleapis.com; script-src 'self' 'unsafe-inline' *.swiftypecdn.com cdnjs.cloudflare.com; font-src 'self' data: fonts.gstatic.com cdnjs.cloudflare.com">
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>launchdarkly_feature_flag_environment – Create Environment specific flag targeting &mdash; LaunchDarkly Ansible Collection  documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+  <script type="text/javascript" src="../_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+        <script type="text/javascript" src="../_static/jquery.js"></script>
+        <script type="text/javascript" src="../_static/underscore.js"></script>
+        <script type="text/javascript" src="../_static/doctools.js"></script>
+        <script type="text/javascript" src="../_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+
+    
+
+  
+  <link href='https://fonts.googleapis.com/css?family=Lato:400,700|Roboto+Slab:400,700|Inconsolata:400,700' rel='stylesheet' type='text/css'>
+  <link href='https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.0.3/css/font-awesome.min.css' rel='stylesheet' type='text/css'>
+
+  
+  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/ansible.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="launchdarkly_feature_flag_sync – Sync LaunchDarkly Feature Flags across Environments" href="launchdarkly_feature_flag_sync.html" />
+    <link rel="prev" title="launchdarkly_feature_flag – Interact with projects, flags of LaunchDarkly" href="launchdarkly_feature_flag.html" /> <script src="//cdnjs.cloudflare.com/ajax/libs/modernizr/2.6.2/modernizr.min.js"></script> 
+</head>
+
+<body class="wy-body-for-nav">
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../index.html" class="icon icon-home"> LaunchDarkly Ansible Collection
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.1.0
+              </div>
+            
+          
+
+          <!--- Based on https://github.com/rtfd/sphinx_rtd_theme/pull/438/files -->
+
+<div class="version">
+  
+    <div class="version-dropdown">
+      <select class="version-list" id="version-list" onchange="javascript:location.href = this.value;">
+        <script> x = document.getElementById("version-list"); </script>
+        
+          <script>
+            current_url = window.location.href;
+            option = document.createElement("option");
+            option.text = "latest";
+            if ( "latest" == "0.1.0" ) {
+              option.selected = true;
+            }
+            if (current_url.search("0.1.0") > -1) {
+              option.value = current_url.replace("0.1.0","latest");
+            } else {
+              option.value = current_url.replace("latest","latest");
+            }
+            x.add(option);
+          </script>
+        
+          <script>
+            current_url = window.location.href;
+            option = document.createElement("option");
+            option.text = "0.1.0";
+            if ( "0.1.0" == "0.1.0" ) {
+              option.selected = true;
+            }
+            if (current_url.search("0.1.0") > -1) {
+              option.value = current_url.replace("0.1.0","0.1.0");
+            } else {
+              option.value = current_url.replace("latest","0.1.0");
+            }
+            x.add(option);
+          </script>
+        
+      </select>
+    </div>
+  
+</div>
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="launchdarkly_custom_role.html">launchdarkly_custom_role – Manage LaunchDarkly Custom Roles</a></li>
+<li class="toctree-l1"><a class="reference internal" href="launchdarkly_environment.html">launchdarkly_environment – Create Launchdarkly Project specific Environment</a></li>
+<li class="toctree-l1"><a class="reference internal" href="launchdarkly_feature_flag.html">launchdarkly_feature_flag – Interact with projects, flags of LaunchDarkly</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">launchdarkly_feature_flag_environment – Create Environment specific flag targeting</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#synopsis">Synopsis</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#parameters">Parameters</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#examples">Examples</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#return-values">Return Values</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#status">Status</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="launchdarkly_feature_flag_sync.html">launchdarkly_feature_flag_sync – Sync LaunchDarkly Feature Flags across Environments</a></li>
+<li class="toctree-l1"><a class="reference internal" href="launchdarkly_project.html">launchdarkly_project – Create Project</a></li>
+<li class="toctree-l1"><a class="reference internal" href="launchdarkly_user_segment.html">launchdarkly_user_segment – Manage User Segments</a></li>
+<li class="toctree-l1"><a class="reference internal" href="launchdarkly_user_segment_sync.html">launchdarkly_user_segment_sync – Sync LaunchDarkly Feature Flags across Environments</a></li>
+<li class="toctree-l1"><a class="reference internal" href="launchdarkly_webhook.html">launchdarkly_webhook – Manage LaunchDarkly Webhooks</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+  </div>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">LaunchDarkly Ansible Collection</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../index.html">Docs</a> &raquo;</li>
+        
+      <li>launchdarkly_feature_flag_environment – Create Environment specific flag targeting</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            
+              <!-- Ansible-specific additions for modules etc -->
+                
+                  <a href="https://github.com/launchdarkly-labs/ansible-launchdarkly/collection//docs/rst/modules/launchdarkly_feature_flag_environment.rst?description=%23%23%23%23%23%20SUMMARY%0A%3C!---%20Your%20description%20here%20--%3E%0A%0A%0A%23%23%23%23%23%20ISSUE%20TYPE%0A-%20Docs%20Pull%20Request%0A%0A%2Blabel:%20docsite_pr" class="fa fa-github"> Edit on GitHub</a>
+                
+            
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="launchdarkly-feature-flag-environment-create-environment-specific-flag-targeting">
+<span id="launchdarkly-feature-flag-environment"></span><h1>launchdarkly_feature_flag_environment – Create Environment specific flag targeting<a class="headerlink" href="#launchdarkly-feature-flag-environment-create-environment-specific-flag-targeting" title="Permalink to this headline">¶</a></h1>
+<div class="versionadded">
+<p><span class="versionmodified added">New in version 0.1.0.</span></p>
+</div>
+<div class="contents local topic" id="contents">
+<ul class="simple">
+<li><p><a class="reference internal" href="#synopsis" id="id1">Synopsis</a></p></li>
+<li><p><a class="reference internal" href="#parameters" id="id2">Parameters</a></p></li>
+<li><p><a class="reference internal" href="#examples" id="id3">Examples</a></p></li>
+<li><p><a class="reference internal" href="#return-values" id="id4">Return Values</a></p></li>
+<li><p><a class="reference internal" href="#status" id="id5">Status</a></p></li>
+</ul>
+</div>
+<div class="section" id="synopsis">
+<h2><a class="toc-backref" href="#id1">Synopsis</a><a class="headerlink" href="#synopsis" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li><p>Manage LaunchDarkly manage feature flags and account settings.</p></li>
+</ul>
+</div>
+<div class="section" id="parameters">
+<h2><a class="toc-backref" href="#id2">Parameters</a><a class="headerlink" href="#parameters" title="Permalink to this headline">¶</a></h2>
+<table  border=0 cellpadding=0 class="documentation-table">
+    <tr>
+        <th colspan="1">Parameter</th>
+        <th>Choices/<font color="blue">Defaults</font></th>
+        <th width="100%">Comments</th>
+    </tr>
+                <tr>
+                                                            <td colspan="1">
+                <b>api_key</b>
+                <div style="font-size: small">
+                    <span style="color: purple">string</span>
+                                             / <span style="color: red">required</span>                    </div>
+                                </td>
+                            <td>
+                                                                                                                                                        </td>
+                            <td>
+                                        <div>LaunchDarkly API Key. May be set as LAUNCHDARKLY_ACCESS_TOKEN environment variable.</div>
+                                                    </td>
+        </tr>
+                            <tr>
+                                                            <td colspan="1">
+                <b>environment_key</b>
+                <div style="font-size: small">
+                    <span style="color: purple">string</span>
+                                             / <span style="color: red">required</span>                    </div>
+                                </td>
+                            <td>
+                                                                                                                                                        </td>
+                            <td>
+                                        <div>A unique key that will be used to reference the environment.</div>
+                                                    </td>
+        </tr>
+                            <tr>
+                                                            <td colspan="1">
+                <b>fallthrough</b>
+                <div style="font-size: small">
+                    <span style="color: purple">-</span>
+                                                                </div>
+                                </td>
+                            <td>
+                                                                                                                                                        </td>
+                            <td>
+                                        <div>N</div>
+                                        <div>e</div>
+                                        <div>s</div>
+                                        <div>t</div>
+                                        <div>e</div>
+                                        <div>d</div>
+                                        <div></div>
+                                        <div>d</div>
+                                        <div>i</div>
+                                        <div>c</div>
+                                        <div>t</div>
+                                        <div>i</div>
+                                        <div>o</div>
+                                        <div>n</div>
+                                        <div>a</div>
+                                        <div>r</div>
+                                        <div>y</div>
+                                        <div></div>
+                                        <div>d</div>
+                                        <div>e</div>
+                                        <div>s</div>
+                                        <div>c</div>
+                                        <div>r</div>
+                                        <div>i</div>
+                                        <div>b</div>
+                                        <div>i</div>
+                                        <div>n</div>
+                                        <div>g</div>
+                                        <div></div>
+                                        <div>t</div>
+                                        <div>h</div>
+                                        <div>e</div>
+                                        <div></div>
+                                        <div>d</div>
+                                        <div>e</div>
+                                        <div>f</div>
+                                        <div>a</div>
+                                        <div>u</div>
+                                        <div>l</div>
+                                        <div>t</div>
+                                        <div></div>
+                                        <div>v</div>
+                                        <div>a</div>
+                                        <div>r</div>
+                                        <div>i</div>
+                                        <div>a</div>
+                                        <div>t</div>
+                                        <div>i</div>
+                                        <div>o</div>
+                                        <div>n</div>
+                                        <div></div>
+                                        <div>t</div>
+                                        <div>o</div>
+                                        <div></div>
+                                        <div>s</div>
+                                        <div>e</div>
+                                        <div>r</div>
+                                        <div>v</div>
+                                        <div>e</div>
+                                        <div></div>
+                                        <div>i</div>
+                                        <div>f</div>
+                                        <div></div>
+                                        <div>n</div>
+                                        <div>o</div>
+                                        <div></div>
+                                        <div>'</div>
+                                        <div>p</div>
+                                        <div>r</div>
+                                        <div>e</div>
+                                        <div>r</div>
+                                        <div>e</div>
+                                        <div>q</div>
+                                        <div>u</div>
+                                        <div>i</div>
+                                        <div>s</div>
+                                        <div>i</div>
+                                        <div>t</div>
+                                        <div>e</div>
+                                        <div>s</div>
+                                        <div>'</div>
+                                        <div>,</div>
+                                        <div></div>
+                                        <div>'</div>
+                                        <div>t</div>
+                                        <div>a</div>
+                                        <div>r</div>
+                                        <div>g</div>
+                                        <div>e</div>
+                                        <div>t</div>
+                                        <div>s</div>
+                                        <div>'</div>
+                                        <div>,</div>
+                                        <div></div>
+                                        <div>o</div>
+                                        <div>r</div>
+                                        <div></div>
+                                        <div>'</div>
+                                        <div>r</div>
+                                        <div>u</div>
+                                        <div>l</div>
+                                        <div>e</div>
+                                        <div>s</div>
+                                        <div>'</div>
+                                        <div></div>
+                                        <div>a</div>
+                                        <div>p</div>
+                                        <div>p</div>
+                                        <div>l</div>
+                                        <div>y</div>
+                                        <div>.</div>
+                                                    </td>
+        </tr>
+                            <tr>
+                                                            <td colspan="1">
+                <b>off_variation</b>
+                <div style="font-size: small">
+                    <span style="color: purple">integer</span>
+                                                                </div>
+                                </td>
+                            <td>
+                                                                                                                                                        </td>
+                            <td>
+                                        <div>Variation served if flag targeting is turned off.</div>
+                                                    </td>
+        </tr>
+                            <tr>
+                                                            <td colspan="1">
+                <b>project_key</b>
+                <div style="font-size: small">
+                    <span style="color: purple">-</span>
+                                                                </div>
+                                </td>
+                            <td>
+                                                                                                                                                                <b>Default:</b><br/><div style="color: blue">"default"</div>
+                                </td>
+                            <td>
+                                        <div>Project key will group flags together</div>
+                                                    </td>
+        </tr>
+                            <tr>
+                                                            <td colspan="1">
+                <b>rules</b>
+                <div style="font-size: small">
+                    <span style="color: purple">list</span>
+                                                                </div>
+                                </td>
+                            <td>
+                                                                                                                                                        </td>
+                            <td>
+                                        <div>Target users based on user attributes</div>
+                                                    </td>
+        </tr>
+                            <tr>
+                                                            <td colspan="1">
+                <b>state</b>
+                <div style="font-size: small">
+                    <span style="color: purple">string</span>
+                                                                </div>
+                                </td>
+                            <td>
+                                                                                                                        <ul style="margin: 0; padding: 0"><b>Choices:</b>
+                                                                                                                                                            <li>absent</li>
+                                                                                                                                                                                            <li>enabled</li>
+                                                                                                                                                                                            <li>disabled</li>
+                                                                                                                                                                                            <li><div style="color: blue"><b>present</b>&nbsp;&larr;</div></li>
+                                                                                </ul>
+                                                                        </td>
+                            <td>
+                                        <div>Indicate desired state of the resource</div>
+                                                    </td>
+        </tr>
+                            <tr>
+                                                            <td colspan="1">
+                <b>targets</b>
+                <div style="font-size: small">
+                    <span style="color: purple">list</span>
+                                                                </div>
+                                </td>
+                            <td>
+                                                                                                                                                        </td>
+                            <td>
+                                        <div>Assign users to a specific variation</div>
+                                                    </td>
+        </tr>
+                    </table>
+<br/></div>
+<div class="section" id="examples">
+<h2><a class="toc-backref" href="#id3">Examples</a><a class="headerlink" href="#examples" title="Permalink to this headline">¶</a></h2>
+<div class="highlight-yaml+jinja notranslate"><div class="highlight"><pre><span></span><span class="nn">---</span>
+<span class="c1"># Create a new flag</span>
+<span class="p p-Indicator">-</span> <span class="nt">launchdarkly_feature_flag_environment</span><span class="p">:</span>
+    <span class="nt">state</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">present</span>
+    <span class="nt">flag_key</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">example_flag</span>
+    <span class="nt">environment_key</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">default</span>
+    <span class="nt">off_variation</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">1</span>
+    <span class="nt">targets</span><span class="p">:</span>
+        <span class="p p-Indicator">-</span> <span class="nt">variation</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">1</span>
+          <span class="nt">values</span><span class="p">:</span>
+            <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">test@example.com</span>
+            <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">test2@example.com</span>
+    <span class="nt">comment</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">Updating default env values</span>
+
+<span class="p p-Indicator">-</span> <span class="nt">launchdarkly_feature_flag_environment</span><span class="p">:</span>
+    <span class="nt">state</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">enabled</span>
+    <span class="nt">flag_key</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">example_2</span>
+    <span class="nt">environment_key</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">env_2</span>
+    <span class="nt">fallthrough</span><span class="p">:</span>
+      <span class="nt">variation</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">1</span>
+    <span class="nt">rules</span><span class="p">:</span>
+    <span class="p p-Indicator">-</span> <span class="nt">variation</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">1</span>
+        <span class="l l-Scalar l-Scalar-Plain">clauses</span><span class="p p-Indicator">:</span>
+        <span class="p p-Indicator">-</span> <span class="nt">attribute</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">test-attribute</span>
+            <span class="l l-Scalar l-Scalar-Plain">op</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">contains</span>
+            <span class="l l-Scalar l-Scalar-Plain">values</span><span class="p p-Indicator">:</span>
+            <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">2</span>
+            <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">3</span>
+            <span class="nt">negate</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">true</span>
+    <span class="nt">prerequisites</span><span class="p">:</span>
+      <span class="p p-Indicator">-</span> <span class="nt">variation</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">0</span>
+        <span class="nt">key</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">example_flag</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="return-values">
+<h2><a class="toc-backref" href="#id4">Return Values</a><a class="headerlink" href="#return-values" title="Permalink to this headline">¶</a></h2>
+<p>Common return values are documented <span class="xref std std-ref">here</span>, the following are the fields unique to this :</p>
+<table border=0 cellpadding=0 class="documentation-table">
+    <tr>
+        <th colspan="1">Key</th>
+        <th>Returned</th>
+        <th width="100%">Description</th>
+    </tr>
+                <tr>
+                            <td colspan="1">
+                <b>feature_flag_environment</b>
+                <div style="font-size: small">
+                  <span style="color: purple">dictionary</span>
+                                      </div>
+                                </td>
+            <td>on success</td>
+            <td>
+                                        <div>Dictionary containing a <a href='https://github.com/launchdarkly/api-client-python/blob/2.0.21/docs/FeatureFlagConfig.md'>Feature Flag Config</a></div>
+                                    <br/>
+                                </td>
+        </tr>
+                    </table>
+<br/><br/></div>
+<div class="section" id="status">
+<h2><a class="toc-backref" href="#id5">Status</a><a class="headerlink" href="#status" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li><p>This  is not guaranteed to have a backwards compatible interface. <em>[preview]</em></p></li>
+<li><p>This  is <span class="xref std std-ref">maintained by the Ansible Community</span>. <em>[community]</em></p></li>
+</ul>
+<div class="admonition hint">
+<p class="admonition-title">Hint</p>
+<p>If you notice any issues in this documentation, you can <a class="reference external" href="https://github.com/ansible/ansible/edit/devel/lib/ansible/plugins//?description=%23%23%23%23%23%20SUMMARY%0A%3C!---%20Your%20description%20here%20--%3E%0A%0A%0A%23%23%23%23%23%20ISSUE%20TYPE%0A-%20Docs%20Pull%20Request%0A%0A%2Blabel:%20docsite_pr">edit this document</a> to improve it.</p>
+</div>
+<div class="admonition hint">
+<p class="admonition-title">Hint</p>
+<p>Configuration entries for each entry type have a low to high priority order. For example, a variable that is lower in the list will override a variable that is higher up.</p>
+</div>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons">
+      
+        <a href="launchdarkly_feature_flag_sync.html" class="btn btn-neutral float-right" title="launchdarkly_feature_flag_sync – Sync LaunchDarkly Feature Flags across Environments"/>Next <span class="icon icon-circle-arrow-right"></span></a>
+      
+      
+        <a href="launchdarkly_feature_flag.html" class="btn btn-neutral" title="launchdarkly_feature_flag – Interact with projects, flags of LaunchDarkly"><span class="icon icon-circle-arrow-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+
+<script type="text/javascript">
+  (function(w,d,t,u,n,s,e){w['SwiftypeObject']=n;w[n]=w[n]||function(){
+  (w[n].q=w[n].q||[]).push(arguments);};s=d.createElement(t);
+  e=d.getElementsByTagName(t)[0];s.async=1;s.src=u;e.parentNode.insertBefore(s,e);
+  })(window,document,'script','//s.swiftypecdn.com/install/v2/st.js','_st');
+
+  _st('install','yABGvz2N8PwcwBxyfzUc','2.0.0');
+</script>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2019, Catamorphic, Co.
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+
+  <script type="text/javascript">
+      jQuery(function () {
+          
+          SphinxRtdTheme.Navigation.enableSticky();
+          
+      });
+  </script>
+
+  
+  
+    
+   <!-- extra footer elements for Ansible beyond RTD Sphinx Theme --->
+if (("undefined" !== typeof _satellite) && ("function" === typeof _satellite.pageBottom)) {
+  _satellite.pageBottom();
+}
+</script> 
+
+</body>
+</html>
