@@ -6,3 +6,4 @@ docs/_build
 docs/build
 docs/source/modules/*.rst
 **/__pycache__
+**/.DS_Store
