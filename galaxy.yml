@@ -42,10 +42,10 @@ dependencies: {}
 repository: https://github.com/launchdarkly-labs/ansible-collection-launchdarkly
 
 # The URL to any online docs
-documentation: http://docs.example.com
+documentation: https://launchdarkly-labs.github.io/ansible-launchdarkly-collection/
 
 # The URL to the homepage of the collection/project
-homepage: http://example.com
+homepage: https://launchdarkly-labs.github.io/ansible-launchdarkly-collection/
 
 # The URL to the collection issue tracker
 issues: https://github.com/launchdarkly-labs/ansible-collection-launchdarkly/issues
