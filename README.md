@@ -37,7 +37,7 @@ To use a module from LaunchDarkly collection, please reference the full namespac
 - name: Using LaunchDarkly collection
   hosts: localhost
   tasks:
-    - launchdarkly.collection.launchdarkly_feature_flag:
+    - launchdarkly_labs.collection.launchdarkly_feature_flag:
         name: example
         kind: bool
         state: present
@@ -45,14 +45,14 @@ To use a module from LaunchDarkly collection, please reference the full namespac
         key: example_flag_creation
 ```
 
-Or you can add full namepsace and collecton name in the `collections` element:
+Or you can add full namepsace and collection name in the `collections` element:
 
 ```yaml
 ---
 - name: Using LaunchDarkly collection
   hosts: localhost
   collections:
-    - launchdarkly.collection
+    - launchdarkly_labs.collection
   tasks:
     - launchdarkly_feature_flag:
         name: example

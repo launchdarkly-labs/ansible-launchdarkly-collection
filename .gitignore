@@ -7,3 +7,4 @@ docs/build
 docs/source/modules/*.rst
 **/__pycache__
 **/.DS_Store
+*.tar.gz
