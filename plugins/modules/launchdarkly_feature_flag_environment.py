@@ -125,13 +125,13 @@ from ansible.module_utils.six import PY2, iteritems, string_types
 # from rule import rule_argument_spec
 # from base import configure_instance, _patch_path, _build_comment, _patch_op
 
-from ansible_collections.launchdarkly.collection.plugins.module_utils.base import (
+from ansible_collections.launchdarkly_labs.collection.plugins.module_utils.base import (
     configure_instance,
     _patch_path,
     _patch_op,
     _build_comment,
 )
-from ansible_collections.launchdarkly.collection.plugins.module_utils.rule import (
+from ansible_collections.launchdarkly_labs.collection.plugins.module_utils.rule import (
     rule_argument_spec,
 )
 

@@ -22,6 +22,12 @@ LaunchDarkly overview
 ansible-galaxy collection install launchdarkly.collection
 ```
 
+You will then need to install the library dependencies. The requirements.txt will be in the directory that Ansible installed your collection to. Default is `~/.ansible/collections`
+
+```
+python -m pip install -r ~/.ansible/collections/ansible_collections/launchdarkly_labs/collection/requirements.txt
+```
+
 ## Usage
 
 To use a module from LaunchDarkly collection, please reference the full namespace, collection name, and modules name that you want to use:

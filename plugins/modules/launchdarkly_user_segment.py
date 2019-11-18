@@ -115,10 +115,10 @@ except ImportError:
 from ansible.module_utils.basic import AnsibleModule, missing_required_lib, env_fallback
 from ansible.module_utils._text import to_native
 from ansible.module_utils.common._json_compat import json
-from ansible_collections.launchdarkly.collection.plugins.module_utils.clause import (
+from ansible_collections.launchdarkly_labs.collection.plugins.module_utils.clause import (
     clause_argument_spec,
 )
-from ansible_collections.launchdarkly.collection.plugins.module_utils.base import (
+from ansible_collections.launchdarkly_labs.collection.plugins.module_utils.base import (
     configure_instance,
     _patch_path,
 )

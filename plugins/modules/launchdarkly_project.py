@@ -87,15 +87,13 @@ from ansible.module_utils.basic import AnsibleModule, missing_required_lib, env_
 from ansible.module_utils._text import to_native
 from ansible.module_utils.common._json_compat import json
 from ansible.module_utils.six import PY2, iteritems, string_types
-from ansible_collections.launchdarkly.collection.plugins.module_utils.base import (
+from ansible_collections.launchdarkly_labs.collection.plugins.module_utils.base import (
     configure_instance,
 )
-from ansible_collections.launchdarkly.collection.plugins.module_utils.environment import (
+from ansible_collections.launchdarkly_labs.collection.plugins.module_utils.environment import (
     ld_env_arg_spec,
     env_ld_builder,
 )
-
-# from .launchdarkly_environment import ld_env_arg_spec, env_ld_builder
 
 
 def main():

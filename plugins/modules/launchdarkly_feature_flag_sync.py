@@ -89,10 +89,9 @@ from ansible.module_utils.basic import AnsibleModule, missing_required_lib, env_
 from ansible.module_utils._text import to_native
 from ansible.module_utils.common._json_compat import json
 
-# from ansible_collections.launchdarkly.collection.plugins.module_utils.base import (
-#     configure_instance
-# )
-from base import configure_instance
+from ansible_collections.launchdarkly_labs.collection.plugins.module_utils.base import (
+    configure_instance
+)
 
 
 def main():
