@@ -93,7 +93,7 @@ EXAMPLES = r'''
 RETURN = r'''
 ---
 feature_flag_environment:
-    description: Dictionary containing a L(Feature Flag Config, https://github.com/launchdarkly/api-client-python/blob/2.0.21/docs/FeatureFlagConfig.md)
+    description: Dictionary containing a L(Feature Flag Config, https://github.com/launchdarkly/api-client-python/blob/2.0.24/docs/FeatureFlagConfig.md)
     type: dict
     returned: on success
 '''

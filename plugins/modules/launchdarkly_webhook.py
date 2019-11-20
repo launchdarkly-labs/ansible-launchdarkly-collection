@@ -84,7 +84,7 @@ EXAMPLES = r'''
 RETURN=r'''
 ---
 webhook:
-    description: Dictionary containing a L(Webhook, https://github.com/launchdarkly/api-client-python/blob/2.0.21/docs/Webhook.md)
+    description: Dictionary containing a L(Webhook, https://github.com/launchdarkly/api-client-python/blob/2.0.24/docs/Webhook.md)
     type: dict
     returned: on success
 '''

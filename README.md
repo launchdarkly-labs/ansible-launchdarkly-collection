@@ -13,13 +13,13 @@ LaunchDarkly overview
 ## Requirements
 
 - ansible version >= 2.9
-- launchdarkly-api >= 2.0.21
+- launchdarkly-api >= 2.0.24
 - dictdiffer == 0.8.0
 
 ## Installation
 
 ```
-ansible-galaxy collection install launchdarkly.collection
+ansible-galaxy collection install launchdarkly_labs.collection
 ```
 
 You will then need to install the library dependencies. The requirements.txt will be in the directory that Ansible installed your collection to. Default is `~/.ansible/collections`
@@ -45,7 +45,7 @@ To use a module from LaunchDarkly collection, please reference the full namespac
         key: example_flag_creation
 ```
 
-Or you can add full namepsace and collection name in the `collections` element:
+Or you can add full namespace and collection name in the `collections` element:
 
 ```yaml
 ---

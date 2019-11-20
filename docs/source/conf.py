@@ -58,13 +58,11 @@ html_static_path = ['./_static']
 html_context = {
     'display_github': 'True',
     'github_user': 'launchdarkly-labs',
-    'github_repo': 'ansible-launchdarkly/collection',
+    'github_repo': 'ansible-launchdarkly-collection',
     'github_version': 'docs/rst/',
     'github_module_version': 'devel/lib/ansible/modules/',
     'current_version': version,
-    'latest_version': '0.1.0',
+    'latest_version': '0.1.3',
     # list specifically out of order to make latest work
-    'available_versions': ('latest', '0.1.0'),
-    #'css_files': ('static/ansible.css',  # overrides to the standard theme
-    #             ),
+    'available_versions': ('latest', '0.1.3'),
 }
