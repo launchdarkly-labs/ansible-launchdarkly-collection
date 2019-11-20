@@ -42,7 +42,7 @@ Parameters
                                 <td>
                                                                                                                                                             </td>
                                 <td>
-                                            <div>LaunchDarkly API Key. May be set as LAUNCHDARKLY_ACCESS_TOKEN environment variable.</div>
+                                            <div>LaunchDarkly API Key. May be set as <code>LAUNCHDARKLY_ACCESS_TOKEN</code> environment variable.</div>
                                                         </td>
             </tr>
                                 <tr>
@@ -68,122 +68,8 @@ Parameters
                                 <td>
                                                                                                                                                             </td>
                                 <td>
-                                            <div>-</div>
-                                            <div></div>
-                                            <div>N</div>
-                                            <div>e</div>
-                                            <div>s</div>
-                                            <div>t</div>
-                                            <div>e</div>
-                                            <div>d</div>
-                                            <div></div>
-                                            <div>d</div>
-                                            <div>i</div>
-                                            <div>c</div>
-                                            <div>t</div>
-                                            <div>i</div>
-                                            <div>o</div>
-                                            <div>n</div>
-                                            <div>a</div>
-                                            <div>r</div>
-                                            <div>y</div>
-                                            <div></div>
-                                            <div>d</div>
-                                            <div>e</div>
-                                            <div>s</div>
-                                            <div>c</div>
-                                            <div>r</div>
-                                            <div>i</div>
-                                            <div>b</div>
-                                            <div>i</div>
-                                            <div>n</div>
-                                            <div>g</div>
-                                            <div></div>
-                                            <div>t</div>
-                                            <div>h</div>
-                                            <div>e</div>
-                                            <div></div>
-                                            <div>d</div>
-                                            <div>e</div>
-                                            <div>f</div>
-                                            <div>a</div>
-                                            <div>u</div>
-                                            <div>l</div>
-                                            <div>t</div>
-                                            <div></div>
-                                            <div>v</div>
-                                            <div>a</div>
-                                            <div>r</div>
-                                            <div>i</div>
-                                            <div>a</div>
-                                            <div>t</div>
-                                            <div>i</div>
-                                            <div>o</div>
-                                            <div>n</div>
-                                            <div></div>
-                                            <div>t</div>
-                                            <div>o</div>
-                                            <div></div>
-                                            <div>s</div>
-                                            <div>e</div>
-                                            <div>r</div>
-                                            <div>v</div>
-                                            <div>e</div>
-                                            <div></div>
-                                            <div>i</div>
-                                            <div>f</div>
-                                            <div></div>
-                                            <div>n</div>
-                                            <div>o</div>
-                                            <div></div>
-                                            <div>'</div>
-                                            <div>p</div>
-                                            <div>r</div>
-                                            <div>e</div>
-                                            <div>r</div>
-                                            <div>e</div>
-                                            <div>q</div>
-                                            <div>u</div>
-                                            <div>i</div>
-                                            <div>s</div>
-                                            <div>i</div>
-                                            <div>t</div>
-                                            <div>e</div>
-                                            <div>s</div>
-                                            <div>'</div>
-                                            <div>,</div>
-                                            <div></div>
-                                            <div>-</div>
-                                            <div></div>
-                                            <div>'</div>
-                                            <div>t</div>
-                                            <div>a</div>
-                                            <div>r</div>
-                                            <div>g</div>
-                                            <div>e</div>
-                                            <div>t</div>
-                                            <div>s</div>
-                                            <div>'</div>
-                                            <div>,</div>
-                                            <div></div>
-                                            <div>o</div>
-                                            <div>r</div>
-                                            <div></div>
-                                            <div>'</div>
-                                            <div>r</div>
-                                            <div>u</div>
-                                            <div>l</div>
-                                            <div>e</div>
-                                            <div>s</div>
-                                            <div>'</div>
-                                            <div></div>
-                                            <div>a</div>
-                                            <div>p</div>
-                                            <div>p</div>
-                                            <div>l</div>
-                                            <div>y</div>
-                                            <div>.</div>
-                                            <div></div>
+                                            <div>Nested dictionary describing the default variation to serve if no <code>prerequisites</code>,</div>
+                                            <div><code>targets</code> or <code>rules</code> apply.</div>
                                                         </td>
             </tr>
                                 <tr>
