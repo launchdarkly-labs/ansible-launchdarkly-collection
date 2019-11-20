@@ -50,6 +50,7 @@ EOF
 	git add .
 	git commit -m "new pages version $(date)"
 	git push origin gh-pages
+    git checkout master
 else
 	echo "directory $buildDirectory does not exists"
 fi

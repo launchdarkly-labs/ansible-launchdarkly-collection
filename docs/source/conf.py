@@ -20,7 +20,7 @@
 project = 'LaunchDarkly Ansible Collection'
 copyright = "2019, Catamorphic, Co."
 author = "Dan O'Brien"
-version = '0.1.0'
+version = '0.1.14'
 
 
 # -- General configuration ---------------------------------------------------
@@ -62,7 +62,7 @@ html_context = {
     'github_version': 'docs/rst/',
     'github_module_version': 'devel/lib/ansible/modules/',
     'current_version': version,
-    'latest_version': '0.1.3',
+    'latest_version': '0.1.14',
     # list specifically out of order to make latest work
-    'available_versions': ('latest', '0.1.3'),
+    'available_versions': ('latest', '0.1.14'),
 }

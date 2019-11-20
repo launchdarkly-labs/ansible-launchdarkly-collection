@@ -25,7 +25,7 @@ options:
         type: str
     api_key:
         description:
-            - LaunchDarkly API Key. May be set as LAUNCHDARKLY_ACCESS_TOKEN environment variable.
+            - LaunchDarkly API Key. May be set as C(LAUNCHDARKLY_ACCESS_TOKEN) environment variable.
         type: str
         required: yes
     project_key:
@@ -50,9 +50,9 @@ options:
             - Target users based on user attributes
         type: list
     fallthrough:
-        description: |
-            - Nested dictionary describing the default variation to serve if no 'prerequisites',
-            - 'targets', or 'rules' apply.
+        description:
+            - Nested dictionary describing the default variation to serve if no C(prerequisites),
+            - C(targets) or C(rules) apply.
 '''
 
 EXAMPLES = r'''
