@@ -69,6 +69,10 @@ EXAMPLES = r'''
 '''
 
 RETURN = r'''
+results:
+    description: list of dictionaries containing a L(Feature Flag Config, https://github.com/launchdarkly/api-client-python/blob/2.0.24/docs/FeatureFlag.md)
+    type: dict
+    returned: on success
 '''
 
 import inspect
@@ -147,8 +151,9 @@ def main():
 
 
 def _configure_flag_sync(module, api_instance):
+    results = []
+    max_targets = len(module.params["environment_targets"]) - 1
     for idx, env in enumerate(module.params["environment_targets"]):
-        print(env)
         source = {"key": module.params["environment_key"]}
 
         target = {"key": env}
@@ -171,14 +176,15 @@ def _configure_flag_sync(module, api_instance):
                 module.params["flag_key"],
                 feature_flag_copy_body,
             )
-        except ApiException as e:
-            if e.status == 404:
-                err = "user segment key not found"
-            else:
-                err = json.loads(str(e.body))
-            module.exit_json(msg=err)
 
-    module.exit_json(changed=True, msg="feature flags synced")
+            if idx == max_targets:
+                # LD Returns a FeatureFlag Object containing all Environments. Only need last one.
+                feature_flag = response.to_dict()
+        except ApiException as e:
+            err = json.loads(str(e.body))
+            module.exit_json(failed=True, msg=to_native(err))
+
+    module.exit_json(changed=True, msg="feature flags synced", feature_flag=feature_flag)
 
 
 if __name__ == "__main__":

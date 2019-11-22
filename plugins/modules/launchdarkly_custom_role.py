@@ -57,7 +57,12 @@ EXAMPLES = r"""
         effect: allow
 """
 
-RETURN = '''
+RETURN = r'''
+---
+custom_role:
+    description: Dictionary containing a L(Custom Role, https://github.com/launchdarkly/api-client-python/blob/2.0.24/docs/CustomRole.md)
+    type: dict
+    returned: on success
 '''
 
 import inspect
@@ -168,6 +173,7 @@ def _create_custom_role(module, api_instance):
         custom_role_config["policy"] = policies
 
     custom_role_body = launchdarkly_api.CustomRoleBody(**custom_role_config)
+
     try:
         api_response = api_instance.post_custom_role(custom_role_body)
     except ApiException as e:
@@ -197,7 +203,11 @@ def _configure_custom_role(module, api_instance):
                 err = "webhook id not found"
             else:
                 err = json.loads(str(e.body))
-            module.exit_json(msg=err)
+
+            module.exit_json(msg=to_native(err))
+        module.exit_json(changed=True, msg="successfully updated custom role: %s" % api_response.key)
+    else:
+        module.exit_json(changed=False, msg="custom role unchanged")
 
 
 def _fetch_custom_role(module, api_instance):

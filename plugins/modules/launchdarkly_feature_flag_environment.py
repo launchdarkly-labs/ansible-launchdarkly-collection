@@ -476,7 +476,7 @@ def _configure_feature_flag_env(module, api_instance, feature_flag=None):
             feature_flag_environment=api_response.to_dict(),
         )
 
-    module.exit_json(changed=False, msg="flag environment unchanged", feature_flag_environment=feature_flag)
+    module.exit_json(changed=False, msg="flag environment unchanged", feature_flag_environment=feature_flag.to_dict())
 
 
 def _build_rules(rule):

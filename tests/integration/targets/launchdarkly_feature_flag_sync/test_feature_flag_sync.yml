@@ -1,0 +1,65 @@
+---
+- name: Test Ansible Collection
+  hosts: localhost
+  gather_facts: no
+
+  tasks:
+  - name: Create Feature Flag
+    launchdarkly_feature_flag:
+      kind: bool
+      state: present
+      key: example_test_flag
+      project_key: dano-test-project
+      tags: ["yellow", "green"]
+      name: ansible-random-new-name
+      include_in_snippet: true
+      description: "This is an awesome feature that will be implemented."
+
+
+  - name: Set Feature Flag Environment
+    launchdarkly_feature_flag_environment:
+      state: enabled
+      flag_key: example_test_flag
+      project_key: dano-test-project
+      environment_key: production
+      comment: "testing updated flag environment"
+      targets:
+        - variation: 1
+          values:
+            - "test@example1.com"
+            - "test2@example.com"
+      rules:
+        - variation: 1
+          clauses:
+            - attribute: test-attribute
+              op: contains
+              values:
+                - 2
+                - 3
+              negate: true
+      fallthrough:
+        variation: 1
+
+  - name: Copy Flag settings to Test
+    launchdarkly_feature_flag_sync:
+      flag_key: example_test_flag
+      project_key: dano-test-project
+      environment_key: production
+      environment_targets:
+          - test
+
+  - name: Copy Flag settings to Default
+    launchdarkly_feature_flag_sync:
+      flag_key: example_test_flag
+      project_key: dano-test-project
+      environment_key: production
+      environment_targets:
+          - default
+    register: result
+    ignore_errors: yes
+
+  - name: Delete flag
+    launchdarkly_feature_flag:
+      state: absent
+      key: example_test_flag
+      project_key: dano-test-project

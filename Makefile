@@ -3,9 +3,7 @@
 current_api_doc_version := 2.0.24
 old_api_doc_version := 2.0.21
 
-
-current_galaxy_version := 0.1.14
-old_galaxy_version := 0.1.12
+old_galaxy_version := $(shell git describe --abbrev=0 --tags)
 
 
 .PHONY: update_api_version_docs
@@ -18,5 +16,5 @@ build_docs:
 
 .PHONY: update_galaxy_version
 update_galaxy_version:
-	sed -i 's/version: $(old_galaxy_version)/version: $(current_galaxy_version)/g' galaxy.yml
-	sed -i 's/$(old_galaxy_version)/$(current_galaxy_version)/g' docs/source/conf.py
+	sed -i 's/version: $(old_galaxy_version)/version: $(new_galaxy_version)/g' galaxy.yml
+	sed -i 's/$(old_galaxy_version)/$(new_galaxy_version)/g' docs/source/conf.py

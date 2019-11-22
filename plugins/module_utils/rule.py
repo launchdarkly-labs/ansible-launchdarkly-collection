@@ -1,6 +1,6 @@
 # from clause import clause_argument_spec
 
-from ansible_collections.launchdarkly.collection.plugins.module_utils.clause import (
+from ansible_collections.launchdarkly_labs.collection.plugins.module_utils.clause import (
     clause_argument_spec,
 )
 

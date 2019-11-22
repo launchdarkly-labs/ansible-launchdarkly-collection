@@ -94,22 +94,9 @@ EXAMPLES = r'''
 
 RETURN = r'''
 environment:
-    description: Return dictionary containg LaunchDarkly Environment
+    description: Returns dictionary containing an L(Environment, https://github.com/launchdarkly/api-client-python/blob/2.0.24/docs/Environment.md)
     type: dict
-    returned: always
-    sample:
-        _links: {}
-        _id: 57ae15fc40cda6071f6c242e
-        key: production
-        name: Production
-        apiKey: XXX
-        mobileKey: XXX
-        color: 417505
-        defaultTtl: 0
-        secureMode: false
-'''
-
-RETURN = r'''
+    returned: on success
 '''
 
 import inspect

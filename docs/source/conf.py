@@ -20,7 +20,7 @@
 project = 'LaunchDarkly Ansible Collection'
 copyright = "2019, Catamorphic, Co."
 author = "Dan O'Brien"
-version = '0.1.14'
+version = '0.1.15'
 
 
 # -- General configuration ---------------------------------------------------
@@ -59,10 +59,10 @@ html_context = {
     'display_github': 'True',
     'github_user': 'launchdarkly-labs',
     'github_repo': 'ansible-launchdarkly-collection',
-    'github_version': 'docs/rst/',
+    'github_version': 'tree/master/plugins/',
     'github_module_version': 'devel/lib/ansible/modules/',
     'current_version': version,
-    'latest_version': '0.1.14',
+    'latest_version': '0.1.15',
     # list specifically out of order to make latest work
-    'available_versions': ('latest', '0.1.14'),
+    'available_versions': ('latest', '0.1.15'),
 }
