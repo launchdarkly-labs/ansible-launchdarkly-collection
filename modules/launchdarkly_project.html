@@ -63,7 +63,7 @@
             
             
               <div class="version">
-                0.1.14
+                0.1.15
               </div>
             
           
@@ -80,11 +80,11 @@
             current_url = window.location.href;
             option = document.createElement("option");
             option.text = "latest";
-            if ( "latest" == "0.1.14" ) {
+            if ( "latest" == "0.1.15" ) {
               option.selected = true;
             }
-            if (current_url.search("0.1.14") > -1) {
-              option.value = current_url.replace("0.1.14","latest");
+            if (current_url.search("0.1.15") > -1) {
+              option.value = current_url.replace("0.1.15","latest");
             } else {
               option.value = current_url.replace("latest","latest");
             }
@@ -94,14 +94,14 @@
           <script>
             current_url = window.location.href;
             option = document.createElement("option");
-            option.text = "0.1.14";
-            if ( "0.1.14" == "0.1.14" ) {
+            option.text = "0.1.15";
+            if ( "0.1.15" == "0.1.15" ) {
               option.selected = true;
             }
-            if (current_url.search("0.1.14") > -1) {
-              option.value = current_url.replace("0.1.14","0.1.14");
+            if (current_url.search("0.1.15") > -1) {
+              option.value = current_url.replace("0.1.15","0.1.15");
             } else {
-              option.value = current_url.replace("latest","0.1.14");
+              option.value = current_url.replace("latest","0.1.15");
             }
             x.add(option);
           </script>
@@ -204,7 +204,7 @@
             
               <!-- Ansible-specific additions for modules etc -->
                 
-                  <a href="https://github.com/launchdarkly-labs/ansible-launchdarkly-collection//docs/rst/modules/launchdarkly_project.rst?description=%23%23%23%23%23%20SUMMARY%0A%3C!---%20Your%20description%20here%20--%3E%0A%0A%0A%23%23%23%23%23%20ISSUE%20TYPE%0A-%20Docs%20Pull%20Request%0A%0A%2Blabel:%20docsite_pr" class="fa fa-github"> Edit on GitHub</a>
+                  <a href="https://github.com/launchdarkly-labs/ansible-launchdarkly-collection//tree/master/plugins/modules/launchdarkly_project.rst?description=%23%23%23%23%23%20SUMMARY%0A%3C!---%20Your%20description%20here%20--%3E%0A%0A%0A%23%23%23%23%23%20ISSUE%20TYPE%0A-%20Docs%20Pull%20Request%0A%0A%2Blabel:%20docsite_pr" class="fa fa-github"> Edit on GitHub</a>
                 
             
           
@@ -306,7 +306,7 @@
                                                             <td colspan="1">
                 <b>project_key</b>
                 <div style="font-size: small">
-                    <span style="color: purple">-</span>
+                    <span style="color: purple">string</span>
                                              / <span style="color: red">required</span>                    </div>
                                 </td>
                             <td>
@@ -320,7 +320,7 @@
                                                             <td colspan="1">
                 <b>state</b>
                 <div style="font-size: small">
-                    <span style="color: purple">-</span>
+                    <span style="color: purple">string</span>
                                                                 </div>
                                 </td>
                             <td>
@@ -350,7 +350,7 @@
 <br/></div>
 <div class="section" id="examples">
 <h2><a class="toc-backref" href="#id3">Examples</a><a class="headerlink" href="#examples" title="Permalink to this headline">¶</a></h2>
-<div class="highlight-yaml+jinja notranslate"><div class="highlight"><pre><span></span><span class="c1"># Create a new LaunchDarkly Environment</span>
+<div class="highlight-yaml+jinja notranslate"><div class="highlight"><pre><span></span><span class="c1"># Create a new LaunchDarkly Project with tags</span>
 <span class="p p-Indicator">-</span> <span class="nt">project</span><span class="p">:</span>
     <span class="nt">state</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">present</span>
     <span class="nt">project_key</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">test-project-1</span>
@@ -359,7 +359,6 @@
       <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">dev</span>
       <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">ops</span>
       <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">frontend</span>
-    <span class="nt">include_in_snippet_by_default</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">false</span>
 </pre></div>
 </div>
 </div>

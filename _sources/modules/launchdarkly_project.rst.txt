@@ -92,7 +92,7 @@ Parameters
                                                                 <td colspan="1">
                     <b>project_key</b>
                     <div style="font-size: small">
-                        <span style="color: purple">-</span>
+                        <span style="color: purple">string</span>
                                                  / <span style="color: red">required</span>                    </div>
                                     </td>
                                 <td>
@@ -106,7 +106,7 @@ Parameters
                                                                 <td colspan="1">
                     <b>state</b>
                     <div style="font-size: small">
-                        <span style="color: purple">-</span>
+                        <span style="color: purple">string</span>
                                                                     </div>
                                     </td>
                                 <td>
@@ -144,7 +144,7 @@ Examples
 .. code-block:: yaml+jinja
 
     
-    # Create a new LaunchDarkly Environment
+    # Create a new LaunchDarkly Project with tags
     - project:
         state: present
         project_key: test-project-1
@@ -153,7 +153,6 @@ Examples
           - dev
           - ops
           - frontend
-        include_in_snippet_by_default: false
 
 
 

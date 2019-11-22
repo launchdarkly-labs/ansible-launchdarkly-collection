@@ -216,6 +216,34 @@ Examples
 
 
 
+Return Values
+-------------
+Common return values are documented :ref:`here <common_return_values>`, the following are the fields unique to this :
+
+.. raw:: html
+
+    <table border=0 cellpadding=0 class="documentation-table">
+        <tr>
+            <th colspan="1">Key</th>
+            <th>Returned</th>
+            <th width="100%">Description</th>
+        </tr>
+                    <tr>
+                                <td colspan="1">
+                    <b>feature_flag</b>
+                    <div style="font-size: small">
+                      <span style="color: purple">dictionary</span>
+                                          </div>
+                                    </td>
+                <td>on success</td>
+                <td>
+                                            <div>Dictionary containing a <a href='https://github.com/launchdarkly/api-client-python/blob/2.0.24/docs/FeatureFlag.md'>Feature Flag</a></div>
+                                        <br/>
+                                    </td>
+            </tr>
+                        </table>
+    <br/><br/>
+
 
 Status
 ------

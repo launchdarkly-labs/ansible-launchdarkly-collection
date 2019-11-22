@@ -63,7 +63,7 @@
             
             
               <div class="version">
-                0.1.14
+                0.1.15
               </div>
             
           
@@ -80,11 +80,11 @@
             current_url = window.location.href;
             option = document.createElement("option");
             option.text = "latest";
-            if ( "latest" == "0.1.14" ) {
+            if ( "latest" == "0.1.15" ) {
               option.selected = true;
             }
-            if (current_url.search("0.1.14") > -1) {
-              option.value = current_url.replace("0.1.14","latest");
+            if (current_url.search("0.1.15") > -1) {
+              option.value = current_url.replace("0.1.15","latest");
             } else {
               option.value = current_url.replace("latest","latest");
             }
@@ -94,14 +94,14 @@
           <script>
             current_url = window.location.href;
             option = document.createElement("option");
-            option.text = "0.1.14";
-            if ( "0.1.14" == "0.1.14" ) {
+            option.text = "0.1.15";
+            if ( "0.1.15" == "0.1.15" ) {
               option.selected = true;
             }
-            if (current_url.search("0.1.14") > -1) {
-              option.value = current_url.replace("0.1.14","0.1.14");
+            if (current_url.search("0.1.15") > -1) {
+              option.value = current_url.replace("0.1.15","0.1.15");
             } else {
-              option.value = current_url.replace("latest","0.1.14");
+              option.value = current_url.replace("latest","0.1.15");
             }
             x.add(option);
           </script>
@@ -204,7 +204,7 @@
             
               <!-- Ansible-specific additions for modules etc -->
                 
-                  <a href="https://github.com/launchdarkly-labs/ansible-launchdarkly-collection//docs/rst/modules/launchdarkly_user_segment_sync.rst?description=%23%23%23%23%23%20SUMMARY%0A%3C!---%20Your%20description%20here%20--%3E%0A%0A%0A%23%23%23%23%23%20ISSUE%20TYPE%0A-%20Docs%20Pull%20Request%0A%0A%2Blabel:%20docsite_pr" class="fa fa-github"> Edit on GitHub</a>
+                  <a href="https://github.com/launchdarkly-labs/ansible-launchdarkly-collection//tree/master/plugins/modules/launchdarkly_user_segment_sync.rst?description=%23%23%23%23%23%20SUMMARY%0A%3C!---%20Your%20description%20here%20--%3E%0A%0A%0A%23%23%23%23%23%20ISSUE%20TYPE%0A-%20Docs%20Pull%20Request%0A%0A%2Blabel:%20docsite_pr" class="fa fa-github"> Edit on GitHub</a>
                 
             
           
@@ -323,22 +323,22 @@
                                                             <td colspan="1">
                 <b>project_key</b>
                 <div style="font-size: small">
-                    <span style="color: purple">-</span>
+                    <span style="color: purple">string</span>
                                                                 </div>
                                 </td>
                             <td>
                                                                                                                                                                 <b>Default:</b><br/><div style="color: blue">"default"</div>
                                 </td>
                             <td>
-                                        <div>Project key will group flags together</div>
+                                        <div>Project key to look for flag</div>
                                                     </td>
         </tr>
                             <tr>
                                                             <td colspan="1">
                 <b>user_segment_key</b>
                 <div style="font-size: small">
-                    <span style="color: purple">-</span>
-                                                                </div>
+                    <span style="color: purple">string</span>
+                                             / <span style="color: red">required</span>                    </div>
                                 </td>
                             <td>
                                                                                                                                                         </td>
@@ -346,24 +346,11 @@
                                         <div>A unique key that will be used to reference the user segment in this environment.</div>
                                                     </td>
         </tr>
-                            <tr>
-                                                            <td colspan="1">
-                <b>version</b>
-                <div style="font-size: small">
-                    <span style="color: purple">-</span>
-                                                                </div>
-                                </td>
-                            <td>
-                                                                                                                                                        </td>
-                            <td>
-                                        <div>Version lock to ensure there have been no updates since request</div>
-                                                    </td>
-        </tr>
                     </table>
 <br/></div>
 <div class="section" id="examples">
 <h2><a class="toc-backref" href="#id3">Examples</a><a class="headerlink" href="#examples" title="Permalink to this headline">¶</a></h2>
-<div class="highlight-yaml+jinja notranslate"><div class="highlight"><pre><span></span><span class="c1"># Create a new LaunchDarkly Environment</span>
+<div class="highlight-yaml+jinja notranslate"><div class="highlight"><pre><span></span><span class="c1"># Sync a LaunchDarkly User Segment to multiple environments</span>
 <span class="p p-Indicator">-</span> <span class="nt">launchdarkly_user_segment_sync</span><span class="p">:</span>
     <span class="nt">environment_key</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">test-environment-1</span>
     <span class="nt">environment_targets</span><span class="p">:</span>

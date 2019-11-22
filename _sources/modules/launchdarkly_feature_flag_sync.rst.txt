@@ -42,7 +42,7 @@ Parameters
                                 <td>
                                                                                                                                                             </td>
                                 <td>
-                                            <div>LaunchDarkly API Key. May be set as LAUNCHDARKLY_ACCESS_TOKEN environment variable.</div>
+                                            <div>LaunchDarkly API Key. May be set as <code>LAUNCHDARKLY_ACCESS_TOKEN</code> environment variable.</div>
                                                         </td>
             </tr>
                                 <tr>
@@ -96,8 +96,8 @@ Parameters
                                                                 <td colspan="1">
                     <b>flag_key</b>
                     <div style="font-size: small">
-                        <span style="color: purple">-</span>
-                                                                    </div>
+                        <span style="color: purple">string</span>
+                                                 / <span style="color: red">required</span>                    </div>
                                     </td>
                                 <td>
                                                                                                                                                             </td>
@@ -130,14 +130,14 @@ Parameters
                                                                 <td colspan="1">
                     <b>project_key</b>
                     <div style="font-size: small">
-                        <span style="color: purple">-</span>
+                        <span style="color: purple">string</span>
                                                                     </div>
                                     </td>
                                 <td>
                                                                                                                                                                     <b>Default:</b><br/><div style="color: blue">"default"</div>
                                     </td>
                                 <td>
-                                            <div>Project key will group flags together</div>
+                                            <div>Project key to look for flag</div>
                                                         </td>
             </tr>
                         </table>
@@ -152,20 +152,48 @@ Examples
 .. code-block:: yaml+jinja
 
     
-    # Create a new LaunchDarkly Environment
+    # Sync a LaunchDarkly Feature Flag Configuration across environments
     - launchdarkly_feature_flag_sync:
         environment_key: test-environment-1
         environment_targets:
             - dev
             - staging
             - production
-        name: "Test Segment"
+        flag_key: test_flag_1
         includedActions:
           - updateOn
           - updateRules
 
 
 
+
+Return Values
+-------------
+Common return values are documented :ref:`here <common_return_values>`, the following are the fields unique to this :
+
+.. raw:: html
+
+    <table border=0 cellpadding=0 class="documentation-table">
+        <tr>
+            <th colspan="1">Key</th>
+            <th>Returned</th>
+            <th width="100%">Description</th>
+        </tr>
+                    <tr>
+                                <td colspan="1">
+                    <b>feature_flag</b>
+                    <div style="font-size: small">
+                      <span style="color: purple">dictionary</span>
+                                          </div>
+                                    </td>
+                <td>on success</td>
+                <td>
+                                            <div>Dictionary containing a <a href='https://github.com/launchdarkly/api-client-python/blob/2.0.24/docs/FeatureFlag.md'>Feature Flag</a></div>
+                                        <br/>
+                                    </td>
+            </tr>
+                        </table>
+    <br/><br/>
 
 
 Status

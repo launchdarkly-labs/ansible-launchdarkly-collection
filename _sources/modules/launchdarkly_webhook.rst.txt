@@ -79,7 +79,7 @@ Parameters
                                                                 <td colspan="1">
                     <b>secret</b>
                     <div style="font-size: small">
-                        <span style="color: purple">stri</span>
+                        <span style="color: purple">string</span>
                                                                     </div>
                                     </td>
                                 <td>
@@ -139,13 +139,13 @@ Parameters
                                                                 <td colspan="1">
                     <b>webhook_id</b>
                     <div style="font-size: small">
-                        <span style="color: purple">-</span>
+                        <span style="color: purple">string</span>
                                                                     </div>
                                     </td>
                                 <td>
                                                                                                                                                             </td>
                                 <td>
-                                            <div>Webhook id</div>
+                                            <div>Webhook id. Required when <em>state=present</em></div>
                                                         </td>
             </tr>
                         </table>
@@ -160,7 +160,7 @@ Examples
 .. code-block:: yaml+jinja
 
     
-    # Create a new LaunchDarkly Environment
+    # Create a new LaunchDarkly Webhook
     - launchdarkly_webhook:
         state: present
         project_key: test-project-1

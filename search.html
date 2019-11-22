@@ -62,7 +62,7 @@
             
             
               <div class="version">
-                0.1.14
+                0.1.15
               </div>
             
           
@@ -79,11 +79,11 @@
             current_url = window.location.href;
             option = document.createElement("option");
             option.text = "latest";
-            if ( "latest" == "0.1.14" ) {
+            if ( "latest" == "0.1.15" ) {
               option.selected = true;
             }
-            if (current_url.search("0.1.14") > -1) {
-              option.value = current_url.replace("0.1.14","latest");
+            if (current_url.search("0.1.15") > -1) {
+              option.value = current_url.replace("0.1.15","latest");
             } else {
               option.value = current_url.replace("latest","latest");
             }
@@ -93,14 +93,14 @@
           <script>
             current_url = window.location.href;
             option = document.createElement("option");
-            option.text = "0.1.14";
-            if ( "0.1.14" == "0.1.14" ) {
+            option.text = "0.1.15";
+            if ( "0.1.15" == "0.1.15" ) {
               option.selected = true;
             }
-            if (current_url.search("0.1.14") > -1) {
-              option.value = current_url.replace("0.1.14","0.1.14");
+            if (current_url.search("0.1.15") > -1) {
+              option.value = current_url.replace("0.1.15","0.1.15");
             } else {
-              option.value = current_url.replace("latest","0.1.14");
+              option.value = current_url.replace("latest","0.1.15");
             }
             x.add(option);
           </script>
@@ -197,7 +197,7 @@
             
               <!-- Ansible-specific additions for modules etc -->
                 
-                  <a href="https://github.com/launchdarkly-labs/ansible-launchdarkly-collection//docs/rst/search?description=%23%23%23%23%23%20SUMMARY%0A%3C!---%20Your%20description%20here%20--%3E%0A%0A%0A%23%23%23%23%23%20ISSUE%20TYPE%0A-%20Docs%20Pull%20Request%0A%0A%2Blabel:%20docsite_pr" class="fa fa-github"> Edit on GitHub</a>
+                  <a href="https://github.com/launchdarkly-labs/ansible-launchdarkly-collection//tree/master/plugins/search?description=%23%23%23%23%23%20SUMMARY%0A%3C!---%20Your%20description%20here%20--%3E%0A%0A%0A%23%23%23%23%23%20ISSUE%20TYPE%0A-%20Docs%20Pull%20Request%0A%0A%2Blabel:%20docsite_pr" class="fa fa-github"> Edit on GitHub</a>
                 
             
           

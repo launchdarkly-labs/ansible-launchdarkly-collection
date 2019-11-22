@@ -12,8 +12,3 @@ Welcome to LaunchDarkly Ansible Collection's documentation!
    :glob:
 
    modules/*
-
-Indices and tables
-==================
-
-* :ref:`genindex`
