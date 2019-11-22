@@ -57,7 +57,7 @@ options:
 '''
 
 EXAMPLES = r'''
-# Create a new LaunchDarkly Environment
+# Sync a LaunchDarkly User Segment to multiple environments
 - launchdarkly_user_segment_sync:
     environment_key: test-environment-1
     environment_targets:

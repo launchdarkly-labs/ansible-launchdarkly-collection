@@ -69,8 +69,8 @@ EXAMPLES = r'''
 '''
 
 RETURN = r'''
-results:
-    description: list of dictionaries containing a L(Feature Flag Config, https://github.com/launchdarkly/api-client-python/blob/2.0.24/docs/FeatureFlag.md)
+feature_flag:
+    description: Dictionary containing a L(Feature Flag, https://github.com/launchdarkly/api-client-python/blob/2.0.24/docs/FeatureFlag.md)
     type: dict
     returned: on success
 '''

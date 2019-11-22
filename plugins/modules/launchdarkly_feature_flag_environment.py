@@ -57,7 +57,7 @@ options:
 
 EXAMPLES = r'''
 ---
-# Create a new flag
+# Configure a feature flag within an environment
 - launchdarkly_feature_flag_environment:
     state: present
     flag_key: example_flag

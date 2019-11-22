@@ -54,7 +54,7 @@ options:
 '''
 
 EXAMPLES = r'''
-# Create a new LaunchDarkly Environment
+# Create a new LaunchDarkly Webhook
 - launchdarkly_webhook:
     state: present
     project_key: test-project-1

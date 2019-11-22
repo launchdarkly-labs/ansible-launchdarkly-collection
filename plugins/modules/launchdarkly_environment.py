@@ -81,7 +81,7 @@ EXAMPLES = r'''
     environment_key: test_environment-1
     color: C9C9C9
 
-# Create a new LaunchDarkly Environmnet and tag it
+# Create a new LaunchDarkly Environment and tag it
 - launchdarkly_environment:
     state: present
     project_key: test-project-1

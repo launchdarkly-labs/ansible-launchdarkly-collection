@@ -55,7 +55,7 @@ options:
 '''
 
 EXAMPLES = r'''
-# Create a new LaunchDarkly Environment
+# Create a new LaunchDarkly Project with tags
 - project:
     state: present
     project_key: test-project-1
@@ -64,7 +64,6 @@ EXAMPLES = r'''
       - dev
       - ops
       - frontend
-    include_in_snippet_by_default: false
 '''
 
 RETURN = r'''
