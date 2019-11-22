@@ -20,16 +20,19 @@ version_added: "0.1.0"
 options:
     api_key:
         description:
-            - LaunchDarkly API Key. May be set as LAUNCHDARKLY_ACCESS_TOKEN environment variable.
+            - LaunchDarkly API Key. May be set as C(LAUNCHDARKLY_ACCESS_TOKEN) environment variable.
         type: str
         required: yes
     project_key:
         description:
-            - Project key will group flags together
+            - Project key to look for flag
         default: 'default'
+        type: str
     flag_key:
         description:
             - A unique key that will be used to reference the user segment in this environment.
+        type: str
+        required: yes
     environment_key:
         description:
             - A unique key that will be used to determine source environment.
@@ -55,14 +58,14 @@ options:
 '''
 
 EXAMPLES = r'''
-# Create a new LaunchDarkly Environment
+# Sync a LaunchDarkly Feature Flag Configuration across environments
 - launchdarkly_feature_flag_sync:
     environment_key: test-environment-1
     environment_targets:
         - dev
         - staging
         - production
-    name: "Test Segment"
+    flag_key: test_flag_1
     includedActions:
       - updateOn
       - updateRules

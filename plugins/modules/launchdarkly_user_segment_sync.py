@@ -24,11 +24,14 @@ options:
         required: yes
     project_key:
         description:
-            - Project key will group flags together
+            - Project key to look for flag
         default: 'default'
+        type: str
     user_segment_key:
         description:
             - A unique key that will be used to reference the user segment in this environment.
+        type: str
+        required: yes
     environment_key:
         description:
             - A unique key that will be used to determine source environment.
@@ -51,9 +54,6 @@ options:
         required: no
         type: list
         choices: [updateTargets', 'updateRules']
-    version:
-        description:
-            - Version lock to ensure there have been no updates since request
 '''
 
 EXAMPLES = r'''

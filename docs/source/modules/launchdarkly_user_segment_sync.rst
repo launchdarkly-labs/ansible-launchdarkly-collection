@@ -109,40 +109,27 @@ Parameters
                                                                 <td colspan="1">
                     <b>project_key</b>
                     <div style="font-size: small">
-                        <span style="color: purple">-</span>
+                        <span style="color: purple">string</span>
                                                                     </div>
                                     </td>
                                 <td>
                                                                                                                                                                     <b>Default:</b><br/><div style="color: blue">"default"</div>
                                     </td>
                                 <td>
-                                            <div>Project key will group flags together</div>
+                                            <div>Project key to look for flag</div>
                                                         </td>
             </tr>
                                 <tr>
                                                                 <td colspan="1">
                     <b>user_segment_key</b>
                     <div style="font-size: small">
-                        <span style="color: purple">-</span>
-                                                                    </div>
+                        <span style="color: purple">string</span>
+                                                 / <span style="color: red">required</span>                    </div>
                                     </td>
                                 <td>
                                                                                                                                                             </td>
                                 <td>
                                             <div>A unique key that will be used to reference the user segment in this environment.</div>
-                                                        </td>
-            </tr>
-                                <tr>
-                                                                <td colspan="1">
-                    <b>version</b>
-                    <div style="font-size: small">
-                        <span style="color: purple">-</span>
-                                                                    </div>
-                                    </td>
-                                <td>
-                                                                                                                                                            </td>
-                                <td>
-                                            <div>Version lock to ensure there have been no updates since request</div>
                                                         </td>
             </tr>
                         </table>
@@ -157,7 +144,7 @@ Examples
 .. code-block:: yaml+jinja
 
     
-    # Create a new LaunchDarkly Environment
+    # Sync a LaunchDarkly User Segment to multiple environments
     - launchdarkly_user_segment_sync:
         environment_key: test-environment-1
         environment_targets:

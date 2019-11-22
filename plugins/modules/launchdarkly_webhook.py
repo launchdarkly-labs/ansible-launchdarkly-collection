@@ -34,7 +34,8 @@ options:
         type: str
     webhook_id:
         description:
-            - Webhook id
+            - Webhook id. Required when I(state=present)
+        type: str
     url:
         description:
             - The URL of the remote webhook.
@@ -42,7 +43,7 @@ options:
     secret:
         description:
             - If sign is true, and the secret attribute is omitted, LaunchDarkly will automatically generate a secret for you.
-        type: stri
+        type: str
     sign:
         description:
             - If sign is false, the webhook will not include a signature header, and the secret can be omitted.

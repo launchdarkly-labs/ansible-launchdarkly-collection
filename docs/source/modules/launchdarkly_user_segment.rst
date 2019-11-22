@@ -179,7 +179,7 @@ Examples
 .. code-block:: yaml+jinja
 
     
-    # Create a new LaunchDarkly Environment
+    # Create a new LaunchDarkly User Segment
     - launchdarkly_user_segment:
         state: present
         project_key: test-project-1

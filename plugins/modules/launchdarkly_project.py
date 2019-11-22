@@ -23,16 +23,18 @@ options:
             - Indicate desired state of the resource.
         choices: [ absent, present ]
         default: present
+        type: str
     api_key:
         description:
             - LaunchDarkly API Key. May be set as LAUNCHDARKLY_ACCESS_TOKEN environment variable.
-        type: str
         required: yes
+        type: str
     project_key:
         description:
             - Project key will group flags together.
         default: 'default'
         required: yes
+        type: str
     name:
         description:
             - Display name for the environment.
@@ -41,6 +43,7 @@ options:
     environments:
         description:
             - A list of Environments to create. Cannot be updated with this resource.
+        required: no
         type: str
     tags:
         description:
