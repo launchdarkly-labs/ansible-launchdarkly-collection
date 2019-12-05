@@ -61,7 +61,7 @@
 
   - name: Lookup segment
     debug:
-      msg: '{{ lookup("launchdarkly.collection.launchdarkly_user_segments", "dano-test-project", "production") }}'
+      msg: '{{ lookup("launchdarkly_labs.collection.launchdarkly_user_segments", "dano-test-project", "production") }}'
 
   - name: Delete User Segment
     launchdarkly_user_segment:

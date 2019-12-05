@@ -18,9 +18,9 @@
           actions:
             - "*"
           effect: "allow"
-    register: webhook
+    register: results
 
   - name: Delete webhook
     launchdarkly_webhook:
       state: absent
-      webhook_id: "{{ webhook.content.id }}"
+      webhook_id: "{{ results.webhook.id }}"

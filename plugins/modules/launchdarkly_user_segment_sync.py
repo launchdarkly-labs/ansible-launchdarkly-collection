@@ -9,7 +9,7 @@ ANSIBLE_METADATA = {
     "supported_by": "community",
 }
 
-DOCUMENTATION = r'''
+DOCUMENTATION = r"""
 ---
 module: launchdarkly_user_segment_sync
 short_description: Sync LaunchDarkly Feature Flags across Environments
@@ -54,9 +54,11 @@ options:
         required: no
         type: list
         choices: [updateTargets', 'updateRules']
-'''
 
-EXAMPLES = r'''
+extends_documentation_fragment: launchdarkly_labs.collection.launchdarkly
+"""
+
+EXAMPLES = r"""
 # Sync a LaunchDarkly User Segment to multiple environments
 - launchdarkly_user_segment_sync:
     environment_key: test-environment-1
@@ -68,10 +70,10 @@ EXAMPLES = r'''
     includedActions:
       - updateOn
       - updateRules
-'''
+"""
 
-RETURN = r'''
-'''
+RETURN = r"""
+"""
 
 import inspect
 import traceback
@@ -92,8 +94,9 @@ from ansible.module_utils._text import to_native
 from ansible.module_utils.common._json_compat import json
 
 from ansible_collections.launchdarkly_labs.collection.plugins.module_utils.base import (
-    configure_instance
+    configure_instance,
 )
+
 
 def main():
     module = AnsibleModule(
@@ -154,7 +157,11 @@ def _configure_user_sync(module, api_instance):
             )
         except ApiException as e:
             if e.status == 409:
-                response, status, headers = api_instance.get_user_segment_with_http_info(
+                (
+                    response,
+                    status,
+                    headers,
+                ) = api_instance.get_user_segment_with_http_info(
                     module.params["project_key"], env, module.params["user_segment_key"]
                 )
                 if user_segment.name is not None and user_segment.name != response.name:

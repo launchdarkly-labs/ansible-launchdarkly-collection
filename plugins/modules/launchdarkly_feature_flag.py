@@ -10,7 +10,7 @@ ANSIBLE_METADATA = {
     "supported_by": "community",
 }
 
-DOCUMENTATION = r'''
+DOCUMENTATION = r"""
 ---
 module: launchdarkly_feature_flag
 short_description: Interact with projects, flags of LaunchDarkly
@@ -23,11 +23,6 @@ options:
             - Indicate desired state of the resource
         choices: [ absent, enabled, disabled, deleted, present ]
         default: present
-    api_key:
-        description:
-            - LaunchDarkly API Key. May be set as LAUNCHDARKLY_ACCESS_TOKEN environment variable.
-        type: str
-        required: yes
     name:
         description:
             - Name of the flag, if not provided and API calls requires it, key value will be used.
@@ -65,9 +60,11 @@ options:
             - Whether or not this flag should be made available to the client-side JavaScript SDK
         required: no
         type: bool
-'''
 
-EXAMPLES = r'''
+extends_documentation_fragment: launchdarkly_labs.collection.launchdarkly
+"""
+
+EXAMPLES = r"""
 # Create a new flag
 - launchdarkly_feature_flag:
     name: example
@@ -84,14 +81,14 @@ EXAMPLES = r'''
      - tag1
      - tag2
     include_in_snippet: true
-'''
+"""
 
-RETURN = r'''
+RETURN = r"""
 feature_flag:
     description: Dictionary containing a L(Feature Flag, https://github.com/launchdarkly/api-client-python/blob/2.0.24/docs/FeatureFlag.md)
     type: dict
     returned: on success
-'''
+"""
 
 import inspect
 import traceback

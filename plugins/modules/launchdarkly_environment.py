@@ -10,7 +10,7 @@ ANSIBLE_METADATA = {
     "supported_by": "community",
 }
 
-DOCUMENTATION = r'''
+DOCUMENTATION = r"""
 ---
 module: launchdarkly_environment
 short_description: Create Launchdarkly Project specific Environment
@@ -24,11 +24,6 @@ options:
         choices: [ absent, present ]
         default: present
         type: str
-    api_key:
-        description:
-            - LaunchDarkly API Key. May be set as LAUNCHDARKLY_ACCESS_TOKEN environment variable.
-        type: str
-        required: yes
     project_key:
         description:
             - Project key will group flags together
@@ -70,9 +65,11 @@ options:
         description:
             - Determines if this environment requires confirmation for flag and segment changes.
         type: bool
-'''
 
-EXAMPLES = r'''
+extends_documentation_fragment: launchdarkly_labs.collection.launchdarkly
+"""
+
+EXAMPLES = r"""
 ---
 # Create a new LaunchDarkly Environment
 - launchdarkly_environment:
@@ -90,14 +87,15 @@ EXAMPLES = r'''
     tags:
       - blue
       - green
-'''
 
-RETURN = r'''
+"""
+
+RETURN = r"""
 environment:
     description: Returns dictionary containing an L(Environment, https://github.com/launchdarkly/api-client-python/blob/2.0.24/docs/Environment.md)
     type: dict
     returned: on success
-'''
+"""
 
 import inspect
 import traceback

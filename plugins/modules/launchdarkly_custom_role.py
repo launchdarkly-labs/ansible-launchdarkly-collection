@@ -23,26 +23,44 @@ options:
             - Indicate desired state of the resource
         choices: [ absent, present ]
         default: present
-    api_key:
-        description:
-            - LaunchDarkly API Key. May be set as LAUNCHDARKLY_ACCESS_TOKEN environment variable.
-        type: str
-        required: yes
     key:
         description:
             - Unique key to identify Custom Role
         type: str
+        required: yes
     name:
         description:
             - A human-readable name for your webhook
         type: str
+        required: no
     description:
         description:
             - Description of the custom role
         type: str
+        required: no
     policies:
         description:
             - Policies to attach to the role
+        type: dict
+        required: yes
+        suboptions:
+            resources:
+                description:
+                    - Resource to use in policy
+                type: list
+                required: yes
+            actions:
+                description:
+                    - Identify actions of policy
+                type: str
+                default: "*"
+            effect:
+                description:
+                    - Defines whether the statement allows or denies access to the named resources and actions.
+                choices: ["allow", "deny"]
+                type: str
+
+extends_documentation_fragment: launchdarkly_labs.collection.launchdarkly
 """
 
 EXAMPLES = r"""
@@ -57,13 +75,13 @@ EXAMPLES = r"""
         effect: allow
 """
 
-RETURN = r'''
+RETURN = r"""
 ---
 custom_role:
     description: Dictionary containing a L(Custom Role, https://github.com/launchdarkly/api-client-python/blob/2.0.24/docs/CustomRole.md)
     type: dict
     returned: on success
-'''
+"""
 
 import inspect
 import traceback
@@ -200,12 +218,14 @@ def _configure_custom_role(module, api_instance):
             )
         except ApiException as e:
             if e.status == 404:
-                err = "webhook id not found"
+                err = "custom role: %s not found" % module["key"]
             else:
                 err = json.loads(str(e.body))
 
             module.exit_json(msg=to_native(err))
-        module.exit_json(changed=True, msg="successfully updated custom role: %s" % api_response.key)
+        module.exit_json(
+            changed=True, msg="successfully updated custom role: %s" % api_response.key
+        )
     else:
         module.exit_json(changed=False, msg="custom role unchanged")
 

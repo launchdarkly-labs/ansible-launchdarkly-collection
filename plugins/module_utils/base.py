@@ -1,6 +1,5 @@
 import launchdarkly_api
 
-
 def configure_instance(api_key):
     configuration = launchdarkly_api.Configuration()
     configuration.api_key["Authorization"] = api_key

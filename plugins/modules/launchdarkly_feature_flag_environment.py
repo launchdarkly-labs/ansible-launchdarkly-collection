@@ -10,7 +10,7 @@ ANSIBLE_METADATA = {
     "supported_by": "community",
 }
 
-DOCUMENTATION = r'''
+DOCUMENTATION = r"""
 module: launchdarkly_feature_flag_environment
 short_description: Create Environment specific flag targeting
 description:
@@ -53,9 +53,20 @@ options:
         description:
             - Nested dictionary describing the default variation to serve if no C(prerequisites),
             - C(targets) or C(rules) apply.
-'''
+        suboptions:
+            variation:
+                description:
+                    - index of variation to serve default. Exclusive of rollout.
+                type: int
+            rollout:
+                description:
+                    - rollout value
+                type: dict
 
-EXAMPLES = r'''
+extends_documentation_fragment: launchdarkly_labs.collection.launchdarkly
+"""
+
+EXAMPLES = r"""
 ---
 # Configure a feature flag within an environment
 - launchdarkly_feature_flag_environment:
@@ -88,15 +99,15 @@ EXAMPLES = r'''
     prerequisites:
       - variation: 0
         key: example_flag
-'''
+"""
 
-RETURN = r'''
+RETURN = r"""
 ---
 feature_flag_environment:
     description: Dictionary containing a L(Feature Flag Config, https://github.com/launchdarkly/api-client-python/blob/2.0.24/docs/FeatureFlagConfig.md)
     type: dict
     returned: on success
-'''
+"""
 
 import inspect
 import traceback
@@ -175,10 +186,15 @@ def main():
                 options=dict(
                     variation=dict(type="int"),
                     rollout=dict(
-                        type="list",
-                        elements="dict",
-                        options=dict(
-                            variation=dict(type="int"), weight=dict(type="int")
+                        type="dict",
+                        # elements="dict",
+                        bucket_by=dict(type="str"),
+                        weighted_variations=dict(
+                            type="list",
+                            elements="dict",
+                            options=dict(
+                                variation=dict(type="int"), weight=dict(type="int")
+                            ),
                         ),
                     ),
                 ),
@@ -329,22 +345,24 @@ def _configure_feature_flag_env(module, api_instance, feature_flag=None):
 
     # Loop over rules comparing
     if module.params["rules"] is not None:
-        oldRules = len(feature_flag.rules) - 1
-        newRules = len(module.params["rules"])
-        newIndex = newRules - 1
-        newRulesCopy = module.params["rules"]
+        old_rules = len(feature_flag.rules) - 1
+        new_rules = len(module.params["rules"])
+        new_index = new_rules - 1
+        # Make copy for next step.
+        new_rules_copy = module.params["rules"]
         for ruleIndex, newRule in enumerate(module.params["rules"]):
-            if newIndex < oldRules and newRule["state"] != "add":
+            state = newRule.get("state", "present")
+            if new_index < old_rules and state != "add":
                 # iterating over statements for range to be inclusive
-                for i in range(newRules, len(feature_flag.rules)):
-                    path = _patch_path(module, "rules") + "/" + str(newRules)
+                for i in range(new_rules, len(feature_flag.rules)):
+                    path = _patch_path(module, "rules") + "/" + str(new_rules)
                     patches.append(
                         launchdarkly_api.PatchOperation(
                             op="remove", path=path, value="needed_for_call"
                         )
                     )
 
-                for i in range(newIndex):
+                for i in range(new_index):
                     if diff(module.params["rules"][i], feature_flag.rules[i].to_dict()):
                         path = _patch_path(module, "rules")
                         if module.params["rules"][i]["variation"] is not None:
@@ -396,22 +414,28 @@ def _configure_feature_flag_env(module, api_instance, feature_flag=None):
                                     )
                                 )
 
-                        del newRulesCopy[i]
+                        del new_rules_copy[i]
 
         result = []
-        for idx, ruleChange in enumerate(newRulesCopy):
+        for idx, ruleChange in enumerate(new_rules_copy):
             rule = _build_rules(ruleChange)
-            if idx > oldRules:
+            ruleChange["state"] = ruleChange.get("state", "present")
+            if idx > old_rules:
                 path = _patch_path(module, "rules") + "/" + str(idx)
                 patches.append(_patch_op("add", path, rule))
-            # Non-idempotent operation
+            # Non-idempotent operation - add
             elif ruleChange["state"] == "add":
-                pos = oldRules + idx
+                pos = old_rules + idx
                 path = _patch_path(module, "rules") + "/" + str(pos)
                 patches.append(_patch_op("add", path, rule))
             else:
                 state = ruleChange["state"]
                 del ruleChange["state"]
+                if not ruleChange.get("rollout"):
+                    ruleChange["rollout"] = None
+                # Needed because nested defaults are not applying
+                for clause in ruleChange["clauses"]:
+                    clause["negate"] = clause.get("negate", False)
                 result = list(
                     diff(
                         ruleChange,
@@ -440,7 +464,7 @@ def _configure_feature_flag_env(module, api_instance, feature_flag=None):
         op = "replace"
         path = _patch_path(module, "fallthrough")
         patches.append(_patch_op(op, path, fallthrough))
-        # Delete key so it's not pass through to next loop
+        # Delete key so it's not passed through to next loop
         del module.params["fallthrough"]
 
     for key in module.params:
@@ -476,7 +500,11 @@ def _configure_feature_flag_env(module, api_instance, feature_flag=None):
             feature_flag_environment=api_response.to_dict(),
         )
 
-    module.exit_json(changed=False, msg="flag environment unchanged", feature_flag_environment=feature_flag.to_dict())
+    module.exit_json(
+        changed=False,
+        msg="flag environment unchanged",
+        feature_flag_environment=feature_flag.to_dict(),
+    )
 
 
 def _build_rules(rule):
@@ -484,10 +512,25 @@ def _build_rules(rule):
     if temp_rule.get("rollout"):
         temp_cont = temp_rule["rollout"]
         del temp_rule["rollout"]
-        temp_rule["rollout"] = {"variations": temp_cont}
+        bucket_by = temp_cont.get("bucket_by", "key")
+        temp_rule["rollout"] = {"bucketBy": bucket_by, "variations": []}
+        for wv in temp_cont["weighted_variations"]:
+            temp_rule["rollout"]["variations"].append(
+                {"variation": wv["variation"], "weight": wv["weight"],}
+            )
 
-    if temp_rule["variation"] is None or temp_rule.get("variation") is None:
-        del temp_rule["variation"]
+    try:
+        if temp_rule["variation"] is None:
+            del temp_rule["variation"]
+    except KeyError:
+        pass
+    # Not sure if needed
+    try:
+        if temp_rule["rollout"] is None:
+            del temp_rule["rollout"]
+    except KeyError:
+        pass
+
     return temp_rule
 
 

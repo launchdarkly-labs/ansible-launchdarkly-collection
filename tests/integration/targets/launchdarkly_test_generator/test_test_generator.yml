@@ -1,0 +1,30 @@
+---
+- name: Test Ansible Collection
+  hosts: localhost
+  gather_facts: no
+
+  tasks:
+  - name: Create Feature Flag
+    launchdarkly_feature_flag:
+      kind: bool
+      state: present
+      key: example_test_flag
+      project_key: dano-test-project
+      tags: ["yellow", "green"]
+      name: ansible-random-new-name
+      include_in_snippet: true
+      description: "This is an awesome feature that will be implemented."
+
+  - name: Get Test
+    launchdarkly_test_generator:
+      sdk_key: sdk-a686fe5f-273b-4371-b378-55f25fb0c30a
+      overrides_flag:
+        - example_test_flag-3: False
+        - example_test_flag: True
+    register: results
+
+  - name: Delete flag
+    launchdarkly_feature_flag:
+      state: absent
+      key: example_test_flag
+      project_key: dano-test-project

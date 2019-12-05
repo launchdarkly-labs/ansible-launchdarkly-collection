@@ -85,8 +85,9 @@
       targets:
         - variation: 1
           values:
+            - "test@example1.com"
+            - "test2@example.com"
             - "test3@examplettt.com"
-          state: add
       rules:
         - variation: 1
           clauses:
@@ -107,10 +108,48 @@
         variation: 1
     register: results
 
-  # - debug: var=results.changed
-
   - assert:
       that: results.changed == false
+
+  - name: Rollout Feature Flag Environment
+    launchdarkly_feature_flag_environment:
+      state: "enabled"
+      flag_key: example_test_flag
+      project_key: dano-test-project
+      environment_key: production
+      comment: "testing updated flag environment"
+      targets:
+        - variation: 1
+          values:
+            - "test3@examplettt.com"
+          state: add
+      rules:
+        - variation: 1
+          state: present
+          clauses:
+            - attribute: test-attribute
+              op: contains
+              values:
+                - 2
+                - 3
+              negate: true
+        - variation: 0
+          state: present
+          clauses:
+          - attribute: test-attribute2
+            op: startsWith
+            values:
+              - 4
+              - 5
+      fallthrough:
+        rollout:
+          bucket_by: test-attribute
+          weighted_variations:
+            - variation: 0
+              weight: 50000
+            - variation: 1
+              weight: 50000
+
 
   - name: Remove Feature Flag Rule
     launchdarkly_feature_flag_environment:
@@ -148,10 +187,11 @@
           state: add
       rules:
         - rollout:
-            - variation: 0
-              weight: 50000
-            - variation: 1
-              weight: 50000
+            weighted_variations:
+              - variation: 0
+                weight: 50000
+              - variation: 1
+                weight: 50000
           clauses:
           - attribute: test-attribute2
             op: startsWith

@@ -10,7 +10,7 @@ ANSIBLE_METADATA = {
     "supported_by": "community",
 }
 
-DOCUMENTATION = r'''
+DOCUMENTATION = r"""
 ---
 module: launchdarkly_webhook
 short_description: Manage LaunchDarkly Webhooks
@@ -23,18 +23,13 @@ options:
             - Indicate desired state of the resource.
         choices: [ absent, present ]
         default: present
-    api_key:
-        description:
-            - LaunchDarkly API Key. May be set as LAUNCHDARKLY_ACCESS_TOKEN environment variable.
-        type: str
-        required: yes
     name:
         description:
             - A human-readable name for your webhook.
         type: str
     webhook_id:
         description:
-            - Webhook id. Required when I(state=present)
+            - Webhook id. Required when updating resource.
         type: str
     url:
         description:
@@ -52,9 +47,11 @@ options:
         description:
             - Whether this webhook is enabled or not.
         type: bool
-'''
 
-EXAMPLES = r'''
+extends_documentation_fragment: launchdarkly_labs.collection.launchdarkly
+"""
+
+EXAMPLES = r"""
 # Create a new LaunchDarkly Webhook
 - launchdarkly_webhook:
     state: present
@@ -80,15 +77,15 @@ EXAMPLES = r'''
     excluded:
       - test3
       - test4
-'''
+"""
 
-RETURN=r'''
+RETURN = r"""
 ---
 webhook:
     description: Dictionary containing a L(Webhook, https://github.com/launchdarkly/api-client-python/blob/2.0.24/docs/Webhook.md)
     type: dict
     returned: on success
-'''
+"""
 
 import inspect
 import traceback

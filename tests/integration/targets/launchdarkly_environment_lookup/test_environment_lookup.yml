@@ -21,4 +21,4 @@
 
   - name: Lookup environment
     debug:
-      msg: '{{ lookup("launchdarkly.collection.launchdarkly_environment", "dano-test-project", "env_1") }}'
+      msg: '{{ lookup("launchdarkly_labs.collection.launchdarkly_environment", "dano-test-project", "env_1") }}'

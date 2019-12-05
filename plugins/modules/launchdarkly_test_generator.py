@@ -1,0 +1,127 @@
+#!/usr/bin/python
+
+from __future__ import absolute_import, division, print_function
+
+__metaclass__ = type
+
+ANSIBLE_METADATA = {
+    "metadata_version": "0.1.0",
+    "status": ["preview"],
+    "supported_by": "community",
+}
+
+DOCUMENTATION = r"""
+---
+module: launchdarkly_file_generator
+short_description: Create a JSON file for testing
+description:
+     - Create a JSON file for local testing
+version_added: "0.2.0"
+options:
+    project_key:
+        description:
+            - Project key will group flags together.
+        default: 'default'
+        required: yes
+        type: str
+    environment_key:
+        description:
+            - A unique key that will be used to reference the flag in your code.
+        required: yes
+        type: str
+    overrides:
+        description:
+            - override specific keys
+        required: no
+        type: list
+"""
+
+EXAMPLES = r"""
+# Create a new LaunchDarkly Project with tags
+- launchdarkly_project:
+    state: present
+    project_key: test-project-1
+    color: C9C9C9
+    tags:
+      - dev
+      - ops
+      - frontend
+"""
+
+RETURN = r"""
+project:
+    description: Dictionary containing a L(Project, https://github.com/launchdarkly/api-client-python/blob/2.0.24/docs/Project.md)
+    type: dict
+    returned: on success
+"""
+
+import inspect
+import traceback
+
+LD_IMP_ERR = None
+try:
+    import launchdarkly_api
+    from launchdarkly_api.rest import ApiException
+
+    HAS_LD = True
+except ImportError:
+    LD_IMP_ERR = traceback.format_exc()
+    HAS_LD = False
+
+from ansible.module_utils.basic import AnsibleModule, missing_required_lib, env_fallback
+from ansible.errors import AnsibleError
+from ansible.module_utils._text import to_native
+from ansible.module_utils.common._json_compat import json
+from ansible.module_utils.six import PY2, iteritems, string_types
+from ansible.module_utils.urls import *
+from ansible_collections.launchdarkly_labs.collection.plugins.module_utils.base import (
+    configure_instance,
+)
+from ansible_collections.launchdarkly_labs.collection.plugins.module_utils.environment import (
+    ld_env_arg_spec,
+    env_ld_builder,
+)
+
+
+def main():
+
+    module = AnsibleModule(
+        argument_spec=dict(
+            sdk_key=dict(
+                required=True,
+                type="str",
+                no_log=True,
+                fallback=(env_fallback, ["LAUNCHDARKLY_SDK_KEY"]),
+            ),
+            overrides_flag=dict(type="list", elements="dict"),
+            overrides_segment=dict(type="list", elem="dict"),
+        )
+    )
+
+    if not HAS_LD:
+        module.fail_json(
+            msg=missing_required_lib("launchdarkly-server-sdk"), exception=LD_IMP_ERR
+        )
+
+    headers = {"Authorization": module.params["sdk_key"]}
+    resp = open_url(
+        "https://app.launchdarkly.com/sdk/latest-all", headers=headers, method="GET"
+    )
+
+    test_data = json.loads(resp.read())
+    for item in module.params["overrides_flag"]:
+        if item.values()[0] not in test_data["flags"][item.keys()[0]]["variations"]:
+            raise AnsibleError("Override variation does not match flag variations")
+
+        if "flagValues" in test_data.keys():
+            test_data["flagValues"][item.keys()[0]] = item.values()[0]
+        else:
+            test_data["flagValues"] = {}
+            test_data["flagValues"][item.keys()[0]] = item.values()[0]
+        del test_data["flags"][item.keys()[0]]
+
+    module.exit_json(changed=True, content=test_data)
+
+
+if __name__ == "__main__":
+    main()

@@ -42,7 +42,7 @@ Parameters
                                 <td>
                                                                                                                                                             </td>
                                 <td>
-                                            <div>LaunchDarkly API Key. May be set as LAUNCHDARKLY_ACCESS_TOKEN environment variable.</div>
+                                            <div>LaunchDarkly API Key. May be set as <code>LAUNCHDARKLY_ACCESS_TOKEN</code> environment variable.</div>
                                                         </td>
             </tr>
                                 <tr>
@@ -145,7 +145,7 @@ Parameters
                                 <td>
                                                                                                                                                             </td>
                                 <td>
-                                            <div>Webhook id. Required when <em>state=present</em></div>
+                                            <div>Webhook id. Required when updating resource.</div>
                                                         </td>
             </tr>
                         </table>

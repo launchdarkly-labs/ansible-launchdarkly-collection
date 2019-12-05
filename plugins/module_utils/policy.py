@@ -5,7 +5,7 @@ def policy_argument_spec():
         aliases=["statement", "statements", "policies"],
         options=dict(
             resources=dict(type="list", elements="str"),
-            actions=dict(type="list", elements="str"),
+            actions=dict(type="list", elements="str", default="*"),
             effect=dict(type="str", choices=["allow", "deny"]),
         ),
     )

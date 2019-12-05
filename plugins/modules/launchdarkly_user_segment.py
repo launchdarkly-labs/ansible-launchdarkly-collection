@@ -10,7 +10,7 @@ ANSIBLE_METADATA = {
     "supported_by": "community",
 }
 
-DOCUMENTATION = r'''
+DOCUMENTATION = r"""
 ---
 module: launchdarkly_user_segment
 short_description: Manage User Segments
@@ -23,11 +23,6 @@ options:
             - Indicate desired state of the resource
         choices: [ absent, present ]
         default: present
-    api_key:
-        description:
-            - LaunchDarkly API Key. May be set as LAUNCHDARKLY_ACCESS_TOKEN environment variable.
-        type: str
-        required: yes
     project_key:
         description:
             - Project key will group flags together
@@ -65,9 +60,11 @@ options:
             - Manage a list of excluded users for the user segment.
         required: no
         type: list
-'''
 
-EXAMPLES = r'''
+extends_documentation_fragment: launchdarkly_labs.collection.launchdarkly
+"""
+
+EXAMPLES = r"""
 # Create a new LaunchDarkly User Segment
 - launchdarkly_user_segment:
     state: present
@@ -93,10 +90,10 @@ EXAMPLES = r'''
     excluded:
       - test3@example.com
       - test4@example.com
-'''
+"""
 
-RETURN = r'''
-'''
+RETURN = r"""
+"""
 
 import inspect
 import traceback

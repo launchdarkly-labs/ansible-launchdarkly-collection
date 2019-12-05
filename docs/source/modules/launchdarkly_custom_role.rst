@@ -28,12 +28,12 @@ Parameters
 
     <table  border=0 cellpadding=0 class="documentation-table">
         <tr>
-            <th colspan="1">Parameter</th>
+            <th colspan="2">Parameter</th>
             <th>Choices/<font color="blue">Defaults</font></th>
             <th width="100%">Comments</th>
         </tr>
                     <tr>
-                                                                <td colspan="1">
+                                                                <td colspan="2">
                     <b>api_key</b>
                     <div style="font-size: small">
                         <span style="color: purple">string</span>
@@ -42,11 +42,11 @@ Parameters
                                 <td>
                                                                                                                                                             </td>
                                 <td>
-                                            <div>LaunchDarkly API Key. May be set as LAUNCHDARKLY_ACCESS_TOKEN environment variable.</div>
+                                            <div>LaunchDarkly API Key. May be set as <code>LAUNCHDARKLY_ACCESS_TOKEN</code> environment variable.</div>
                                                         </td>
             </tr>
                                 <tr>
-                                                                <td colspan="1">
+                                                                <td colspan="2">
                     <b>description</b>
                     <div style="font-size: small">
                         <span style="color: purple">string</span>
@@ -59,11 +59,11 @@ Parameters
                                                         </td>
             </tr>
                                 <tr>
-                                                                <td colspan="1">
+                                                                <td colspan="2">
                     <b>key</b>
                     <div style="font-size: small">
                         <span style="color: purple">string</span>
-                                                                    </div>
+                                                 / <span style="color: red">required</span>                    </div>
                                     </td>
                                 <td>
                                                                                                                                                             </td>
@@ -72,7 +72,7 @@ Parameters
                                                         </td>
             </tr>
                                 <tr>
-                                                                <td colspan="1">
+                                                                <td colspan="2">
                     <b>name</b>
                     <div style="font-size: small">
                         <span style="color: purple">string</span>
@@ -85,11 +85,11 @@ Parameters
                                                         </td>
             </tr>
                                 <tr>
-                                                                <td colspan="1">
+                                                                <td colspan="2">
                     <b>policies</b>
                     <div style="font-size: small">
-                        <span style="color: purple">-</span>
-                                                                    </div>
+                        <span style="color: purple">dictionary</span>
+                                                 / <span style="color: red">required</span>                    </div>
                                     </td>
                                 <td>
                                                                                                                                                             </td>
@@ -97,8 +97,56 @@ Parameters
                                             <div>Policies to attach to the role</div>
                                                         </td>
             </tr>
+                                                            <tr>
+                                                    <td class="elbow-placeholder"></td>
+                                                <td colspan="1">
+                    <b>actions</b>
+                    <div style="font-size: small">
+                        <span style="color: purple">string</span>
+                                                                    </div>
+                                    </td>
+                                <td>
+                                                                                                                                                                    <b>Default:</b><br/><div style="color: blue">"*"</div>
+                                    </td>
+                                <td>
+                                            <div>Identify actions of policy</div>
+                                                        </td>
+            </tr>
                                 <tr>
-                                                                <td colspan="1">
+                                                    <td class="elbow-placeholder"></td>
+                                                <td colspan="1">
+                    <b>effect</b>
+                    <div style="font-size: small">
+                        <span style="color: purple">string</span>
+                                                                    </div>
+                                    </td>
+                                <td>
+                                                                                                                            <ul style="margin: 0; padding: 0"><b>Choices:</b>
+                                                                                                                                                                <li>allow</li>
+                                                                                                                                                                                                <li>deny</li>
+                                                                                    </ul>
+                                                                            </td>
+                                <td>
+                                            <div>Defines whether the statement allows or denies access to the named resources and actions.</div>
+                                                        </td>
+            </tr>
+                                <tr>
+                                                    <td class="elbow-placeholder"></td>
+                                                <td colspan="1">
+                    <b>resources</b>
+                    <div style="font-size: small">
+                        <span style="color: purple">list</span>
+                                                 / <span style="color: red">required</span>                    </div>
+                                    </td>
+                                <td>
+                                                                                                                                                            </td>
+                                <td>
+                                            <div>Resource to use in policy</div>
+                                                        </td>
+            </tr>
+                    
+                                                <tr>
+                                                                <td colspan="2">
                     <b>state</b>
                     <div style="font-size: small">
                         <span style="color: purple">-</span>

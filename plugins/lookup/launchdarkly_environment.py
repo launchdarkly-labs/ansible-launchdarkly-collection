@@ -1,7 +1,7 @@
 from ansible.plugins.lookup import LookupBase
 from ansible.errors import AnsibleError
 import os
-from ansible_collections.launchdarkly.collection.plugins.module_utils.base import configure_instance
+from ansible_collections.launchdarkly_labs.collection.plugins.module_utils.base import configure_instance
 
 try:
     import launchdarkly_api

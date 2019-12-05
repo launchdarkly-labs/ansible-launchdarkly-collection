@@ -2,6 +2,7 @@ def clause_argument_spec():
     return dict(
         type="list",
         elements="dict",
+        apply_defaults=True,
         options=dict(
             attribute=dict(type="str"),
             op=dict(
@@ -24,6 +25,6 @@ def clause_argument_spec():
                 ],
             ),
             values=dict(type="list"),
-            negate=dict(type="bool", default=False),
+            negate=dict(apply_defaults=True,type="bool", default=True),
         ),
     )

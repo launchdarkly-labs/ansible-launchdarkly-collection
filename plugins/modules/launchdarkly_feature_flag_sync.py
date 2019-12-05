@@ -10,7 +10,7 @@ ANSIBLE_METADATA = {
     "supported_by": "community",
 }
 
-DOCUMENTATION = r'''
+DOCUMENTATION = r"""
 ---
 module: launchdarkly_feature_flag_sync
 short_description: Sync LaunchDarkly Feature Flags across Environments
@@ -18,11 +18,6 @@ description:
      - Sync LaunchDarkly Feature Flags across Environments
 version_added: "0.1.0"
 options:
-    api_key:
-        description:
-            - LaunchDarkly API Key. May be set as C(LAUNCHDARKLY_ACCESS_TOKEN) environment variable.
-        type: str
-        required: yes
     project_key:
         description:
             - Project key to look for flag
@@ -55,9 +50,11 @@ options:
         required: no
         type: list
         choices: ['updateOn', 'updatePrerequisites', 'updateTargets', 'updateRules', 'updateFallthrough', 'updateOffVariation']
-'''
 
-EXAMPLES = r'''
+extends_documentation_fragment: launchdarkly_labs.collection.launchdarkly
+"""
+
+EXAMPLES = r"""
 # Sync a LaunchDarkly Feature Flag Configuration across environments
 - launchdarkly_feature_flag_sync:
     environment_key: test-environment-1
@@ -69,14 +66,14 @@ EXAMPLES = r'''
     includedActions:
       - updateOn
       - updateRules
-'''
+"""
 
-RETURN = r'''
+RETURN = r"""
 feature_flag:
     description: Dictionary containing a L(Feature Flag, https://github.com/launchdarkly/api-client-python/blob/2.0.24/docs/FeatureFlag.md)
     type: dict
     returned: on success
-'''
+"""
 
 import inspect
 import traceback
@@ -97,7 +94,7 @@ from ansible.module_utils._text import to_native
 from ansible.module_utils.common._json_compat import json
 
 from ansible_collections.launchdarkly_labs.collection.plugins.module_utils.base import (
-    configure_instance
+    configure_instance,
 )
 
 
@@ -187,7 +184,9 @@ def _configure_flag_sync(module, api_instance):
             err = json.loads(str(e.body))
             module.exit_json(failed=True, msg=to_native(err))
 
-    module.exit_json(changed=True, msg="feature flags synced", feature_flag=feature_flag)
+    module.exit_json(
+        changed=True, msg="feature flags synced", feature_flag=feature_flag
+    )
 
 
 if __name__ == "__main__":

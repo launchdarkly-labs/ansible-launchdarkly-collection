@@ -10,7 +10,7 @@ ANSIBLE_METADATA = {
     "supported_by": "community",
 }
 
-DOCUMENTATION = r'''
+DOCUMENTATION = r"""
 ---
 module: launchdarkly_project
 short_description: Create Project
@@ -23,11 +23,6 @@ options:
             - Indicate desired state of the resource.
         choices: [ absent, present ]
         default: present
-        type: str
-    api_key:
-        description:
-            - LaunchDarkly API Key. May be set as LAUNCHDARKLY_ACCESS_TOKEN environment variable.
-        required: yes
         type: str
     project_key:
         description:
@@ -55,11 +50,13 @@ options:
             - Whether or not all flags in project should be made available to the client-side JavaScript SDK.
         required: no
         type: bool
-'''
 
-EXAMPLES = r'''
+extends_documentation_fragment: launchdarkly_labs.collection.launchdarkly
+"""
+
+EXAMPLES = r"""
 # Create a new LaunchDarkly Project with tags
-- project:
+- launchdarkly_project:
     state: present
     project_key: test-project-1
     color: C9C9C9
@@ -67,10 +64,14 @@ EXAMPLES = r'''
       - dev
       - ops
       - frontend
-'''
+"""
 
-RETURN = r'''
-'''
+RETURN = r"""
+project:
+    description: Dictionary containing a L(Project, https://github.com/launchdarkly/api-client-python/blob/2.0.24/docs/Project.md)
+    type: dict
+    returned: on success
+"""
 
 import inspect
 import traceback
@@ -174,8 +175,8 @@ def _create_project(module, api_instance):
             environments.append(env)
         project_config["environments"] = environments
 
-    # if module.params['tags'] and module.params['tags'] is not None:
-    #     project_config['tags'] = module.params['tags']
+    if module.params["tags"] and module.params["tags"] is not None:
+        project_config["tags"] = module.params["tags"]
 
     # if module.params['include_in_snippet_by_default'] and module.params['include_in_snippet_by_default'] is not None:
     #     project_config['include_in_snippet_by_default'] = module.params['include_in_snippet_by_default']
@@ -205,7 +206,7 @@ def _configure_project(module, api_instance, project=None, changed=False):
             del module.params["name"]
         # Uncomment when attribute is added to project response
         # if project.include_in_snippet_by_default == module.params['include_in_snippet_by_default']:
-        #    del module.parmas['include_in_snippet_by_default']
+        #  del module.parmas['include_in_snippet_by_default']
 
     for key in module.params:
         if module.params.get(key) and key not in [
