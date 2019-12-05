@@ -3,6 +3,17 @@ Change log
 
 All notable changes to the LaunchDarkly Ansible Collection will be documented in this file. This project adheres to [Semantic Versioning](https://semver.org).
 
+## [0.2.0] - 2019-12-04
+### Fixed:
+- core: lookup includes now import dependencies properly
+- test: fix webhook return variable
+- test: add coverage for new modules
+
+### Added:
+- core: Add multiple modules: launchdarkly_variation_info, launchdarkly_test_generator
+- meta: run black against all python files
+- docs: move API key to fragment
+
 ## [0.1.15] - 2019-11-21
 ### Fixed:
 - core: Feature Flag Environment to dictionary
