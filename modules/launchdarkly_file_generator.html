@@ -265,7 +265,7 @@
         </tr>
                             <tr>
                                                             <td colspan="1">
-                <b>overrides</b>
+                <b>overrides_flag</b>
                 <div style="font-size: small">
                     <span style="color: purple">list</span>
                                                                 </div>
@@ -295,14 +295,11 @@
 <div class="section" id="examples">
 <h2><a class="toc-backref" href="#id3">Examples</a><a class="headerlink" href="#examples" title="Permalink to this headline">¶</a></h2>
 <div class="highlight-yaml+jinja notranslate"><div class="highlight"><pre><span></span><span class="c1"># Create a new LaunchDarkly Project with tags</span>
-<span class="p p-Indicator">-</span> <span class="nt">launchdarkly_project</span><span class="p">:</span>
-    <span class="nt">state</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">present</span>
-    <span class="nt">project_key</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">test-project-1</span>
-    <span class="nt">color</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">C9C9C9</span>
-    <span class="nt">tags</span><span class="p">:</span>
-      <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">dev</span>
-      <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">ops</span>
-      <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">frontend</span>
+  <span class="p p-Indicator">-</span> <span class="nt">name</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">Get Test</span>
+    <span class="nt">launchdarkly_test_generator</span><span class="p">:</span>
+      <span class="nt">overrides_flag</span><span class="p">:</span>
+        <span class="p p-Indicator">-</span> <span class="nt">example_test_flag</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">True</span>
+    <span class="nt">register</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">results</span>
 </pre></div>
 </div>
 </div>
@@ -317,14 +314,14 @@
     </tr>
                 <tr>
                             <td colspan="1">
-                <b>project</b>
+                <b>content</b>
                 <div style="font-size: small">
-                  <span style="color: purple">dictionary</span>
+                  <span style="color: purple">json</span>
                                       </div>
                                 </td>
             <td>on success</td>
             <td>
-                                        <div>Dictionary containing a <a href='https://github.com/launchdarkly/api-client-python/blob/2.0.24/docs/Project.md'>Project</a></div>
+                                        <div>Dictionary containing a JSON object that can be used as a file source.</div>
                                     <br/>
                                 </td>
         </tr>

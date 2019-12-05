@@ -47,7 +47,7 @@ Parameters
             </tr>
                                 <tr>
                                                                 <td colspan="1">
-                    <b>overrides</b>
+                    <b>overrides_flag</b>
                     <div style="font-size: small">
                         <span style="color: purple">list</span>
                                                                     </div>
@@ -85,14 +85,11 @@ Examples
 
     
     # Create a new LaunchDarkly Project with tags
-    - launchdarkly_project:
-        state: present
-        project_key: test-project-1
-        color: C9C9C9
-        tags:
-          - dev
-          - ops
-          - frontend
+      - name: Get Test
+        launchdarkly_test_generator:
+          overrides_flag:
+            - example_test_flag: True
+        register: results
 
 
 
@@ -111,14 +108,14 @@ Common return values are documented :ref:`here <common_return_values>`, the foll
         </tr>
                     <tr>
                                 <td colspan="1">
-                    <b>project</b>
+                    <b>content</b>
                     <div style="font-size: small">
-                      <span style="color: purple">dictionary</span>
+                      <span style="color: purple">json</span>
                                           </div>
                                     </td>
                 <td>on success</td>
                 <td>
-                                            <div>Dictionary containing a <a href='https://github.com/launchdarkly/api-client-python/blob/2.0.24/docs/Project.md'>Project</a></div>
+                                            <div>Dictionary containing a JSON object that can be used as a file source.</div>
                                         <br/>
                                     </td>
             </tr>
