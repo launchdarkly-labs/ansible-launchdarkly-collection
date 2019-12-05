@@ -12,7 +12,7 @@ ANSIBLE_METADATA = {
 
 DOCUMENTATION = r"""
 ---
-module: launchdarkly_file_generator
+module: launchdarkly_test_generator
 short_description: Create a JSON file for testing
 description:
      - Create a JSON file for local testing
@@ -29,7 +29,7 @@ options:
             - A unique key that will be used to reference the flag in your code.
         required: yes
         type: str
-    overrides:
+    overrides_flag:
         description:
             - override specific keys
         required: no
@@ -38,20 +38,18 @@ options:
 
 EXAMPLES = r"""
 # Create a new LaunchDarkly Project with tags
-- launchdarkly_project:
-    state: present
-    project_key: test-project-1
-    color: C9C9C9
-    tags:
-      - dev
-      - ops
-      - frontend
+  - name: Generate Test JSON
+    launchdarkly_test_generator:
+      sdk_key: sdk-test-123456
+      overrides_flag:
+        - example_test_flag: True
+    register: results
 """
 
 RETURN = r"""
-project:
-    description: Dictionary containing a L(Project, https://github.com/launchdarkly/api-client-python/blob/2.0.24/docs/Project.md)
-    type: dict
+content:
+    description: Dictionary containing a JSON object that can be used as a file source.
+    type: json
     returned: on success
 """
 

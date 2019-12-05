@@ -1,10 +1,10 @@
 :source: 
 
 
-.. _launchdarkly_file_generator_:
+.. _launchdarkly_test_generator_:
 
 
-launchdarkly_file_generator -- Create a JSON file for testing
+launchdarkly_test_generator -- Create a JSON file for testing
 +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 .. versionadded:: 0.2.0
@@ -85,8 +85,9 @@ Examples
 
     
     # Create a new LaunchDarkly Project with tags
-      - name: Get Test
+      - name: Generate Test JSON
         launchdarkly_test_generator:
+          sdk_key: sdk-test-123456
           overrides_flag:
             - example_test_flag: True
         register: results

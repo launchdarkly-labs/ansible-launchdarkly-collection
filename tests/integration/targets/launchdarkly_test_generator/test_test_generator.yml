@@ -17,7 +17,6 @@
 
   - name: Get Test
     launchdarkly_test_generator:
-      sdk_key: sdk-a686fe5f-273b-4371-b378-55f25fb0c30a
       overrides_flag:
         - example_test_flag-3: False
         - example_test_flag: True
