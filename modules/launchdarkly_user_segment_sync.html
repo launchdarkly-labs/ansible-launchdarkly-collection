@@ -40,7 +40,7 @@
   <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="launchdarkly_webhook – Manage LaunchDarkly Webhooks" href="launchdarkly_webhook.html" />
+    <link rel="next" title="launchdarkly_variation_info – Return value from Feature Flag Evaluation" href="launchdarkly_variation_info.html" />
     <link rel="prev" title="launchdarkly_user_segment – Manage User Segments" href="launchdarkly_user_segment.html" /> <script src="//cdnjs.cloudflare.com/ajax/libs/modernizr/2.6.2/modernizr.min.js"></script> 
 </head>
 
@@ -63,7 +63,7 @@
             
             
               <div class="version">
-                0.1.15
+                0.2.0
               </div>
             
           
@@ -80,11 +80,11 @@
             current_url = window.location.href;
             option = document.createElement("option");
             option.text = "latest";
-            if ( "latest" == "0.1.15" ) {
+            if ( "latest" == "0.2.0" ) {
               option.selected = true;
             }
-            if (current_url.search("0.1.15") > -1) {
-              option.value = current_url.replace("0.1.15","latest");
+            if (current_url.search("0.2.0") > -1) {
+              option.value = current_url.replace("0.2.0","latest");
             } else {
               option.value = current_url.replace("latest","latest");
             }
@@ -94,14 +94,14 @@
           <script>
             current_url = window.location.href;
             option = document.createElement("option");
-            option.text = "0.1.15";
-            if ( "0.1.15" == "0.1.15" ) {
+            option.text = "0.2.0";
+            if ( "0.2.0" == "0.2.0" ) {
               option.selected = true;
             }
-            if (current_url.search("0.1.15") > -1) {
-              option.value = current_url.replace("0.1.15","0.1.15");
+            if (current_url.search("0.2.0") > -1) {
+              option.value = current_url.replace("0.2.0","0.2.0");
             } else {
-              option.value = current_url.replace("latest","0.1.15");
+              option.value = current_url.replace("latest","0.2.0");
             }
             x.add(option);
           </script>
@@ -137,6 +137,7 @@
 <li class="toctree-l1"><a class="reference internal" href="launchdarkly_feature_flag.html">launchdarkly_feature_flag – Interact with projects, flags of LaunchDarkly</a></li>
 <li class="toctree-l1"><a class="reference internal" href="launchdarkly_feature_flag_environment.html">launchdarkly_feature_flag_environment – Create Environment specific flag targeting</a></li>
 <li class="toctree-l1"><a class="reference internal" href="launchdarkly_feature_flag_sync.html">launchdarkly_feature_flag_sync – Sync LaunchDarkly Feature Flags across Environments</a></li>
+<li class="toctree-l1"><a class="reference internal" href="launchdarkly_file_generator.html">launchdarkly_file_generator – Create a JSON file for testing</a></li>
 <li class="toctree-l1"><a class="reference internal" href="launchdarkly_project.html">launchdarkly_project – Create Project</a></li>
 <li class="toctree-l1"><a class="reference internal" href="launchdarkly_user_segment.html">launchdarkly_user_segment – Manage User Segments</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">launchdarkly_user_segment_sync – Sync LaunchDarkly Feature Flags across Environments</a><ul>
@@ -146,6 +147,7 @@
 <li class="toctree-l2"><a class="reference internal" href="#status">Status</a></li>
 </ul>
 </li>
+<li class="toctree-l1"><a class="reference internal" href="launchdarkly_variation_info.html">launchdarkly_variation_info – Return value from Feature Flag Evaluation</a></li>
 <li class="toctree-l1"><a class="reference internal" href="launchdarkly_webhook.html">launchdarkly_webhook – Manage LaunchDarkly Webhooks</a></li>
 </ul>
 
@@ -389,7 +391,7 @@
   
     <div class="rst-footer-buttons">
       
-        <a href="launchdarkly_webhook.html" class="btn btn-neutral float-right" title="launchdarkly_webhook – Manage LaunchDarkly Webhooks"/>Next <span class="icon icon-circle-arrow-right"></span></a>
+        <a href="launchdarkly_variation_info.html" class="btn btn-neutral float-right" title="launchdarkly_variation_info – Return value from Feature Flag Evaluation"/>Next <span class="icon icon-circle-arrow-right"></span></a>
       
       
         <a href="launchdarkly_user_segment.html" class="btn btn-neutral" title="launchdarkly_user_segment – Manage User Segments"><span class="icon icon-circle-arrow-left"></span> Previous</a>

@@ -28,12 +28,12 @@ Parameters
 
     <table  border=0 cellpadding=0 class="documentation-table">
         <tr>
-            <th colspan="1">Parameter</th>
+            <th colspan="2">Parameter</th>
             <th>Choices/<font color="blue">Defaults</font></th>
             <th width="100%">Comments</th>
         </tr>
                     <tr>
-                                                                <td colspan="1">
+                                                                <td colspan="2">
                     <b>api_key</b>
                     <div style="font-size: small">
                         <span style="color: purple">string</span>
@@ -46,7 +46,7 @@ Parameters
                                                         </td>
             </tr>
                                 <tr>
-                                                                <td colspan="1">
+                                                                <td colspan="2">
                     <b>environment_key</b>
                     <div style="font-size: small">
                         <span style="color: purple">string</span>
@@ -59,7 +59,7 @@ Parameters
                                                         </td>
             </tr>
                                 <tr>
-                                                                <td colspan="1">
+                                                                <td colspan="2">
                     <b>fallthrough</b>
                     <div style="font-size: small">
                         <span style="color: purple">-</span>
@@ -72,8 +72,37 @@ Parameters
                                             <div><code>targets</code> or <code>rules</code> apply.</div>
                                                         </td>
             </tr>
+                                                            <tr>
+                                                    <td class="elbow-placeholder"></td>
+                                                <td colspan="1">
+                    <b>rollout</b>
+                    <div style="font-size: small">
+                        <span style="color: purple">dictionary</span>
+                                                                    </div>
+                                    </td>
+                                <td>
+                                                                                                                                                            </td>
+                                <td>
+                                            <div>rollout value</div>
+                                                        </td>
+            </tr>
                                 <tr>
-                                                                <td colspan="1">
+                                                    <td class="elbow-placeholder"></td>
+                                                <td colspan="1">
+                    <b>variation</b>
+                    <div style="font-size: small">
+                        <span style="color: purple">integer</span>
+                                                                    </div>
+                                    </td>
+                                <td>
+                                                                                                                                                            </td>
+                                <td>
+                                            <div>index of variation to serve default. Exclusive of rollout.</div>
+                                                        </td>
+            </tr>
+                    
+                                                <tr>
+                                                                <td colspan="2">
                     <b>off_variation</b>
                     <div style="font-size: small">
                         <span style="color: purple">integer</span>
@@ -86,7 +115,7 @@ Parameters
                                                         </td>
             </tr>
                                 <tr>
-                                                                <td colspan="1">
+                                                                <td colspan="2">
                     <b>project_key</b>
                     <div style="font-size: small">
                         <span style="color: purple">-</span>
@@ -100,7 +129,7 @@ Parameters
                                                         </td>
             </tr>
                                 <tr>
-                                                                <td colspan="1">
+                                                                <td colspan="2">
                     <b>rules</b>
                     <div style="font-size: small">
                         <span style="color: purple">list</span>
@@ -113,7 +142,7 @@ Parameters
                                                         </td>
             </tr>
                                 <tr>
-                                                                <td colspan="1">
+                                                                <td colspan="2">
                     <b>state</b>
                     <div style="font-size: small">
                         <span style="color: purple">string</span>
@@ -132,7 +161,7 @@ Parameters
                                                         </td>
             </tr>
                                 <tr>
-                                                                <td colspan="1">
+                                                                <td colspan="2">
                     <b>targets</b>
                     <div style="font-size: small">
                         <span style="color: purple">list</span>

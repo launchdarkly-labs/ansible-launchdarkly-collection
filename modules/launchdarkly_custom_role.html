@@ -63,7 +63,7 @@
             
             
               <div class="version">
-                0.1.15
+                0.2.0
               </div>
             
           
@@ -80,11 +80,11 @@
             current_url = window.location.href;
             option = document.createElement("option");
             option.text = "latest";
-            if ( "latest" == "0.1.15" ) {
+            if ( "latest" == "0.2.0" ) {
               option.selected = true;
             }
-            if (current_url.search("0.1.15") > -1) {
-              option.value = current_url.replace("0.1.15","latest");
+            if (current_url.search("0.2.0") > -1) {
+              option.value = current_url.replace("0.2.0","latest");
             } else {
               option.value = current_url.replace("latest","latest");
             }
@@ -94,14 +94,14 @@
           <script>
             current_url = window.location.href;
             option = document.createElement("option");
-            option.text = "0.1.15";
-            if ( "0.1.15" == "0.1.15" ) {
+            option.text = "0.2.0";
+            if ( "0.2.0" == "0.2.0" ) {
               option.selected = true;
             }
-            if (current_url.search("0.1.15") > -1) {
-              option.value = current_url.replace("0.1.15","0.1.15");
+            if (current_url.search("0.2.0") > -1) {
+              option.value = current_url.replace("0.2.0","0.2.0");
             } else {
-              option.value = current_url.replace("latest","0.1.15");
+              option.value = current_url.replace("latest","0.2.0");
             }
             x.add(option);
           </script>
@@ -144,9 +144,11 @@
 <li class="toctree-l1"><a class="reference internal" href="launchdarkly_feature_flag.html">launchdarkly_feature_flag – Interact with projects, flags of LaunchDarkly</a></li>
 <li class="toctree-l1"><a class="reference internal" href="launchdarkly_feature_flag_environment.html">launchdarkly_feature_flag_environment – Create Environment specific flag targeting</a></li>
 <li class="toctree-l1"><a class="reference internal" href="launchdarkly_feature_flag_sync.html">launchdarkly_feature_flag_sync – Sync LaunchDarkly Feature Flags across Environments</a></li>
+<li class="toctree-l1"><a class="reference internal" href="launchdarkly_file_generator.html">launchdarkly_file_generator – Create a JSON file for testing</a></li>
 <li class="toctree-l1"><a class="reference internal" href="launchdarkly_project.html">launchdarkly_project – Create Project</a></li>
 <li class="toctree-l1"><a class="reference internal" href="launchdarkly_user_segment.html">launchdarkly_user_segment – Manage User Segments</a></li>
 <li class="toctree-l1"><a class="reference internal" href="launchdarkly_user_segment_sync.html">launchdarkly_user_segment_sync – Sync LaunchDarkly Feature Flags across Environments</a></li>
+<li class="toctree-l1"><a class="reference internal" href="launchdarkly_variation_info.html">launchdarkly_variation_info – Return value from Feature Flag Evaluation</a></li>
 <li class="toctree-l1"><a class="reference internal" href="launchdarkly_webhook.html">launchdarkly_webhook – Manage LaunchDarkly Webhooks</a></li>
 </ul>
 
@@ -244,12 +246,12 @@
 <h2><a class="toc-backref" href="#id2">Parameters</a><a class="headerlink" href="#parameters" title="Permalink to this headline">¶</a></h2>
 <table  border=0 cellpadding=0 class="documentation-table">
     <tr>
-        <th colspan="1">Parameter</th>
+        <th colspan="2">Parameter</th>
         <th>Choices/<font color="blue">Defaults</font></th>
         <th width="100%">Comments</th>
     </tr>
                 <tr>
-                                                            <td colspan="1">
+                                                            <td colspan="2">
                 <b>api_key</b>
                 <div style="font-size: small">
                     <span style="color: purple">string</span>
@@ -258,11 +260,11 @@
                             <td>
                                                                                                                                                         </td>
                             <td>
-                                        <div>LaunchDarkly API Key. May be set as LAUNCHDARKLY_ACCESS_TOKEN environment variable.</div>
+                                        <div>LaunchDarkly API Key. May be set as <code>LAUNCHDARKLY_ACCESS_TOKEN</code> environment variable.</div>
                                                     </td>
         </tr>
                             <tr>
-                                                            <td colspan="1">
+                                                            <td colspan="2">
                 <b>description</b>
                 <div style="font-size: small">
                     <span style="color: purple">string</span>
@@ -275,11 +277,11 @@
                                                     </td>
         </tr>
                             <tr>
-                                                            <td colspan="1">
+                                                            <td colspan="2">
                 <b>key</b>
                 <div style="font-size: small">
                     <span style="color: purple">string</span>
-                                                                </div>
+                                             / <span style="color: red">required</span>                    </div>
                                 </td>
                             <td>
                                                                                                                                                         </td>
@@ -288,7 +290,7 @@
                                                     </td>
         </tr>
                             <tr>
-                                                            <td colspan="1">
+                                                            <td colspan="2">
                 <b>name</b>
                 <div style="font-size: small">
                     <span style="color: purple">string</span>
@@ -301,11 +303,11 @@
                                                     </td>
         </tr>
                             <tr>
-                                                            <td colspan="1">
+                                                            <td colspan="2">
                 <b>policies</b>
                 <div style="font-size: small">
-                    <span style="color: purple">-</span>
-                                                                </div>
+                    <span style="color: purple">dictionary</span>
+                                             / <span style="color: red">required</span>                    </div>
                                 </td>
                             <td>
                                                                                                                                                         </td>
@@ -313,8 +315,56 @@
                                         <div>Policies to attach to the role</div>
                                                     </td>
         </tr>
+                                                        <tr>
+                                                <td class="elbow-placeholder"></td>
+                                            <td colspan="1">
+                <b>actions</b>
+                <div style="font-size: small">
+                    <span style="color: purple">string</span>
+                                                                </div>
+                                </td>
+                            <td>
+                                                                                                                                                                <b>Default:</b><br/><div style="color: blue">"*"</div>
+                                </td>
+                            <td>
+                                        <div>Identify actions of policy</div>
+                                                    </td>
+        </tr>
                             <tr>
-                                                            <td colspan="1">
+                                                <td class="elbow-placeholder"></td>
+                                            <td colspan="1">
+                <b>effect</b>
+                <div style="font-size: small">
+                    <span style="color: purple">string</span>
+                                                                </div>
+                                </td>
+                            <td>
+                                                                                                                        <ul style="margin: 0; padding: 0"><b>Choices:</b>
+                                                                                                                                                            <li>allow</li>
+                                                                                                                                                                                            <li>deny</li>
+                                                                                </ul>
+                                                                        </td>
+                            <td>
+                                        <div>Defines whether the statement allows or denies access to the named resources and actions.</div>
+                                                    </td>
+        </tr>
+                            <tr>
+                                                <td class="elbow-placeholder"></td>
+                                            <td colspan="1">
+                <b>resources</b>
+                <div style="font-size: small">
+                    <span style="color: purple">list</span>
+                                             / <span style="color: red">required</span>                    </div>
+                                </td>
+                            <td>
+                                                                                                                                                        </td>
+                            <td>
+                                        <div>Resource to use in policy</div>
+                                                    </td>
+        </tr>
+
+                                            <tr>
+                                                            <td colspan="2">
                 <b>state</b>
                 <div style="font-size: small">
                     <span style="color: purple">-</span>
