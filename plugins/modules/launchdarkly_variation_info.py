@@ -86,6 +86,7 @@ from ansible.module_utils.basic import AnsibleModule, missing_required_lib, env_
 from ansible.module_utils._text import to_native
 from ansible.module_utils.common._json_compat import json
 from ansible.module_utils.six import PY2, iteritems, string_types
+from ansible.errors import AnsibleError
 
 
 def main():
@@ -111,6 +112,9 @@ def main():
     ldclient.set_sdk_key(module.params["sdk_key"])
     ld_client = ldclient.get()
 
+    if not ld_client.is_initialized():
+        raise AnsibleError("Error: Not Connected to LaunchDarkly")
+
     show_feature = ld_client.variation_detail(
         module.params["flag_key"], module.params["user"], False
     )
@@ -119,6 +123,7 @@ def main():
 
     ff_type = type(show_feature.value).__name__
     value = show_feature.value
+    ld_client.close()
 
     if ff_type == "dict":
         ff_end_type = "json"
@@ -126,6 +131,8 @@ def main():
         ff_end_type = "string"
     elif ff_type == "int":
         ff_end_type = "number"
+    elif ff_type == "bool":
+        ff_end_type = "bool"
 
     module.exit_json(
         type=ff_end_type,

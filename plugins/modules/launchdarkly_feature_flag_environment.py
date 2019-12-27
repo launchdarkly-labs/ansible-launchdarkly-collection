@@ -373,14 +373,19 @@ def _configure_feature_flag_env(module, api_instance, feature_flag=None):
                                     module.params["rules"][i]["variation"],
                                 )
                             )
-                        if module.params["rules"][i]["rollout"] is not None:
-                            patches.append(
-                                _patch_op(
-                                    "replace",
-                                    path + "/%d/rollout" % i,
-                                    module.params["rules"][i]["rollout"],
+
+                        try:
+                            if module.params["rules"][i]["rollout"] is not None:
+                                patches.append(
+                                    _patch_op(
+                                        "replace",
+                                        path + "/%d/rollout" % i,
+                                        module.params["rules"][i]["rollout"],
+                                    )
                                 )
-                            )
+                        except KeyError:
+                            pass
+
                         if module.params["rules"][i]["clauses"] is not None:
                             for idx, clause in enumerate(
                                 module.params["rules"][i]["clauses"]
@@ -551,7 +556,7 @@ def _fetch_feature_flag(module, api_instance):
             )
         else:
             err = json.loads(str(e.body))
-            raise AnsibleError("Error: %s" % to_native(err.body))
+            raise AnsibleError("Error: %s" % to_native(err))
 
 
 if __name__ == "__main__":

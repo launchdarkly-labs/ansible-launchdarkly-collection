@@ -191,7 +191,7 @@ def _create_project(module, api_instance):
 
     except ApiException as e:
         err = json.loads(str(e.body))
-        module.exit_json(failed=True, changed=False, msg=err.message)
+        module.exit_json(failed=True, changed=False, msg=err)
 
 
 def _configure_project(module, api_instance, project=None, changed=False):

@@ -3,6 +3,11 @@ Change log
 
 All notable changes to the LaunchDarkly Ansible Collection will be documented in this file. This project adheres to [Semantic Versioning](https://semver.org).
 
+## [0.2.1] - 2019-12-30
+### Fixed:
+- core: properly return error messages
+- core: try/catch on rollout key not existing
+
 ## [0.2.0] - 2019-12-04
 ### Fixed:
 - core: lookup includes now import dependencies properly

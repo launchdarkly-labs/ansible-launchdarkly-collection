@@ -309,7 +309,7 @@ def _configure_user_segment(module, api_instance, api_response=None, ans_changed
                 err = "user segment key not found"
             else:
                 err = json.loads(str(e.body))
-                raise AnsibleError("Error: %s" % to_native(err.body))
+                raise AnsibleError("Error: %s" % to_native(err))
     else:
         segment = user_segment
         msg = "segment unchanged"

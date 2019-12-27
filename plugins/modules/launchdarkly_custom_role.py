@@ -174,7 +174,7 @@ def _delete_custom_role(module, api_instance):
         module.exit_json(msg="successfully deleted custom role")
     except ApiException as e:
         err = json.loads(str(e.body))
-        module.exit_json(msg=err["message"])
+        module.exit_json(msg=err)
 
 
 def _create_custom_role(module, api_instance):
