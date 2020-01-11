@@ -18,7 +18,6 @@
   - name: Get Flag Variation Value
     launchdarkly_variation_info:
       flag_key: test-json
-      sdk_key: sdk-a686fe5f-273b-4371-b378-55f25fb0c30a
       user:
         key: aabbccdd
         custom:

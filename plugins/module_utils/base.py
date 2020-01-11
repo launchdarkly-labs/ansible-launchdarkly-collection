@@ -20,3 +20,24 @@ def _build_comment(module):
 
 def _patch_op(op, path, value):
     return launchdarkly_api.PatchOperation(op=op, path=path, value=value)
+
+def parse_env_param(module, param_name, key=None):
+    if key is None:
+        key = launchdarkly_api.Environment.attribute_map[param_name]
+    path = "/" + key
+    return launchdarkly_api.PatchOperation(
+        path=path, op="replace", value=module[param_name]
+    )
+
+
+def parse_user_param(module, param_name, key=None):
+    if key is None:
+        key = launchdarkly_api.UserSegment.attribute_map[param_name]
+    path = "/" + key
+    patch = dict(path=path, op="replace", value=module[param_name])
+    return launchdarkly_api.PatchOperation(**patch)
+
+
+def reset_rate(reset_time):
+    current = time.time() * 1000.0
+    return int((float(reset_time) - current + 1000.0) / 1000.0)

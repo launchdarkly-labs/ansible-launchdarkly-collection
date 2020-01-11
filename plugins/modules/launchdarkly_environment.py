@@ -116,6 +116,7 @@ from ansible.module_utils.common._json_compat import json
 from ansible.module_utils.six import PY2, iteritems, string_types
 from ansible_collections.launchdarkly_labs.collection.plugins.module_utils.base import (
     configure_instance,
+    parse_env_param
 )
 from ansible_collections.launchdarkly_labs.collection.plugins.module_utils.environment import (
     ld_env_arg_spec,
@@ -164,15 +165,6 @@ def main():
             _create_environment(module, api_instance)
     elif module.params["state"] == "absent":
         _delete_environment(module, api_instance)
-
-
-def _parse_env_param(module, param_name, key=None):
-    if key is None:
-        key = launchdarkly_api.Environment.attribute_map[param_name]
-    path = "/" + key
-    return launchdarkly_api.PatchOperation(
-        path=path, op="replace", value=module.params[param_name]
-    )
 
 
 def _delete_environment(module, api_instance):
@@ -246,7 +238,7 @@ def _configure_environment(module, api_instance, environment=None):
             key not in ["state", "api_key", "environment_key", "project_key"]
             and module.params[key] is not None
         ):
-            patches.append(_parse_env_param(module, key))
+            patches.append(parse_env_param(module.params, key))
 
     if len(patches) > 0:
         try:

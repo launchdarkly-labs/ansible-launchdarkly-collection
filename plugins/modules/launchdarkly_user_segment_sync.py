@@ -17,11 +17,6 @@ description:
      - Sync LaunchDarkly Feature Flags across Environments
 version_added: "0.1.0"
 options:
-    api_key:
-        description:
-            - LaunchDarkly API Key. May be set as LAUNCHDARKLY_ACCESS_TOKEN environment variable.
-        type: str
-        required: yes
     project_key:
         description:
             - Project key to look for flag
