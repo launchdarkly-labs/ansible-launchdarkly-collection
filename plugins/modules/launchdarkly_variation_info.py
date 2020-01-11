@@ -24,6 +24,12 @@ options:
         default: 'default'
         required: yes
         type: str
+    start_wait:
+        description:
+            - How long to wait for the SDK to connect to LaunchDarkly.
+        default: 5
+        required: yes
+        type: int
     flag_key:
         description:
             - Display name for the environment.
@@ -40,6 +46,7 @@ EXAMPLES = r"""
 # Create a new LaunchDarkly Project with tags
 - launchdarkly_variation_info:
     sdk_key: sdk-12345
+    start_wait: 10
     flag_key: example-test-flag
     user:
         key: aabbccdd
@@ -72,6 +79,7 @@ is_default_value:
 
 import inspect
 import traceback
+import time
 
 LD_IMP_ERR = None
 try:
@@ -90,7 +98,6 @@ from ansible.errors import AnsibleError
 
 
 def main():
-
     module = AnsibleModule(
         argument_spec=dict(
             sdk_key=dict(
@@ -101,6 +108,7 @@ def main():
             ),
             flag_key=dict(type="str", required=True),
             user=dict(type="dict", required=True),
+            start_wait=dict(type="int", default=5)
         )
     )
 
@@ -110,6 +118,7 @@ def main():
         )
 
     ldclient.set_sdk_key(module.params["sdk_key"])
+    ldclient.start_wait = 5
     ld_client = ldclient.get()
 
     if not ld_client.is_initialized():

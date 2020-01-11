@@ -118,6 +118,7 @@ from ansible_collections.launchdarkly_labs.collection.plugins.module_utils.claus
 from ansible_collections.launchdarkly_labs.collection.plugins.module_utils.base import (
     configure_instance,
     _patch_path,
+    parse_user_param
 )
 
 
@@ -173,14 +174,6 @@ def main():
             _create_user_segment(module, api_instance)
     elif module.params["state"] == "absent":
         _delete_user_segment(module, api_instance)
-
-
-def _parse_user_param(module, param_name, key=None):
-    if key is None:
-        key = launchdarkly_api.UserSegment.attribute_map[param_name]
-    path = "/" + key
-    patch = dict(path=path, op="replace", value=module.params[param_name])
-    return launchdarkly_api.PatchOperation(**patch)
 
 
 def _delete_user_segment(module, api_instance):
@@ -291,7 +284,7 @@ def _configure_user_segment(module, api_instance, api_response=None, ans_changed
             "user_segment_key",
         ]:
             if module.params[key] is not None:
-                patches.append(_parse_user_param(module, key))
+                patches.append(parse_user_param(module.params, key))
 
     if len(patches) > 0:
         try:

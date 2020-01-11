@@ -1,0 +1,21 @@
+---
+- name: Test Copying Project
+  hosts: localhost
+  gather_facts: no
+
+  tasks:
+  - name: Sync Project
+    launchdarkly_project_copy:
+      project_key: dano-test-project
+      project_key_dest: proj-sync
+      name: "Testing Copy Task"
+      environments_copy: false
+    register: test_project
+
+  - debug:
+      msg: "{{ test_project }}"
+
+  - name: Delete Copied Project
+    launchdarkly_project:
+      state: absent
+      project_key: proj-sync
