@@ -12,9 +12,9 @@ ANSIBLE_METADATA = {
 DOCUMENTATION = r"""
 ---
 module: launchdarkly_user_segment_sync
-short_description: Sync LaunchDarkly Feature Flags across Environments
+short_description: Sync LaunchDarkly User Segments across Environments
 description:
-     - Sync LaunchDarkly Feature Flags across Environments
+     - Sync LaunchDarkly User Segments across Environments
 version_added: "0.1.0"
 options:
     project_key:
