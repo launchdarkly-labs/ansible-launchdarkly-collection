@@ -61,6 +61,20 @@ Parameters
             </tr>
                                 <tr>
                                                                 <td colspan="1">
+                    <b>start_wait</b>
+                    <div style="font-size: small">
+                        <span style="color: purple">integer</span>
+                                                 / <span style="color: red">required</span>                    </div>
+                                    </td>
+                                <td>
+                                                                                                                                                                    <b>Default:</b><br/><div style="color: blue">5</div>
+                                    </td>
+                                <td>
+                                            <div>How long to wait for the SDK to connect to LaunchDarkly.</div>
+                                                        </td>
+            </tr>
+                                <tr>
+                                                                <td colspan="1">
                     <b>user</b>
                     <div style="font-size: small">
                         <span style="color: purple">dictionary</span>
@@ -87,6 +101,7 @@ Examples
     # Create a new LaunchDarkly Project with tags
     - launchdarkly_variation_info:
         sdk_key: sdk-12345
+        start_wait: 10
         flag_key: example-test-flag
         user:
             key: aabbccdd

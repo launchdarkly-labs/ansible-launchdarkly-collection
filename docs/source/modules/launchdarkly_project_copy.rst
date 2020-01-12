@@ -1,13 +1,13 @@
 :source: 
 
 
-.. _launchdarkly_user_segment_sync_:
+.. _launchdarkly_project_copy_:
 
 
-launchdarkly_user_segment_sync -- Sync LaunchDarkly Feature Flags across Environments
-+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+launchdarkly_project_copy -- Copy LaunchDarkly Projects in or between accounts.
++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
-.. versionadded:: 0.1.0
+.. versionadded:: 0.2.2
 
 .. contents::
    :local:
@@ -16,7 +16,7 @@ launchdarkly_user_segment_sync -- Sync LaunchDarkly Feature Flags across Environ
 
 Synopsis
 --------
-- Sync LaunchDarkly Feature Flags across Environments
+- Copy LaunchDarkly Projects in or between accounts.
 
 
 
@@ -42,12 +42,12 @@ Parameters
                                 <td>
                                                                                                                                                             </td>
                                 <td>
-                                            <div>LaunchDarkly API Key. May be set as <code>LAUNCHDARKLY_ACCESS_TOKEN</code> environment variable.</div>
+                                            <div>LaunchDarkly API Source Key. May be set as LAUNCHDARKLY_ACCESS_TOKEN environment variable.</div>
                                                         </td>
             </tr>
                                 <tr>
                                                                 <td colspan="1">
-                    <b>environment_key</b>
+                    <b>api_key_dest</b>
                     <div style="font-size: small">
                         <span style="color: purple">string</span>
                                                  / <span style="color: red">required</span>                    </div>
@@ -55,54 +55,20 @@ Parameters
                                 <td>
                                                                                                                                                             </td>
                                 <td>
-                                            <div>A unique key that will be used to determine source environment.</div>
+                                            <div>LaunchDarkly API Destination Key.</div>
                                                         </td>
             </tr>
                                 <tr>
                                                                 <td colspan="1">
-                    <b>environment_targets</b>
+                    <b>flag_tag</b>
                     <div style="font-size: small">
-                        <span style="color: purple">list</span>
-                                                 / <span style="color: red">required</span>                    </div>
+                        <span style="color: purple">string</span>
+                                                                    </div>
                                     </td>
                                 <td>
                                                                                                                                                             </td>
                                 <td>
-                                            <div>A list of environments that flag settings will be copied to.</div>
-                                                        </td>
-            </tr>
-                                <tr>
-                                                                <td colspan="1">
-                    <b>excludedActions</b>
-                    <div style="font-size: small">
-                        <span style="color: purple">list</span>
-                                                                    </div>
-                                    </td>
-                                <td>
-                                                                                                                            <ul style="margin: 0; padding: 0"><b>Choices:</b>
-                                                                                                                                                                <li>updateTargets&#39;</li>
-                                                                                                                                                                                                <li>updateRules</li>
-                                                                                    </ul>
-                                                                            </td>
-                                <td>
-                                            <div>Manage a list of excluded actions for copying.</div>
-                                                        </td>
-            </tr>
-                                <tr>
-                                                                <td colspan="1">
-                    <b>includedActions</b>
-                    <div style="font-size: small">
-                        <span style="color: purple">list</span>
-                                                                    </div>
-                                    </td>
-                                <td>
-                                                                                                                            <ul style="margin: 0; padding: 0"><b>Choices:</b>
-                                                                                                                                                                <li>updateTargets</li>
-                                                                                                                                                                                                <li>updateRules</li>
-                                                                                    </ul>
-                                                                            </td>
-                                <td>
-                                            <div>Manage a list of included actions for copying.</div>
+                                            <div>Copy only flags which have the specified tag</div>
                                                         </td>
             </tr>
                                 <tr>
@@ -116,12 +82,12 @@ Parameters
                                                                                                                                                                     <b>Default:</b><br/><div style="color: blue">"default"</div>
                                     </td>
                                 <td>
-                                            <div>Project key to look for flag</div>
+                                            <div>Project key source</div>
                                                         </td>
             </tr>
                                 <tr>
                                                                 <td colspan="1">
-                    <b>user_segment_key</b>
+                    <b>project_key_dest</b>
                     <div style="font-size: small">
                         <span style="color: purple">string</span>
                                                  / <span style="color: red">required</span>                    </div>
@@ -129,7 +95,7 @@ Parameters
                                 <td>
                                                                                                                                                             </td>
                                 <td>
-                                            <div>A unique key that will be used to reference the user segment in this environment.</div>
+                                            <div>Project key destination</div>
                                                         </td>
             </tr>
                         </table>
@@ -144,17 +110,12 @@ Examples
 .. code-block:: yaml+jinja
 
     
-    # Sync a LaunchDarkly User Segment to multiple environments
-    - launchdarkly_user_segment_sync:
-        environment_key: test-environment-1
-        environment_targets:
-            - dev
-            - staging
-            - production
-        name: "Test Segment"
-        includedActions:
-          - updateOn
-          - updateRules
+    # Sync a LaunchDarkly Project
+    - launchdarkly_project_copy:
+        api_key: api-12345
+        api_key_dest: api-54321
+        project_key: dev
+        project_key_dest: new-dev
 
 
 

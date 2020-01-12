@@ -11,11 +11,11 @@ ANSIBLE_METADATA = {
 
 DOCUMENTATION = r"""
 ---
-module: launchdarkly_user_segment_sync
-short_description: Sync LaunchDarkly Feature Flags across Environments
+module: launchdarkly_project_copy
+short_description: Copy LaunchDarkly Projects in or between accounts.
 description:
-     - Sync LaunchDarkly Feature Flags across Environments
-version_added: "0.1.0"
+     - Copy LaunchDarkly Projects in or between accounts.
+version_added: "0.2.2"
 options:
     api_key:
         description:
@@ -42,6 +42,8 @@ options:
             - Copy only flags which have the specified tag
         required: no
         type: str
+
+extends_documentation_fragment: launchdarkly_labs.collection.launchdarkly
 """
 
 EXAMPLES = r"""
@@ -102,7 +104,7 @@ def main():
             project_key_dest=dict(type="str", required=True),
             flag_tag=dict(type="list", elements="str"),
             environments_copy=dict(type="bool", default=True),
-            name=dict(type="str"),
+            name=dict(type="str")
         )
     )
 
@@ -151,17 +153,6 @@ def main():
         api_instance_dest_fflag,
     )
 
-
-# def _project_sync(
-#     module,
-#     src_proj: launchdarkly_api.ProjectsApi,
-#     dest_proj: launchdarkly_api.ProjectsApi,
-#     dest_env_api: launchdarkly_api.EnvironmentsApi,
-#     src_user_sgmt: launchdarkly_api.UserSegmentsApi,
-#     dest_user_sgmt: launchdarkly_api.UserSegmentsApi,
-#     src_fflags: launchdarkly_api.FeatureFlagsApi,
-#     dest_fflags: launchdarkly_api.FeatureFlagsApi,
-# ):
 def _project_sync(
     module,
     src_proj,
