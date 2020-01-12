@@ -26,3 +26,7 @@ jobs:
           run: pip install ansible==2.9.0 --disable-pip-version-check
         - name: Run integration tests on Python 3.7
           run: ansible-test integration --docker -v --color --retry-on-error --python 3.7
+          env:
+            LAUNCHDARKLY_ACCESS_TOKEN: ${{ secrets.LAUNCHDARKLY_ACCESS_TOKEN }}
+            LAUNCHDARKLY_DEST_ACCESS_TOKEN: ${{ secrets.LAUNCHDARKLY_ACCESS_TOKEN }}
+            LAUNCHDARKLY_SDK_KEY: ${{ secrets.LAUNCHDARKLY_SDK_KEY }}
