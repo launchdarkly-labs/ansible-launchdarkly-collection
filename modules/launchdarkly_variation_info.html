@@ -139,6 +139,7 @@
 <li class="toctree-l1"><a class="reference internal" href="launchdarkly_feature_flag_sync.html">launchdarkly_feature_flag_sync – Sync LaunchDarkly Feature Flags across Environments</a></li>
 <li class="toctree-l1"><a class="reference internal" href="launchdarkly_file_generator.html">launchdarkly_file_generator – Create a JSON file for testing</a></li>
 <li class="toctree-l1"><a class="reference internal" href="launchdarkly_project.html">launchdarkly_project – Create Project</a></li>
+<li class="toctree-l1"><a class="reference internal" href="launchdarkly_project_copy.html">launchdarkly_project_copy – Copy LaunchDarkly Projects in or between accounts.</a></li>
 <li class="toctree-l1"><a class="reference internal" href="launchdarkly_test_generator.html">launchdarkly_test_generator – Create a JSON file for testing</a></li>
 <li class="toctree-l1"><a class="reference internal" href="launchdarkly_user_segment.html">launchdarkly_user_segment – Manage User Segments</a></li>
 <li class="toctree-l1"><a class="reference internal" href="launchdarkly_user_segment_sync.html">launchdarkly_user_segment_sync – Sync LaunchDarkly Feature Flags across Environments</a></li>
@@ -280,6 +281,20 @@
         </tr>
                             <tr>
                                                             <td colspan="1">
+                <b>start_wait</b>
+                <div style="font-size: small">
+                    <span style="color: purple">integer</span>
+                                             / <span style="color: red">required</span>                    </div>
+                                </td>
+                            <td>
+                                                                                                                                                                <b>Default:</b><br/><div style="color: blue">5</div>
+                                </td>
+                            <td>
+                                        <div>How long to wait for the SDK to connect to LaunchDarkly.</div>
+                                                    </td>
+        </tr>
+                            <tr>
+                                                            <td colspan="1">
                 <b>user</b>
                 <div style="font-size: small">
                     <span style="color: purple">dictionary</span>
@@ -298,6 +313,7 @@
 <div class="highlight-yaml+jinja notranslate"><div class="highlight"><pre><span></span><span class="c1"># Create a new LaunchDarkly Project with tags</span>
 <span class="p p-Indicator">-</span> <span class="nt">launchdarkly_variation_info</span><span class="p">:</span>
     <span class="nt">sdk_key</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">sdk-12345</span>
+    <span class="nt">start_wait</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">10</span>
     <span class="nt">flag_key</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">example-test-flag</span>
     <span class="nt">user</span><span class="p">:</span>
         <span class="nt">key</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">aabbccdd</span>
