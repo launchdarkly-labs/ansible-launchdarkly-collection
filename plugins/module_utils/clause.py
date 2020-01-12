@@ -1,3 +1,7 @@
+from __future__ import absolute_import, division, print_function
+
+__metaclass__ = type
+
 def clause_argument_spec():
     return dict(
         type="list",

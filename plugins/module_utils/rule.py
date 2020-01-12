@@ -1,3 +1,7 @@
+from __future__ import absolute_import, division, print_function
+
+__metaclass__ = type
+
 from ansible_collections.launchdarkly_labs.collection.plugins.module_utils.clause import (
     clause_argument_spec,
 )

@@ -1,3 +1,7 @@
+from __future__ import absolute_import, division, print_function
+
+__metaclass__ = type
+
 def ld_env_arg_spec():
     return dict(
         environment_key=dict(type="str", required=True, aliases=["key"]),

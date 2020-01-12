@@ -1,3 +1,7 @@
+from __future__ import absolute_import, division, print_function
+
+__metaclass__ = type
+
 import launchdarkly_api
 
 def configure_instance(api_key):
