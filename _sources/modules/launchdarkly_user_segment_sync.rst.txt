@@ -4,7 +4,7 @@
 .. _launchdarkly_user_segment_sync_:
 
 
-launchdarkly_user_segment_sync -- Sync LaunchDarkly Feature Flags across Environments
+launchdarkly_user_segment_sync -- Sync LaunchDarkly User Segments across Environments
 +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 .. versionadded:: 0.1.0
@@ -16,7 +16,7 @@ launchdarkly_user_segment_sync -- Sync LaunchDarkly Feature Flags across Environ
 
 Synopsis
 --------
-- Sync LaunchDarkly Feature Flags across Environments
+- Sync LaunchDarkly User Segments across Environments
 
 
 
