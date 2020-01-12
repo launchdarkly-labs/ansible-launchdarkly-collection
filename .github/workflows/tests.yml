@@ -1,0 +1,28 @@
+name: Ansible Tests
+
+on:
+    # Trigger the workflow on push or pull request,
+    # but only for the master branch
+    push:
+      branches:
+        - master
+    pull_request:
+      branches:
+        - master
+
+jobs:
+    build:
+      runs-on: ubuntu-18.04
+      steps:
+        - name: Set up Python 3.7
+          uses: actions/setup-python@v1
+          with:
+            python-version: 3.7
+        - name: Check out code
+          uses: actions/checkout@v1
+          with:
+            path: ansible_collections/launchdarkly_labs/collection
+        - name: Install Ansible 2.9.0
+          run: pip install ansible==2.9.0 --disable-pip-version-check
+        - name: Run integration tests on Python 3.7
+          run: ansible-test integration --docker -v --color --retry-on-error --python 3.7
