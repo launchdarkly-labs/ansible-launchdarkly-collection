@@ -5,7 +5,7 @@
 
   tasks:
   - name: Create Custom Role
-  launchdarkly_labs.collection.launchdarkly_custom_role:
+    launchdarkly_labs.collection.launchdarkly_custom_role:
       state: present
       name: "My Custom Role"
       key: "ans-test-custom-role"
@@ -15,9 +15,9 @@
           actions:
             - "*"
           effect: "allow"
-    register: response
+      register: response
 
   - name: Delete Custom Role
-  launchdarkly_labs.collection.launchdarkly_custom_role:
+    launchdarkly_labs.collection.launchdarkly_custom_role:
       state: absent
       key: "ans-test-custom-role"
