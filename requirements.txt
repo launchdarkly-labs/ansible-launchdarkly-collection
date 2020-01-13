@@ -3,3 +3,4 @@ launchdarkly-api>=2.0.24
 dictdiffer==0.8.0
 # For variation tasks
 launchdarkly-server-sdk==6.11.1
+PyYAML==5.1.2
