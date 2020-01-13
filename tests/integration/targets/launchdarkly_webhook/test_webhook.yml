@@ -5,7 +5,7 @@
 
   tasks:
   - name: Create Webhook
-    launchdarkly_webhook:
+    launchdarkly_labs.collection.launchdarkly_webhook:
       url: http://webhooks.com/webhook
       state: enabled
       name: Test Webhook
@@ -21,6 +21,6 @@
     register: results
 
   - name: Delete webhook
-    launchdarkly_webhook:
+  launchdarkly_labs.collection.launchdarkly_webhook:
       state: absent
       webhook_id: "{{ results.webhook.id }}"
