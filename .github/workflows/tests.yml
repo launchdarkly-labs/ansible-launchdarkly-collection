@@ -23,7 +23,7 @@ jobs:
           with:
             path: ansible_collections/launchdarkly_labs/collection
         - name: Install Ansible 2.9.0
-          run: pip install ansible==2.9.0 --disable-pip-version-check
+          run: pip install -r requirements.txt --disable-pip-version-check
         - name: Run integration tests on Python 3.7
           run: ansible-test integration --docker -v --color --retry-on-error --python 3.7
           env:
