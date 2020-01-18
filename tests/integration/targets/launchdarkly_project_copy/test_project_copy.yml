@@ -2,6 +2,12 @@
 - name: Test Copying Project
   hosts: localhost
   gather_facts: no
+  module_defaults:
+    launchdarkly_project_copy:
+      api_key: "{{ ld_api_key }}"
+      api_key_dest: "{{ ld_api_key_dest }}"
+    launchdarkly_project:
+      api_key: "{{ ld_api_key }}"
 
   tasks:
   - name: Sync Project
@@ -11,9 +17,6 @@
       name: "Testing Copy Task"
       environments_copy: false
     register: test_project
-
-  - debug:
-      msg: "{{ test_project }}"
 
   - name: Delete Copied Project
     launchdarkly_project:

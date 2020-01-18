@@ -25,6 +25,10 @@ class LookupModule(LookupBase):
         project = terms[0]
         environment = terms[1]
         ret = []
-        project = api_instance.get_environment(project, environment)
+        try:
+            #TODO: Add ability to lookup multiple environments
+            project = api_instance.get_environment(project, environment)
+        except Exception as e:
+            raise AnsibleError("Failed to lookup environment: %s" % e)
         ret.append(project)
         return ret

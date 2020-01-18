@@ -213,7 +213,7 @@ def _project_sync(
         )
 
     except ApiException as e:
-        err = json.loads(str(e.body))
+        err = str(e)
         module.exit_json(failed=True, changed=False, msg=err)
 
     # Project Environment Processing

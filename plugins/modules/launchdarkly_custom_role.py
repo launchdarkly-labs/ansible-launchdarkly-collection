@@ -193,22 +193,22 @@ def _create_custom_role(module, api_instance):
     custom_role_body = launchdarkly_api.CustomRoleBody(**custom_role_config)
 
     try:
-        api_response = api_instance.post_custom_role(custom_role_body)
+        response, status, headers = api_instance.post_custom_role_with_http_info(custom_role_body)
     except ApiException as e:
         err = json.loads(str(e.body))
-        module.exit_json(msg=err)
+        module.exit_json(failed=True, msg=err["message"])
 
     module.exit_json(
         changed=True,
         msg="custom role created",
-        custom_role=to_native(api_response.to_dict()),
+        custom_role=to_native(response.to_dict()),
     )
 
 
 def _configure_custom_role(module, api_instance):
     patches = []
     for key in module.params:
-        if key not in ["state", "api_key", "key"]:
+        if key not in ["state", "api_key", "key"] and module.params[key] is not None:
             patches.append(_parse_custom_role_param(module, key))
 
     if len(patches) > 0:
@@ -240,8 +240,8 @@ def _fetch_custom_role(module, api_instance):
             if e.status == 404:
                 return False
             else:
-                err = json.loads(str(e.body))
-                module.exit_json(msg=err)
+                err = json.loads(e.body)
+                module.exit_json(msg=err["message"])
     else:
         return False
 

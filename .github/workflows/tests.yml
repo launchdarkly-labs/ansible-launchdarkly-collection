@@ -22,11 +22,23 @@ jobs:
           uses: actions/checkout@v1
           with:
             path: ansible_collections/launchdarkly_labs/collection
-        - name: Install Ansible 2.9.0
-          run: pip install ansible==2.9.0 --disable-pip-version-check
-        - name: Run integration tests on Python 3.7
-          run: ansible-test integration --docker centos7 -v --color --retry-on-error
+        - name: Inject Keys
+          run: |
+            find . -type f -name "*.yml" -exec sed -i "s/__CHANGE_KEY/${LAUNCHDARKLY_ACCESS_TOKEN}/g" {} +
+            find . -type f -name "*.yml" -exec sed -i "s/__CHANGE_DEST_KEY/${LAUNCHDARKLY_DEST_ACCESS_TOKEN}/g" {} +
+            find . -type f -name "*.yml" -exec sed -i "s/__CHANGE_SDK_KEY/${LAUNCHDARKLY_SDK_KEY}/g" {} +
           env:
             LAUNCHDARKLY_ACCESS_TOKEN: ${{ secrets.LAUNCHDARKLY_ACCESS_TOKEN }}
             LAUNCHDARKLY_DEST_ACCESS_TOKEN: ${{ secrets.LAUNCHDARKLY_ACCESS_TOKEN }}
             LAUNCHDARKLY_SDK_KEY: ${{ secrets.LAUNCHDARKLY_SDK_KEY }}
+        - name: Copy vars file
+          run: |
+            ls
+            ls tests/
+            ls tests/integration
+            find tests/integration/targets -type d -maxdepth 1 -exec cp tests/integration/test_vars_sample.yml {}/vars.yml \;
+            find tests/integration/targets -name "vars.yml"
+        - name: Install Requirements
+          run: pip install -r requirements.txt --disable-pip-version-check
+        - name: Run integration tests
+          run: ansible-test integration --docker centos7 -v --color --retry-on-error --requirements

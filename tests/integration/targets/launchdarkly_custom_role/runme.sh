@@ -1,17 +1,13 @@
 #!/bin/bash
 
-
-if [[ -z "$LAUNCHDARKLY_ACCESS_TOKEN" ]] &&
-   [[ -z "$LAUNCHDARKLY_DEST_ACCESS_TOKEN" ]] &&
-   [[ -z "$LAUNCHDARKLY_SDK_KEY" ]]
+FILE=test_custom_role.yml
+if [[ -v "$LAUNCHDARKLY_ACCESS_TOKEN" ]] && [[ -v "$LAUNCHDARKLY_DEST_ACCESS_TOKEN" ]] && [[ -v "$LAUNCHDARKLY_SDK_KEY" ]];
 then
-    :
+    ansible-playbook -vvvv ${FILE}
+elif [[ -f vars.yml ]]
+then
+    ansible-playbook -vvvv ${FILE} --extra-vars "@vars.yml"
 else
-    # shellcheck source=tests/runme_base.sh
-    source "$(git rev-parse --show-toplevel)"/tests/runme_base.sh
+    echo "You need to have Environment Variables: LAUNCHDARKLY_ACCESS_TOKEN, LAUNCHDARKLY_DEST_ACCESS_TOKEN, LAUNCHDARKLY_SDK_KEY"
+    exit 1
 fi
-
-
-
-
-ansible-playbook -vvvv test_custom_role.yml

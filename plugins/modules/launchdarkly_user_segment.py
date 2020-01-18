@@ -325,8 +325,7 @@ def _fetch_user_segment(module, api_instance):
         if e.status == 404:
             return False
         else:
-            err = json.loads(str(e.body))
-            module.exit_json(msg=err)
+            module.exit_json(failed=True, msg=str(e.reason))
     return False
 
 

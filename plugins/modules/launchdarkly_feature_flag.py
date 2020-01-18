@@ -271,7 +271,7 @@ def _configure_flag(module, api_instance, feature_flag=None):
         )
     except ApiException as e:
         err = json.loads(str(e.body))
-        module.exit_json(msg=err)
+        module.exit_json(failed=True, msg=err["message"])
 
 
 def _parse_flag_param(module, param_name, key, op="replace"):

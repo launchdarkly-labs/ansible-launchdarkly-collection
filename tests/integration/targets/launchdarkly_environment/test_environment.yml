@@ -2,6 +2,9 @@
 - name: Test Ansible Collection
   hosts: localhost
   gather_facts: no
+  module_defaults:
+    launchdarkly_environment:
+      api_key: "{{ ld_api_key }}"
 
   tasks:
   - name: Create Environment
