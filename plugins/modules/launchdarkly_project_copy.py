@@ -313,11 +313,14 @@ def _project_sync(
         tag = ""
     if len(tag) > 0:
         summary = 1
-    else:
-        summary = 0
-    src_ff = src_fflags.get_feature_flags(
-        module.params["project_key"], summary=summary, tag="real"
+        src_ff = src_fflags.get_feature_flags(
+        module.params["project_key"], summary=1, tag=tag
     ).to_dict()
+    else:
+        src_ff = src_fflags.get_feature_flags(
+        module.params["project_key"], summary=0
+    ).to_dict()
+
 
     for flag in src_ff["items"]:
         fflag_body = dict(
@@ -330,7 +333,17 @@ def _project_sync(
             include_in_snippet=flag["include_in_snippet"],
         )
 
-        dest_fflags.post_feature_flag(module.params["project_key_dest"], fflag_body)
+        try:
+            response, status, headers = dest_fflags.post_feature_flag_with_http_info(module.params["project_key_dest"], fflag_body)
+        except ApiException as e:
+            if e.status == 429:
+                time.sleep(reset_rate(headers["X-RateLimit-Reset"]))
+                # Retry
+                response, status, headers = dest_fflags.post_feature_flag_with_http_info(module.params["project_key_dest"], fflag_body)
+            else:
+                err = json.loads(str(e.body))
+                module.exit_json(failed=True, msg=err)
+
         if module.params["environments_copy"]:
             patches = []
             for fenv_key in flag["environments"]:
@@ -379,7 +392,7 @@ def _project_sync(
 
                 except ApiException as e:
                     if e.status == 429:
-                        time.sleep(reset_rate(headers))
+                        time.sleep(reset_rate(headers["X-RateLimit-Reset"]))
                         # Retry
                         dest_fflags.patch_feature_flag_with_http_info(
                             module.params["project_key_dest"],

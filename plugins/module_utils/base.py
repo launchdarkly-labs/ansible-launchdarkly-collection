@@ -1,4 +1,5 @@
 import launchdarkly_api
+import time
 
 def configure_instance(api_key):
     configuration = launchdarkly_api.Configuration()
