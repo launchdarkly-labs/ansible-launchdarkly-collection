@@ -25,6 +25,6 @@ def clause_argument_spec():
                 ],
             ),
             values=dict(type="list"),
-            negate=dict(apply_defaults=True,type="bool", default=True),
+            negate=dict(apply_defaults=True, type="bool", default=True),
         ),
     )

@@ -106,6 +106,7 @@ from ansible_collections.launchdarkly_labs.collection.plugins.module_utils.claus
 from ansible_collections.launchdarkly_labs.collection.plugins.module_utils.base import (
     configure_instance,
     _patch_path,
+    fail_exit,
 )
 from ansible_collections.launchdarkly_labs.collection.plugins.module_utils.policy import (
     policy_argument_spec,
@@ -173,8 +174,7 @@ def _delete_custom_role(module, api_instance):
         api_instance.delete_custom_role(module.params["key"])
         module.exit_json(msg="successfully deleted custom role")
     except ApiException as e:
-        err = json.loads(str(e.body))
-        module.exit_json(msg=err)
+        fail_exit(module, e)
 
 
 def _create_custom_role(module, api_instance):
@@ -193,22 +193,23 @@ def _create_custom_role(module, api_instance):
     custom_role_body = launchdarkly_api.CustomRoleBody(**custom_role_config)
 
     try:
-        api_response = api_instance.post_custom_role(custom_role_body)
+        response, status, headers = api_instance.post_custom_role_with_http_info(
+            custom_role_body
+        )
     except ApiException as e:
-        err = json.loads(str(e.body))
-        module.exit_json(msg=err)
+        module.exit_json(msg=to_native(e.reason))
 
     module.exit_json(
         changed=True,
         msg="custom role created",
-        custom_role=to_native(api_response.to_dict()),
+        custom_role=to_native(response.to_dict()),
     )
 
 
 def _configure_custom_role(module, api_instance):
     patches = []
     for key in module.params:
-        if key not in ["state", "api_key", "key"]:
+        if key not in ["state", "api_key", "key"] and module.params[key] is not None:
             patches.append(_parse_custom_role_param(module, key))
 
     if len(patches) > 0:
@@ -218,11 +219,12 @@ def _configure_custom_role(module, api_instance):
             )
         except ApiException as e:
             if e.status == 404:
-                err = "custom role: %s not found" % module["key"]
+                module.exit_json(
+                    failed=True, msg="custom role: %s not found" % module["key"]
+                )
             else:
-                err = json.loads(str(e.body))
+                fail_exit(module, e)
 
-            module.exit_json(msg=to_native(err))
         module.exit_json(
             changed=True, msg="successfully updated custom role: %s" % api_response.key
         )
@@ -240,8 +242,7 @@ def _fetch_custom_role(module, api_instance):
             if e.status == 404:
                 return False
             else:
-                err = json.loads(str(e.body))
-                module.exit_json(msg=err)
+                module.exit_json(msg=to_native(e.reason))
     else:
         return False
 

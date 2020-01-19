@@ -2,6 +2,11 @@
 - name: Test Ansible Collection
   hosts: localhost
   gather_facts: no
+  vars:
+    api_key: "{{ ld_api_key }}"
+  module_defaults:
+    launchdarkly_environment:
+      api_key: "{{ ld_api_key }}"
 
   tasks:
   - name: Create Environment
@@ -21,4 +26,4 @@
 
   - name: Lookup environment
     debug:
-      msg: '{{ lookup("launchdarkly_labs.collection.launchdarkly_environment", "dano-test-project", "env_1") }}'
+      msg: '{{ lookup("launchdarkly_labs.collection.launchdarkly_environment", "dano-test-project", "env_1", api_key=api_key) }}'

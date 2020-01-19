@@ -141,6 +141,7 @@ from ansible_collections.launchdarkly_labs.collection.plugins.module_utils.base 
     _patch_path,
     _patch_op,
     _build_comment,
+    fail_exit,
 )
 from ansible_collections.launchdarkly_labs.collection.plugins.module_utils.rule import (
     rule_argument_spec,
@@ -521,7 +522,7 @@ def _build_rules(rule):
         temp_rule["rollout"] = {"bucketBy": bucket_by, "variations": []}
         for wv in temp_cont["weighted_variations"]:
             temp_rule["rollout"]["variations"].append(
-                {"variation": wv["variation"], "weight": wv["weight"],}
+                {"variation": wv["variation"], "weight": wv["weight"]}
             )
 
     try:
@@ -555,8 +556,7 @@ def _fetch_feature_flag(module, api_instance):
                 % (module.params["flag_key"], module.params["project_key"])
             )
         else:
-            err = json.loads(str(e.body))
-            raise AnsibleError("Error: %s" % to_native(err))
+            fail_exit(module, e)
 
 
 if __name__ == "__main__":

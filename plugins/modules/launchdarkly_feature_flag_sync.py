@@ -95,6 +95,7 @@ from ansible.module_utils.common._json_compat import json
 
 from ansible_collections.launchdarkly_labs.collection.plugins.module_utils.base import (
     configure_instance,
+    fail_exit,
 )
 
 
@@ -181,8 +182,7 @@ def _configure_flag_sync(module, api_instance):
                 # LD Returns a FeatureFlag Object containing all Environments. Only need last one.
                 feature_flag = response.to_dict()
         except ApiException as e:
-            err = json.loads(str(e.body))
-            module.exit_json(failed=True, msg=to_native(err))
+            fail_exit(module, e)
 
     module.exit_json(
         changed=True, msg="feature flags synced", feature_flag=feature_flag

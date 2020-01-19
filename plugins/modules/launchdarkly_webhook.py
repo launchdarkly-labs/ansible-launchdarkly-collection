@@ -111,6 +111,7 @@ from ansible_collections.launchdarkly_labs.collection.plugins.module_utils.claus
 from ansible_collections.launchdarkly_labs.collection.plugins.module_utils.base import (
     configure_instance,
     _patch_path,
+    fail_exit,
 )
 from ansible_collections.launchdarkly_labs.collection.plugins.module_utils.policy import (
     policy_argument_spec,
@@ -174,8 +175,7 @@ def _delete_webhook(module, api_instance):
         api_instance.delete_webhook(module.params["webhook_id"])
         module.exit_json(msg="successfully deleted webhook")
     except ApiException as e:
-        err = json.loads(str(e.body))
-        module.exit_json(msg=err["message"])
+        fail_exit(module, e)
 
 
 def _create_webhook(module, api_instance):
@@ -207,8 +207,7 @@ def _create_webhook(module, api_instance):
         api_response = api_instance.post_webhook(webhook_body)
         module.params["webhook_id"] = api_response.id
     except ApiException as e:
-        err = json.loads(str(e.body))
-        module.exit_json(msg=to_native(err))
+        fail_exit(module, e)
 
     module.exit_json(
         changed=True, msg="webhook created", webhook=api_response.to_dict()
@@ -262,10 +261,9 @@ def _configure_webhook(module, api_instance, webhook=None):
             )
         except ApiException as e:
             if e.status == 404:
-                err = "webhook id not found"
+                module.exit_json(failed=True, msg="webhook id not found")
             else:
-                err = json.loads(str(e.body))
-            module.exit_json(msg=err)
+                fail_exit(module, e)
 
     module.exit_json(
         msg="webhook successfully configured", webhook=api_response.to_dict()
@@ -282,8 +280,7 @@ def _fetch_webhook(module, api_instance):
             if e.status == 404:
                 return False
             else:
-                err = json.loads(str(e.body))
-                module.exit_json(msg=err)
+                fail_exit(module, e)
     else:
         return False
 

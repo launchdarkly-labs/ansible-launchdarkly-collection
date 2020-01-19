@@ -86,6 +86,7 @@ from ansible_collections.launchdarkly_labs.collection.plugins.module_utils.base 
     parse_env_param,
     parse_user_param,
     reset_rate,
+    fail_exit,
 )
 
 
@@ -108,7 +109,7 @@ def main():
             project_key_dest=dict(type="str", required=True),
             flag_tag=dict(type="list", elements="str"),
             environments_copy=dict(type="bool", default=True),
-            name=dict(type="str")
+            name=dict(type="str"),
         )
     )
 
@@ -156,6 +157,7 @@ def main():
         api_instance_src_fflag,
         api_instance_dest_fflag,
     )
+
 
 def _project_sync(
     module,
@@ -213,8 +215,7 @@ def _project_sync(
         )
 
     except ApiException as e:
-        err = json.loads(str(e.body))
-        module.exit_json(failed=True, changed=False, msg=err)
+        fail_exit(module, e)
 
     # Project Environment Processing
     patches = []
@@ -229,8 +230,7 @@ def _project_sync(
                     module.params["project_key_dest"], env["key"], patch_delta=patches
                 )
             except ApiException as e:
-                err = json.loads(str(e.body))
-                module.exit_json(failed=True, msg=err)
+                fail_exit(module, e)
             # Reset patches
             patches = []
 
@@ -284,7 +284,11 @@ def _project_sync(
                             patches.append(parse_user_param(sgmt, key))
                 if len(patches) > 0:
                     try:
-                        response, status, headers = dest_user_sgmt.patch_user_segment_with_http_info(
+                        (
+                            response,
+                            status,
+                            headers,
+                        ) = dest_user_sgmt.patch_user_segment_with_http_info(
                             module.params["project_key_dest"],
                             env["key"],
                             sgmt["key"],
@@ -302,8 +306,7 @@ def _project_sync(
                                 patch_only=patches,
                             )
                         else:
-                            err = json.loads(str(e.body))
-                            module.exit_json(failed=True, msg=err)
+                            fail_exit(module, e)
                 # Reset patches
                 del patches
 
@@ -314,13 +317,12 @@ def _project_sync(
     if len(tag) > 0:
         summary = 1
         src_ff = src_fflags.get_feature_flags(
-        module.params["project_key"], summary=1, tag=tag
-    ).to_dict()
+            module.params["project_key"], summary=1, tag=tag
+        ).to_dict()
     else:
         src_ff = src_fflags.get_feature_flags(
-        module.params["project_key"], summary=0
-    ).to_dict()
-
+            module.params["project_key"], summary=0
+        ).to_dict()
 
     for flag in src_ff["items"]:
         fflag_body = dict(
@@ -334,15 +336,22 @@ def _project_sync(
         )
 
         try:
-            response, status, headers = dest_fflags.post_feature_flag_with_http_info(module.params["project_key_dest"], fflag_body)
+            response, status, headers = dest_fflags.post_feature_flag_with_http_info(
+                module.params["project_key_dest"], fflag_body
+            )
         except ApiException as e:
             if e.status == 429:
                 time.sleep(reset_rate(headers["X-RateLimit-Reset"]))
                 # Retry
-                response, status, headers = dest_fflags.post_feature_flag_with_http_info(module.params["project_key_dest"], fflag_body)
+                (
+                    response,
+                    status,
+                    headers,
+                ) = dest_fflags.post_feature_flag_with_http_info(
+                    module.params["project_key_dest"], fflag_body
+                )
             else:
-                err = json.loads(str(e.body))
-                module.exit_json(failed=True, msg=err)
+                fail_exit(module, e)
 
         if module.params["environments_copy"]:
             patches = []
@@ -384,7 +393,11 @@ def _project_sync(
 
             if len(patches) > 0:
                 try:
-                    response, status, headers = dest_fflags.patch_feature_flag_with_http_info(
+                    (
+                        response,
+                        status,
+                        headers,
+                    ) = dest_fflags.patch_feature_flag_with_http_info(
                         module.params["project_key_dest"],
                         flag["key"],
                         patch_comment=patches,
@@ -400,8 +413,7 @@ def _project_sync(
                             patch_comment=patches,
                         )
                     else:
-                        err = json.loads(str(e.body))
-                        module.exit_json(failed=True, msg=err)
+                        fail_exit(module, e)
                 # Reset patches
                 del patches
 
@@ -409,7 +421,8 @@ def _project_sync(
     module.exit_json(
         changed=True,
         project=new_project,
-        msg="Copied project: %s to project: %s" % (module.params["project_key"], module.params['project_key_dest'])
+        msg="Copied project: %s to project: %s"
+        % (module.params["project_key"], module.params["project_key_dest"]),
     )
 
 

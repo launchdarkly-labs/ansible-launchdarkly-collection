@@ -3,6 +3,16 @@ Change log
 
 All notable changes to the LaunchDarkly Ansible Collection will be documented in this file. This project adheres to [Semantic Versioning](https://semver.org).
 
+## [0.2.4] - 2020-01-19
+### Fixed:
+- core: Some ApiExceptions were not causing modules to fail
+- test: fixed user segment test
+- test: allow tests to be run locally and in pipeline
+
+### Added:
+- meta: implement integration tests in pipeline
+- meta: implement black linter
+
 ## [0.2.1] - 2019-12-30
 ### Fixed:
 - core: properly return error messages

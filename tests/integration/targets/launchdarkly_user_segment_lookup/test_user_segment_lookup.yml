@@ -2,6 +2,11 @@
 - name: Test Ansible Collection
   hosts: localhost
   gather_facts: no
+  vars:
+    api_key: "{{ ld_api_key }}"
+  module_defaults:
+    launchdarkly_user_segment:
+      api_key: "{{ ld_api_key }}"
 
   tasks:
   - name: Create User Segment
@@ -61,7 +66,7 @@
 
   - name: Lookup segment
     debug:
-      msg: '{{ lookup("launchdarkly_labs.collection.launchdarkly_user_segments", "dano-test-project", "production") }}'
+      msg: '{{ lookup("launchdarkly_labs.collection.launchdarkly_user_segments", "dano-test-project", "production", api_key=api_key) }}'
 
   - name: Delete User Segment
     launchdarkly_user_segment:

@@ -2,6 +2,11 @@
 - name: Test Ansible Collection
   hosts: localhost
   gather_facts: no
+  module_defaults:
+    launchdarkly_feature_flag:
+      api_key: "{{ ld_api_key }}"
+    launchdarkly_variation_info:
+      sdk_key: "{{ ld_sdk_key }}"
 
   tasks:
   - name: Create Feature Flag
