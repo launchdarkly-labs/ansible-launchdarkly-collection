@@ -86,6 +86,7 @@ from ansible_collections.launchdarkly_labs.collection.plugins.module_utils.base 
     parse_env_param,
     parse_user_param,
     reset_rate,
+    fail_exit
 )
 
 
@@ -213,8 +214,7 @@ def _project_sync(
         )
 
     except ApiException as e:
-        err = str(e)
-        module.exit_json(failed=True, changed=False, msg=err)
+        fail_exit(module, e)
 
     # Project Environment Processing
     patches = []
@@ -229,8 +229,7 @@ def _project_sync(
                     module.params["project_key_dest"], env["key"], patch_delta=patches
                 )
             except ApiException as e:
-                err = json.loads(str(e.body))
-                module.exit_json(failed=True, msg=err)
+                fail_exit(module, e)
             # Reset patches
             patches = []
 
@@ -302,8 +301,7 @@ def _project_sync(
                                 patch_only=patches,
                             )
                         else:
-                            err = json.loads(str(e.body))
-                            module.exit_json(failed=True, msg=err)
+                            fail_exit(module, e)
                 # Reset patches
                 del patches
 
@@ -341,8 +339,7 @@ def _project_sync(
                 # Retry
                 response, status, headers = dest_fflags.post_feature_flag_with_http_info(module.params["project_key_dest"], fflag_body)
             else:
-                err = json.loads(str(e.body))
-                module.exit_json(failed=True, msg=err)
+                fail_exit(module, e)
 
         if module.params["environments_copy"]:
             patches = []
@@ -400,8 +397,7 @@ def _project_sync(
                             patch_comment=patches,
                         )
                     else:
-                        err = json.loads(str(e.body))
-                        module.exit_json(failed=True, msg=err)
+                        fail_exit(module, e)
                 # Reset patches
                 del patches
 

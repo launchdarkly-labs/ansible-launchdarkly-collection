@@ -118,7 +118,8 @@ from ansible_collections.launchdarkly_labs.collection.plugins.module_utils.claus
 from ansible_collections.launchdarkly_labs.collection.plugins.module_utils.base import (
     configure_instance,
     _patch_path,
-    parse_user_param
+    parse_user_param,
+    fail_exit
 )
 
 
@@ -185,8 +186,7 @@ def _delete_user_segment(module, api_instance):
         )
         module.exit_json(changed=True, msg="successfully deleted user segment")
     except ApiException as e:
-        err = json.loads(str(e.body))
-        module.exit_json(msg=err["message"])
+        fail_exit(module, e)
 
 
 def _create_user_segment(module, api_instance):
@@ -213,8 +213,7 @@ def _create_user_segment(module, api_instance):
             user_segment_body,
         )
     except ApiException as e:
-        err = json.loads(str(e.body))
-        module.exit_json(msg=err)
+        fail_exit(module, e)
 
     _configure_user_segment(module, api_instance, api_response, True)
 
@@ -299,10 +298,9 @@ def _configure_user_segment(module, api_instance, api_response=None, ans_changed
             msg = "user segment successfully configured"
         except ApiException as e:
             if e.status == 404:
-                err = "user segment key not found"
+                module.exit_json(failed=True, msg="user segment key not found")
             else:
-                err = json.loads(str(e.body))
-                raise AnsibleError("Error: %s" % to_native(err))
+                fail_exit(module, e)
     else:
         segment = user_segment
         msg = "segment unchanged"
@@ -325,7 +323,7 @@ def _fetch_user_segment(module, api_instance):
         if e.status == 404:
             return False
         else:
-            module.exit_json(failed=True, msg=str(e.reason))
+            fail_exit(module, e)
     return False
 
 

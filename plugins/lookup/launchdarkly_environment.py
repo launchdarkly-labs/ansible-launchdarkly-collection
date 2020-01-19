@@ -28,7 +28,7 @@ class LookupModule(LookupBase):
         try:
             #TODO: Add ability to lookup multiple environments
             project = api_instance.get_environment(project, environment)
-        except Exception as e:
-            raise AnsibleError("Failed to lookup environment: %s" % e)
+        except ApiException as e:
+            raise AnsibleError("Failed to lookup environment: %s" % e.reason)
         ret.append(project)
         return ret

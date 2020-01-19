@@ -109,9 +109,11 @@ except ImportError:
 
 from ansible.module_utils.basic import AnsibleModule, missing_required_lib, env_fallback
 from ansible.module_utils._text import to_native
+from ansible.module_utils.common._json_compat import json
 from ansible.module_utils.six import PY2, iteritems, string_types
 from ansible_collections.launchdarkly_labs.collection.plugins.module_utils.base import (
     configure_instance,
+    fail_exit
 )
 
 
@@ -270,8 +272,7 @@ def _configure_flag(module, api_instance, feature_flag=None):
             changed=True, msg="feature flag updated", content=response.to_dict()
         )
     except ApiException as e:
-        err = json.loads(str(e.body))
-        module.exit_json(failed=True, msg=err["message"])
+        fail_exit(module, e)
 
 
 def _parse_flag_param(module, param_name, key, op="replace"):
@@ -319,7 +320,7 @@ def _create_flag(module, api_instance):
         if err["code"] == "key_exists":
             module.exit_json(msg="error: Key already exists")
         else:
-            module.exit_json(msg=err)
+            fail_exit(module, e)
 
     _configure_flag(module, api_instance, response)
     module.exit_json(msg="flag successfully created", content=api_response.to_dict())
@@ -335,8 +336,7 @@ def _fetch_flag(module, api_instance):
         if e.status == 404:
             return None
         else:
-            err = json.loads(str(e.body))
-            module.exit_json(msg=err)
+            fail_exit(module, e)
     return None
 
 
@@ -349,8 +349,7 @@ def _delete_flag(module, api_instance):
         api_response = api_instance.delete_feature_flag(**feature_flag_config)
         module.exit_json(changed=True, msg="feature flag deleted")
     except ApiException as e:
-        err = json.loads(str(e.body))
-        module.exit_json(msg=err)
+        fail_exit(module, e)
 
 
 def _build_variations(module):

@@ -141,6 +141,7 @@ from ansible_collections.launchdarkly_labs.collection.plugins.module_utils.base 
     _patch_path,
     _patch_op,
     _build_comment,
+    fail_exit
 )
 from ansible_collections.launchdarkly_labs.collection.plugins.module_utils.rule import (
     rule_argument_spec,
@@ -555,8 +556,7 @@ def _fetch_feature_flag(module, api_instance):
                 % (module.params["flag_key"], module.params["project_key"])
             )
         else:
-            err = json.loads(str(e.body))
-            raise AnsibleError("Error: %s" % to_native(err))
+            fail_exit(module, e)
 
 
 if __name__ == "__main__":

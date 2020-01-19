@@ -7,6 +7,12 @@
       api_key: "{{ ld_api_key }}"
 
   tasks:
+  - name: Create Project
+    launchdarkly_project:
+      state: present
+      project_key: ansible-int-proj
+      name: "Ansible Integration Project"
+
   - name: Create User Segment
     launchdarkly_user_segment:
       state: present
@@ -94,3 +100,8 @@
       project_key: ansible-int-proj
       environment_key: production
       user_segment_key: test-group
+
+  - name: Delete Project
+    launchdarkly_project:
+      state: absent
+      project_key: ansible-int-proj

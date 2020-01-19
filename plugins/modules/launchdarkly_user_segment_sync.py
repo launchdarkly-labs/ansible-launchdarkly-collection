@@ -90,6 +90,7 @@ from ansible.module_utils.common._json_compat import json
 
 from ansible_collections.launchdarkly_labs.collection.plugins.module_utils.base import (
     configure_instance,
+    fail_exit
 )
 
 
@@ -173,8 +174,7 @@ def _configure_user_sync(module, api_instance):
                 ):
                     patches.append(_patch_op("replace", "/tags", user_segment.tags))
             else:
-                err = json.loads(str(e.body))
-                module.exit_json(msg=err)
+                fail_exit(module, e)
 
         if (
             module.params["included_actions"] is None
@@ -207,10 +207,9 @@ def _configure_user_sync(module, api_instance):
             )
         except ApiException as e:
             if e.status == 404:
-                err = "user segment key not found"
+                module.exit_json(failed=True, msg="user segment key: %s not found" % module.params["user_segment_key"])
             else:
-                err = json.loads(str(e.body))
-            module.exit_json(msg=err)
+                fail_exit(module, e)
 
     module.exit_json(
         changed=True, msg="feature flags synced", user_segment=response.to_dict()

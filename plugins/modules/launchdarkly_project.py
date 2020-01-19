@@ -92,6 +92,7 @@ from ansible.module_utils.common._json_compat import json
 from ansible.module_utils.six import PY2, iteritems, string_types
 from ansible_collections.launchdarkly_labs.collection.plugins.module_utils.base import (
     configure_instance,
+    fail_exit
 )
 from ansible_collections.launchdarkly_labs.collection.plugins.module_utils.environment import (
     ld_env_arg_spec,
@@ -158,8 +159,7 @@ def _delete_project(module, api_instance):
         api_instance.delete_project(module.params["project_key"])
         module.exit_json(msg="successfully deleted project")
     except ApiException as e:
-        err = json.loads(str(e.body))
-        module.exit_json(msg=err)
+        fail_exit(module, e)
 
 
 def _create_project(module, api_instance):
@@ -190,8 +190,7 @@ def _create_project(module, api_instance):
         module.exit_json(changed=True, content=response.to_dict())
 
     except ApiException as e:
-        err = json.loads(str(e.body))
-        module.exit_json(failed=True, changed=False, msg=err)
+        fail_exit(module, e)
 
 
 def _configure_project(module, api_instance, project=None, changed=False):
@@ -224,8 +223,7 @@ def _configure_project(module, api_instance, project=None, changed=False):
             )
             changed = True
         except ApiException as e:
-            err = json.loads(str(e.body))
-            module.exit_json(msg=err)
+            fail_exit(module, e)
 
     try:
         response
@@ -248,8 +246,7 @@ def _fetch_project(module, api_instance):
         if e.status == 404:
             return False
         else:
-            err = json.loads(str(e.body))
-            module.exit_json(msg=err)
+            fail_exit(module, e)
     return False
 
 

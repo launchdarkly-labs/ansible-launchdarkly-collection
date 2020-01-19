@@ -116,7 +116,8 @@ from ansible.module_utils.common._json_compat import json
 from ansible.module_utils.six import PY2, iteritems, string_types
 from ansible_collections.launchdarkly_labs.collection.plugins.module_utils.base import (
     configure_instance,
-    parse_env_param
+    parse_env_param,
+    fail_exit
 )
 from ansible_collections.launchdarkly_labs.collection.plugins.module_utils.environment import (
     ld_env_arg_spec,
@@ -178,8 +179,7 @@ def _delete_environment(module, api_instance):
             )
         module.exit_json(msg="successfully deleted environment")
     except ApiException as e:
-        err = json.loads(str(e.body))
-        module.exit_json(msg=err)
+        fail_exit(module, e)
 
 
 def _create_environment(module, api_instance):
@@ -203,8 +203,7 @@ def _create_environment(module, api_instance):
                 failed=True, msg="failed to create environment, status: %d" % status
             )
     except ApiException as e:
-        err = json.loads(str(e.body))
-        module.exit_json(msg=err)
+        fail_exit(module, e)
 
     _configure_environment(module, api_instance)
 
@@ -248,8 +247,7 @@ def _configure_environment(module, api_instance, environment=None):
                 patch_delta=patches,
             )
         except ApiException as e:
-            err = json.loads(str(e.body))
-            module.exit_json(msg=err)
+            fail_exit(module, e)
 
     module.exit_json(
         changed=True,
@@ -269,8 +267,7 @@ def _fetch_environment(module, api_instance):
         if e.status == 404:
             return False
         else:
-            err = json.loads(str(e.body))
-            module.exit_json(msg=err)
+            fail_exit(module, e)
     return False
 
 

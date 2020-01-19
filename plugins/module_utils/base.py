@@ -1,5 +1,8 @@
 import launchdarkly_api
 import time
+from ansible.module_utils._text import to_native
+from ansible.errors import AnsibleError, AnsibleAuthenticationFailure
+from ansible.module_utils.common._json_compat import json
 
 def configure_instance(api_key):
     configuration = launchdarkly_api.Configuration()
@@ -42,3 +45,12 @@ def parse_user_param(module, param_name, key=None):
 def reset_rate(reset_time):
     current = time.time() * 1000.0
     return int((float(reset_time) - current + 1000.0) / 1000.0)
+
+def fail_exit(module, e):
+    if e.reason == "Unauthorized":
+        raise AnsibleAuthenticationFailure(to_native(e.reason))
+    elif e.body is not None:
+        err = json.loads(str(e.body))
+        raise AnsibleError(err["message"])
+    else:
+        return module.exit_json(failed=True, msg=to_native(e.reason))
