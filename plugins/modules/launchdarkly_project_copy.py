@@ -284,7 +284,11 @@ def _project_sync(
                             patches.append(parse_user_param(sgmt, key))
                 if len(patches) > 0:
                     try:
-                        response, status, headers = dest_user_sgmt.patch_user_segment_with_http_info(
+                        (
+                            response,
+                            status,
+                            headers,
+                        ) = dest_user_sgmt.patch_user_segment_with_http_info(
                             module.params["project_key_dest"],
                             env["key"],
                             sgmt["key"],
@@ -339,7 +343,11 @@ def _project_sync(
             if e.status == 429:
                 time.sleep(reset_rate(headers["X-RateLimit-Reset"]))
                 # Retry
-                response, status, headers = dest_fflags.post_feature_flag_with_http_info(
+                (
+                    response,
+                    status,
+                    headers,
+                ) = dest_fflags.post_feature_flag_with_http_info(
                     module.params["project_key_dest"], fflag_body
                 )
             else:
@@ -385,7 +393,11 @@ def _project_sync(
 
             if len(patches) > 0:
                 try:
-                    response, status, headers = dest_fflags.patch_feature_flag_with_http_info(
+                    (
+                        response,
+                        status,
+                        headers,
+                    ) = dest_fflags.patch_feature_flag_with_http_info(
                         module.params["project_key_dest"],
                         flag["key"],
                         patch_comment=patches,
