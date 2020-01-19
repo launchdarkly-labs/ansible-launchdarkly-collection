@@ -5,6 +5,8 @@
   module_defaults:
     launchdarkly_user_segment:
       api_key: "{{ ld_api_key }}"
+    launchdarkly_project:
+      api_key: "{{ ld_api_key }}"
 
   tasks:
   - name: Create Project
