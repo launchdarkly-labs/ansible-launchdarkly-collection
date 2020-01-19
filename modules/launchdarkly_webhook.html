@@ -62,7 +62,7 @@
             
             
               <div class="version">
-                0.2.2
+                0.2.4
               </div>
             
           
@@ -79,11 +79,11 @@
             current_url = window.location.href;
             option = document.createElement("option");
             option.text = "latest";
-            if ( "latest" == "0.2.2" ) {
+            if ( "latest" == "0.2.4" ) {
               option.selected = true;
             }
-            if (current_url.search("0.2.2") > -1) {
-              option.value = current_url.replace("0.2.2","latest");
+            if (current_url.search("0.2.4") > -1) {
+              option.value = current_url.replace("0.2.4","latest");
             } else {
               option.value = current_url.replace("latest","latest");
             }
@@ -93,14 +93,14 @@
           <script>
             current_url = window.location.href;
             option = document.createElement("option");
-            option.text = "0.2.2";
-            if ( "0.2.2" == "0.2.2" ) {
+            option.text = "0.2.4";
+            if ( "0.2.4" == "0.2.4" ) {
               option.selected = true;
             }
-            if (current_url.search("0.2.2") > -1) {
-              option.value = current_url.replace("0.2.2","0.2.2");
+            if (current_url.search("0.2.4") > -1) {
+              option.value = current_url.replace("0.2.4","0.2.4");
             } else {
-              option.value = current_url.replace("latest","0.2.2");
+              option.value = current_url.replace("latest","0.2.4");
             }
             x.add(option);
           </script>
