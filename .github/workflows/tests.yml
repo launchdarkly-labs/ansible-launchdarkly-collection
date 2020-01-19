@@ -22,6 +22,10 @@ jobs:
           uses: actions/checkout@v1
           with:
             path: ansible_collections/launchdarkly_labs/collection
+        - name: Lint code
+          run: |
+            pip install black
+            black . --check
         - name: Inject Keys
           run: |
             find . -type f -name "*.yml" -exec sed -i "s/__CHANGE_KEY/${LAUNCHDARKLY_ACCESS_TOKEN}/g" {} +
