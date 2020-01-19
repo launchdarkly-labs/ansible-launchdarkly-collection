@@ -119,7 +119,7 @@ from ansible_collections.launchdarkly_labs.collection.plugins.module_utils.base 
     configure_instance,
     _patch_path,
     parse_user_param,
-    fail_exit
+    fail_exit,
 )
 
 

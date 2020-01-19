@@ -111,7 +111,7 @@ from ansible_collections.launchdarkly_labs.collection.plugins.module_utils.claus
 from ansible_collections.launchdarkly_labs.collection.plugins.module_utils.base import (
     configure_instance,
     _patch_path,
-    fail_exit
+    fail_exit,
 )
 from ansible_collections.launchdarkly_labs.collection.plugins.module_utils.policy import (
     policy_argument_spec,

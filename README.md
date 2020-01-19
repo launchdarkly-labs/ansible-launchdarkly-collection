@@ -65,15 +65,17 @@ Or you can add full namespace and collection name in the `collections` element:
 ## Resource Supported
 
 - launchdarkly_feature_flag - Create, update, delete a LaunchDarkly Feature Flag
+- launchdarkly_feature_flag_environment - Configure an Environment specific LaunchDarkly Feature Flag
 - launchdarkly_feature_flag_sync - Sync flag settings across environments
 - launchdarkly_custom_role - Create, update, delete a LaunchDarkly Custom Role
 - launchdarkly_environment - Create, update, delete a LaunchDarkly Project Environment
 - launchdarkly_project - Create, update, delete a LaunchDarkly Project
+- launchdarkly_project_copy - Copy a LaunchDarkly Project
+- launchdarkly_test_generator - Generate a LaunchDarkly compatible SDK test file
 - launchdarkly_user_segment - Create, update, delete a LaunchDarkly User Segment
+- launchdarkly_user_segment_sync - Copy a LaunchDarkly User Segment across Environments
 - launchdarkly_variation_info - Return a value from a feature flag evaluation
 - launchdarkly_webhook - Create, update, delete a LaunchDarkly Webhook
-
-
 
 ## Lookups Support
 - launchdarkly_environment - Lookup a specific LaunchDarkly Environment

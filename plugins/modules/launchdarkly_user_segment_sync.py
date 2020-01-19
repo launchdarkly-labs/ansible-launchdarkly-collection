@@ -90,7 +90,7 @@ from ansible.module_utils.common._json_compat import json
 
 from ansible_collections.launchdarkly_labs.collection.plugins.module_utils.base import (
     configure_instance,
-    fail_exit
+    fail_exit,
 )
 
 
@@ -207,7 +207,11 @@ def _configure_user_sync(module, api_instance):
             )
         except ApiException as e:
             if e.status == 404:
-                module.exit_json(failed=True, msg="user segment key: %s not found" % module.params["user_segment_key"])
+                module.exit_json(
+                    failed=True,
+                    msg="user segment key: %s not found"
+                    % module.params["user_segment_key"],
+                )
             else:
                 fail_exit(module, e)
 

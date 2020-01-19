@@ -108,7 +108,7 @@ def main():
             ),
             flag_key=dict(type="str", required=True),
             user=dict(type="dict", required=True),
-            start_wait=dict(type="int", default=5)
+            start_wait=dict(type="int", default=5),
         )
     )
 

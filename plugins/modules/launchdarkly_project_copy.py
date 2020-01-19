@@ -86,7 +86,7 @@ from ansible_collections.launchdarkly_labs.collection.plugins.module_utils.base 
     parse_env_param,
     parse_user_param,
     reset_rate,
-    fail_exit
+    fail_exit,
 )
 
 
@@ -109,7 +109,7 @@ def main():
             project_key_dest=dict(type="str", required=True),
             flag_tag=dict(type="list", elements="str"),
             environments_copy=dict(type="bool", default=True),
-            name=dict(type="str")
+            name=dict(type="str"),
         )
     )
 
@@ -157,6 +157,7 @@ def main():
         api_instance_src_fflag,
         api_instance_dest_fflag,
     )
+
 
 def _project_sync(
     module,
@@ -312,13 +313,12 @@ def _project_sync(
     if len(tag) > 0:
         summary = 1
         src_ff = src_fflags.get_feature_flags(
-        module.params["project_key"], summary=1, tag=tag
-    ).to_dict()
+            module.params["project_key"], summary=1, tag=tag
+        ).to_dict()
     else:
         src_ff = src_fflags.get_feature_flags(
-        module.params["project_key"], summary=0
-    ).to_dict()
-
+            module.params["project_key"], summary=0
+        ).to_dict()
 
     for flag in src_ff["items"]:
         fflag_body = dict(
@@ -332,12 +332,16 @@ def _project_sync(
         )
 
         try:
-            response, status, headers = dest_fflags.post_feature_flag_with_http_info(module.params["project_key_dest"], fflag_body)
+            response, status, headers = dest_fflags.post_feature_flag_with_http_info(
+                module.params["project_key_dest"], fflag_body
+            )
         except ApiException as e:
             if e.status == 429:
                 time.sleep(reset_rate(headers["X-RateLimit-Reset"]))
                 # Retry
-                response, status, headers = dest_fflags.post_feature_flag_with_http_info(module.params["project_key_dest"], fflag_body)
+                response, status, headers = dest_fflags.post_feature_flag_with_http_info(
+                    module.params["project_key_dest"], fflag_body
+                )
             else:
                 fail_exit(module, e)
 
@@ -405,7 +409,8 @@ def _project_sync(
     module.exit_json(
         changed=True,
         project=new_project,
-        msg="Copied project: %s to project: %s" % (module.params["project_key"], module.params['project_key_dest'])
+        msg="Copied project: %s to project: %s"
+        % (module.params["project_key"], module.params["project_key_dest"]),
     )
 
 

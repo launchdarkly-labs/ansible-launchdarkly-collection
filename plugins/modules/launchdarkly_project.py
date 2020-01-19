@@ -92,7 +92,7 @@ from ansible.module_utils.common._json_compat import json
 from ansible.module_utils.six import PY2, iteritems, string_types
 from ansible_collections.launchdarkly_labs.collection.plugins.module_utils.base import (
     configure_instance,
-    fail_exit
+    fail_exit,
 )
 from ansible_collections.launchdarkly_labs.collection.plugins.module_utils.environment import (
     ld_env_arg_spec,

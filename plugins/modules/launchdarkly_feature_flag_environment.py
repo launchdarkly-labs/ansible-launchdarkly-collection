@@ -141,7 +141,7 @@ from ansible_collections.launchdarkly_labs.collection.plugins.module_utils.base 
     _patch_path,
     _patch_op,
     _build_comment,
-    fail_exit
+    fail_exit,
 )
 from ansible_collections.launchdarkly_labs.collection.plugins.module_utils.rule import (
     rule_argument_spec,
@@ -522,7 +522,7 @@ def _build_rules(rule):
         temp_rule["rollout"] = {"bucketBy": bucket_by, "variations": []}
         for wv in temp_cont["weighted_variations"]:
             temp_rule["rollout"]["variations"].append(
-                {"variation": wv["variation"], "weight": wv["weight"],}
+                {"variation": wv["variation"], "weight": wv["weight"]}
             )
 
     try:

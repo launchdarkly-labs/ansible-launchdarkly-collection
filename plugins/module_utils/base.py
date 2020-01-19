@@ -4,6 +4,7 @@ from ansible.module_utils._text import to_native
 from ansible.errors import AnsibleError, AnsibleAuthenticationFailure
 from ansible.module_utils.common._json_compat import json
 
+
 def configure_instance(api_key):
     configuration = launchdarkly_api.Configuration()
     configuration.api_key["Authorization"] = api_key
@@ -25,6 +26,7 @@ def _build_comment(module):
 def _patch_op(op, path, value):
     return launchdarkly_api.PatchOperation(op=op, path=path, value=value)
 
+
 def parse_env_param(module, param_name, key=None):
     if key is None:
         key = launchdarkly_api.Environment.attribute_map[param_name]
@@ -45,6 +47,7 @@ def parse_user_param(module, param_name, key=None):
 def reset_rate(reset_time):
     current = time.time() * 1000.0
     return int((float(reset_time) - current + 1000.0) / 1000.0)
+
 
 def fail_exit(module, e):
     if e.reason == "Unauthorized":
