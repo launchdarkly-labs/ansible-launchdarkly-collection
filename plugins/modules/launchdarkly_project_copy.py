@@ -87,6 +87,7 @@ from ansible_collections.launchdarkly_labs.collection.plugins.module_utils.base 
     parse_user_param,
     reset_rate,
     fail_exit,
+    ld_common_argument_spec,
 )
 
 

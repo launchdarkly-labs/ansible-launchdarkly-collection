@@ -62,7 +62,6 @@ def fail_exit(module, e):
     else:
         return module.exit_json(failed=True, msg=to_native(e.reason))
 
-
 def ld_common_argument_spec():
     return dict(
         api_key=dict(
@@ -70,5 +69,27 @@ def ld_common_argument_spec():
             type="str",
             no_log=True,
             fallback=(env_fallback, ["LAUNCHDARKLY_ACCESS_TOKEN"]),
-        )
+        ),
+        conftest=dict(type="dict",
+            apply_defaults=True,
+            options=dict(
+                dir=dict(type="str", default="policy"),
+                namespace=dict(type="str", default="launchdarkly"),
+                enabled=dict(type="bool", default=False)
+            )),
     )
+
+def rego_test(module):
+    try:
+        from policykit import Conftest
+    except ImportError:
+        module.fail_json(
+            msg=missing_required_lib("policykit"), exception=traceback.format_exc()
+        )
+    params = json.dumps(module.params)
+    try:
+        run = Conftest(module.params["conftest"]["dir"]).test(params, namespace=module.params["conftest"]["namespace"])
+    except Exception as e:
+        raise AnsibleError(e)
+    if not run.success:
+        return module.exit_json(failed=True, msg="policy failed: %s" % run.results.failures)

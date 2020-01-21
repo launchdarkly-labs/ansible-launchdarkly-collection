@@ -108,16 +108,17 @@ def main():
 
     test_data = json.loads(resp.read())
     if module.params.get("overrides_flag"):
-        for item in module.params["overrides_flag"]:
-            if item.values()[0] not in test_data["flags"][item.keys()[0]]["variations"]:
+        for k, v in [(k, v) for x in module.params["overrides_flag"] for (k, v) in x.items()]:
+            if v not in test_data["flags"][k]["variations"]:
                 raise AnsibleError("Override variation does not match flag variations")
 
             if "flagValues" in test_data.keys():
-                test_data["flagValues"][item.keys()[0]] = item.values()[0]
+                test_data["flagValues"][k] = v
             else:
                 test_data["flagValues"] = {}
-                test_data["flagValues"][item.keys()[0]] = item.values()[0]
-            del test_data["flags"][item.keys()[0]]
+                test_data["flagValues"][k] = v
+            del test_data["flags"][k]
+
 
     module.exit_json(changed=True, content=test_data)
 

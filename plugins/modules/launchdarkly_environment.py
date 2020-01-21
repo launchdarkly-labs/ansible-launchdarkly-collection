@@ -118,6 +118,7 @@ from ansible_collections.launchdarkly_labs.collection.plugins.module_utils.base 
     configure_instance,
     parse_env_param,
     fail_exit,
+    ld_common_argument_spec,
 )
 from ansible_collections.launchdarkly_labs.collection.plugins.module_utils.environment import (
     ld_env_arg_spec,
@@ -127,7 +128,8 @@ from ansible_collections.launchdarkly_labs.collection.plugins.module_utils.envir
 
 def main():
     mutually_exclusive = []
-    spec = ld_env_arg_spec()
+    spec = ld_common_argument_spec()
+    spec.update(ld_env_arg_spec())
     spec.update(
         dict(
             state=dict(type="str", default="present", choices=["absent", "present"]),
@@ -209,6 +211,7 @@ def _create_environment(module, api_instance):
 
 
 def _configure_environment(module, api_instance, environment=None):
+    changed = False
     patches = []
     if environment:
         if environment.name == module.params["name"]:
@@ -234,7 +237,8 @@ def _configure_environment(module, api_instance, environment=None):
             module.exit_json(changed=False, msg="environment unchanged")
     for key in module.params:
         if (
-            key not in ["state", "api_key", "environment_key", "project_key"]
+            key
+            not in ["state", "api_key", "environment_key", "project_key", "conftest"]
             and module.params[key] is not None
         ):
             patches.append(parse_env_param(module.params, key))
@@ -249,10 +253,14 @@ def _configure_environment(module, api_instance, environment=None):
         except ApiException as e:
             fail_exit(module, e)
 
+        module.exit_json(
+            changed=True,
+            msg="environment successfully configured",
+            environment=api_response.to_dict(),
+        )
+
     module.exit_json(
-        changed=True,
-        msg="environment successfully configured",
-        environment=api_response.to_dict(),
+        changed=False, msg="environment unchanged", environment=environment.to_dict()
     )
 
 

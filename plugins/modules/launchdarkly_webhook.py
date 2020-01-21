@@ -112,6 +112,7 @@ from ansible_collections.launchdarkly_labs.collection.plugins.module_utils.base 
     configure_instance,
     _patch_path,
     fail_exit,
+    ld_common_argument_spec,
 )
 from ansible_collections.launchdarkly_labs.collection.plugins.module_utils.policy import (
     policy_argument_spec,
@@ -119,18 +120,13 @@ from ansible_collections.launchdarkly_labs.collection.plugins.module_utils.polic
 
 
 def main():
-    module = AnsibleModule(
-        argument_spec=dict(
+    argument_spec = ld_common_argument_spec()
+    argument_spec.update(
+        dict(
             state=dict(
                 type="str",
                 default="present",
                 choices=["absent", "present", "enabled", "disabled"],
-            ),
-            api_key=dict(
-                required=True,
-                type="str",
-                no_log=True,
-                fallback=(env_fallback, ["LAUNCHDARKLY_ACCESS_TOKEN"]),
             ),
             name=dict(type="str"),
             sign=dict(type="bool", default=False),
@@ -140,6 +136,7 @@ def main():
             statements=policy_argument_spec(),
         )
     )
+    module = AnsibleModule(argument_spec=argument_spec)
 
     if not HAS_LD:
         module.fail_json(

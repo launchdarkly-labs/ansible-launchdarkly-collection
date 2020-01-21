@@ -115,6 +115,8 @@ from ansible_collections.launchdarkly_labs.collection.plugins.module_utils.base 
     configure_instance,
     _patch_path,
     fail_exit,
+    ld_common_argument_spec,
+    rego_test,
 )
 from ansible_collections.launchdarkly_labs.collection.plugins.module_utils.policy import (
     policy_argument_spec,
@@ -122,21 +124,17 @@ from ansible_collections.launchdarkly_labs.collection.plugins.module_utils.polic
 
 
 def main():
-    module = AnsibleModule(
-        argument_spec=dict(
+    argument_spec = ld_common_argument_spec()
+    argument_spec.update(
+        dict(
             state=dict(type="str", default="present", choices=["absent", "present"]),
-            api_key=dict(
-                required=True,
-                type="str",
-                no_log=True,
-                fallback=(env_fallback, ["LAUNCHDARKLY_ACCESS_TOKEN"]),
-            ),
             key=dict(type="str", required=True, aliases=["custom_role_key"]),
             name=dict(type="str"),
             description=dict(type="str"),
             policy=policy_argument_spec(),
         )
     )
+    module = AnsibleModule(argument_spec=argument_spec)
 
     if not HAS_LD:
         module.fail_json(
@@ -186,6 +184,8 @@ def _delete_custom_role(module, api_instance):
 
 
 def _create_custom_role(module, api_instance):
+    if module.params["conftest"]["enabled"]:
+        rego_test(module)
     name = (
         module.params["name"]
         if module.params["name"] is not None

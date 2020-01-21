@@ -60,6 +60,20 @@ options:
             - Whether or not this flag should be made available to the client-side JavaScript SDK
         required: no
         type: bool
+    conftest:
+        description:
+            - Compare input against a rego policy
+        required: no
+        suboptions:
+            dir:
+                description:
+                    - Directory to load the Rego policy from
+            enabled:
+                description:
+                    - Run the policy checks
+            namespace:
+                description:
+                    - Rego namespace to run the tests against
 
 extends_documentation_fragment: launchdarkly_labs.collection.launchdarkly
 """
@@ -112,9 +126,12 @@ from ansible.module_utils.basic import AnsibleModule, missing_required_lib, env_
 from ansible.module_utils._text import to_native
 from ansible.module_utils.common._json_compat import json
 from ansible.module_utils.six import PY2, iteritems, string_types
+
 from ansible_collections.launchdarkly_labs.collection.plugins.module_utils.base import (
     configure_instance,
     fail_exit,
+    ld_common_argument_spec,
+    rego_test
 )
 
 
@@ -124,15 +141,11 @@ def main():
         ["kind", "json", ["variations"]],
         ["kind", "number", ["variations"]],
     ]
-    module = AnsibleModule(
-        argument_spec=dict(
+
+    argument_spec = ld_common_argument_spec()
+    argument_spec.update(
+        dict(
             state=dict(type="str", default="present", choices=["absent", "present"]),
-            api_key=dict(
-                required=True,
-                type="str",
-                no_log=True,
-                fallback=(env_fallback, ["LAUNCHDARKLY_ACCESS_TOKEN"]),
-            ),
             name=dict(type="str", required_if=["state", "present"]),
             kind=dict(
                 choices=["str", "bool", "json", "number"],
@@ -157,6 +170,8 @@ def main():
             maintainer_id=dict(type="str"),
         )
     )
+
+    module = AnsibleModule(argument_spec=argument_spec, required_if=required_if)
 
     if not HAS_LD:
         module.fail_json(
@@ -251,6 +266,7 @@ def _configure_flag(module, api_instance, feature_flag=None):
                     "comment",
                     "clone",
                     "variations",
+                    "conftest",
                 ]
                 and module.params[key] is not None
             ):
@@ -284,6 +300,9 @@ def _parse_flag_param(module, param_name, key, op="replace"):
 
 def _create_flag(module, api_instance):
     # Variations can only be set at time of flag creation.
+    if module.params["conftest"]["enabled"]:
+        rego_test(module)
+
     if module.params["kind"] == "bool":
         variations = [
             launchdarkly_api.Variation(value=True),
