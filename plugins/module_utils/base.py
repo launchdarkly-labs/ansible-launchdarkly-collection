@@ -3,7 +3,7 @@ import time
 from ansible.module_utils._text import to_native
 from ansible.errors import AnsibleError, AnsibleAuthenticationFailure
 from ansible.module_utils.common._json_compat import json
-
+from ansible.module_utils.basic import env_fallback
 
 def configure_instance(api_key):
     configuration = launchdarkly_api.Configuration()
@@ -57,3 +57,12 @@ def fail_exit(module, e):
         raise AnsibleError(err["message"])
     else:
         return module.exit_json(failed=True, msg=to_native(e.reason))
+
+def ld_common_argument_spec():
+    return dict(
+        api_key=dict(
+            required=True,
+            type="str",
+            no_log=True,
+            fallback=(env_fallback, ["LAUNCHDARKLY_ACCESS_TOKEN"]),
+        )
