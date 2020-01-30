@@ -66,3 +66,4 @@ def ld_common_argument_spec():
             no_log=True,
             fallback=(env_fallback, ["LAUNCHDARKLY_ACCESS_TOKEN"]),
         )
+    )
