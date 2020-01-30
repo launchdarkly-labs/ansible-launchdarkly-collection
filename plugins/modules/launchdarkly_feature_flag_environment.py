@@ -147,7 +147,7 @@ from ansible_collections.launchdarkly_labs.collection.plugins.module_utils.base 
     _patch_op,
     _build_comment,
     fail_exit,
-    ld_common_argument_spec
+    ld_common_argument_spec,
 )
 from ansible_collections.launchdarkly_labs.collection.plugins.module_utils.rule import (
     rule_argument_spec,
@@ -272,7 +272,7 @@ def _configure_feature_flag_env(module, api_instance, feature_flag=None):
             flag_var_index = {
                 target_dict["variation"]: {
                     "index": wtf,
-                    "targets": target_dict["values"]
+                    "targets": target_dict["values"],
                 }
             }
 
@@ -280,13 +280,20 @@ def _configure_feature_flag_env(module, api_instance, feature_flag=None):
         for target in module.params["targets"]:
             if target["state"] == "add":
                 if flag_var_index:
-                    if set(target["values"]).issubset(set(flag_var_index[target["variation"]]["targets"])):
+                    if set(target["values"]).issubset(
+                        set(flag_var_index[target["variation"]]["targets"])
+                    ):
                         continue
                     else:
-                        new_targets = list(set(target["values"]) - set(flag_var_index[target["variation"]]["targets"]))
+                        new_targets = list(
+                            set(target["values"])
+                            - set(flag_var_index[target["variation"]]["targets"])
+                        )
                         target_index = str(flag_var_index[target["variation"]]["index"])
                         val_index = flag_var_index[target["variation"]]["index"]
-                        new_targets_idx = len(flag_var_index[target["variation"]]["targets"])
+                        new_targets_idx = len(
+                            flag_var_index[target["variation"]]["targets"]
+                        )
                         for val_idx, val in enumerate(new_targets):
                             new_idx = str(new_targets_idx + val_idx)
                             path = (
@@ -294,19 +301,21 @@ def _configure_feature_flag_env(module, api_instance, feature_flag=None):
                                 + "/"
                                 + target_index
                                 + "/values/"
-                                +  new_idx
+                                + new_idx
                             )
                             patches.append(_patch_op("add", path, new_targets[val_idx]))
                         continue
 
                 else:
-                        new_targets = set(target["values"])
-                        target_index = "0"
-                        val_index = "0"
+                    new_targets = set(target["values"])
+                    target_index = "0"
+                    val_index = "0"
 
             elif target["state"] == "replace":
                 if flag_var_index:
-                    if set(target["values"]) == set(flag_var_index[target["variation"]]["targets"]):
+                    if set(target["values"]) == set(
+                        flag_var_index[target["variation"]]["targets"]
+                    ):
                         continue
                     else:
                         new_targets = set(target["values"])
@@ -319,7 +328,9 @@ def _configure_feature_flag_env(module, api_instance, feature_flag=None):
                     target["state"] = "add"
 
             elif target["state"] == "remove":
-                if set(target["values"]).issubset(set(flag_var_index[target["variation"]]["targets"])):
+                if set(target["values"]).issubset(
+                    set(flag_var_index[target["variation"]]["targets"])
+                ):
                     new_targets = set(target["values"])
                     target_index = str(flag_var_index[target["variation"]]["index"])
                     val_index = str(flag_var_index[target["variation"]]["index"])
@@ -329,21 +340,18 @@ def _configure_feature_flag_env(module, api_instance, feature_flag=None):
             elif target["state"] == "absent":
                 target_index = str(flag_var_index[target["variation"]]["index"])
 
-                path = (
-                    _patch_path(module, "targets")
-                    + "/"
-                    + target_index
-                )
+                path = _patch_path(module, "targets") + "/" + target_index
                 patches.append(dict(op="remove", path=path))
                 continue
 
-
-            path = (
-                _patch_path(module, "targets")
-                + "/"
-                + target_index
+            path = _patch_path(module, "targets") + "/" + target_index
+            patches.append(
+                _patch_op(
+                    target["state"],
+                    path,
+                    {"variation": target["variation"], "values": list(new_targets)},
+                )
             )
-            patches.append(_patch_op(target["state"], path, { "variation": target["variation"], "values": list(new_targets) }))
 
         del module.params["targets"]
 
@@ -541,7 +549,10 @@ def _build_rules(rule):
         temp_rule["rollout"] = {"bucketBy": bucket_by, "variations": []}
         for weighted_var in temp_cont["weighted_variations"]:
             temp_rule["rollout"]["variations"].append(
-                {"variation": weighted_var["variation"], "weight": weighted_var["weight"]}
+                {
+                    "variation": weighted_var["variation"],
+                    "weight": weighted_var["weight"],
+                }
             )
 
     try:
