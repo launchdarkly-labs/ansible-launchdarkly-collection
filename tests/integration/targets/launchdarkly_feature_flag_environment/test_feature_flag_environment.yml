@@ -26,7 +26,7 @@
       flag_key: example_test_flag
       project_key: dano-test-project
       environment_key: production
-      comment: "testing updated flag environment"
+      comment: "Set Flag values"
       targets:
         - variation: 1
           values:
@@ -79,6 +79,9 @@
               - 5
       fallthrough:
         variation: 1
+
+  - assert:
+      that: results.changed == true
 
   - name: Idempotent Feature Flag Environment
     launchdarkly_feature_flag_environment:
@@ -141,9 +144,6 @@
         variation: 1
     register: results
 
-  - debug:
-      msg: "{{ results }}"
-
   - assert:
       that: results.feature_flag_environment.environments.production.rules.0.clauses.0.attribute == "test-attribute2"
       that: results.feature_flag_environment.environments.production.rules.0.clauses.0.negate == "false"
@@ -155,7 +155,7 @@
       flag_key: example_test_flag
       project_key: dano-test-project
       environment_key: production
-      comment: "testing updated flag environment"
+      comment: "testing change rule to rollout"
       targets:
         - variation: 1
           values:
@@ -195,7 +195,7 @@
       flag_key: example_test_flag
       project_key: dano-test-project
       environment_key: production
-      comment: "testing updated flag environment"
+      comment: "testing removing flag rule"
       targets:
         - variation: 1
           values:
@@ -212,7 +212,7 @@
       fallthrough:
         variation: 1
 
-  - name: Remove Feature Flag Rule
+  - name: Swap to Rollout
     launchdarkly_feature_flag_environment:
       flag_key: example_test_flag
       project_key: dano-test-project
@@ -238,6 +238,46 @@
               - 5
       fallthrough:
         variation: 1
+    register: results
+
+  - assert:
+      that: results.feature_flag_environment.environments.production.rules.0.clauses.0.attribute == "test-attribute2"
+      that: results.feature_flag_environment.environments.production.rules.0.clauses.0.negate == "false"
+      that: results.feature_flag_environment.environments.production.rules.0.rollout.bucket_by == "key"
+      that: results.feature_flag_environment.environments.production.rules.0.rollout.variations.0.variation == 0
+      that: results.feature_flag_environment.environments.production.rules.0.rollout.variations.0.weight == 50000
+
+  - name: Update Rollout Percentage
+    launchdarkly_feature_flag_environment:
+      flag_key: example_test_flag
+      project_key: dano-test-project
+      environment_key: production
+      comment: "state should not change, Rollout percentage should change"
+      rules:
+        - rollout:
+            weighted_variations:
+              - variation: 0
+                weight: 70000
+              - variation: 1
+                weight: 30000
+          clauses:
+          - attribute: test-attribute2
+            op: startsWith
+            values:
+              - 4
+              - 5
+      fallthrough:
+        variation: 1
+    register: results
+
+  - assert:
+      that: results.feature_flag_environment.environments.production.rules.0.clauses.0.attribute == "test-attribute2"
+      that: results.feature_flag_environment.environments.production.rules.0.clauses.0.negate == "false"
+      that: results.feature_flag_environment.environments.production.rules.0.rollout.bucket_by == "key"
+      that: results.feature_flag_environment.environments.production.rules.0.rollout.variations.0.variation == 0
+      that: results.feature_flag_environment.environments.production.rules.0.rollout.variations.0.weight == 70000
+      that: results.feature_flag_environment.environments.production.rules.0.rollout.variations.1.variation == 1
+      that: results.feature_flag_environment.environments.production.rules.0.rollout.variations.1.weight == 30000
 
   - name: Delete flag
     launchdarkly_feature_flag:

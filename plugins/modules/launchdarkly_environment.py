@@ -92,7 +92,7 @@ EXAMPLES = r"""
 
 RETURN = r"""
 environment:
-    description: Returns dictionary containing an L(Environment, https://github.com/launchdarkly/api-client-python/blob/2.0.24/docs/Environment.md)
+    description: Returns dictionary containing an L(Environment, https://github.com/launchdarkly/api-client-python/blob/2.0.26/docs/Environment.md)
     type: dict
     returned: on success
 """

@@ -57,7 +57,7 @@ EXAMPLES = r"""
 
 RETURN = r"""
 project:
-    description: Dictionary containing a L(Project, https://github.com/launchdarkly/api-client-python/blob/2.0.24/docs/Project.md)
+    description: Dictionary containing a L(Project, https://github.com/launchdarkly/api-client-python/blob/2.0.26/docs/Project.md)
     type: dict
     returned: on success
 """

@@ -115,7 +115,7 @@ EXAMPLES = r"""
 RETURN = r"""
 ---
 feature_flag_environment:
-    description: Dictionary containing a L(Feature Flag Config, https://github.com/launchdarkly/api-client-python/blob/2.0.24/docs/FeatureFlagConfig.md)
+    description: Dictionary containing a L(Feature Flag Config, https://github.com/launchdarkly/api-client-python/blob/2.0.26/docs/FeatureFlagConfig.md)
     type: dict
     returned: on success
 """
@@ -391,7 +391,7 @@ def _configure_feature_flag_env(module, api_instance, feature_flag=None):
             patches.append(_parse_flag_param(module, key))
 
     if patches:
-        print(patches)
+        #print(patches)
         comments = dict(comment=_build_comment(module), patch=patches)
         try:
             api_response = api_instance.patch_feature_flag(
@@ -421,6 +421,7 @@ def _process_rules(module, patches, feature_flag):
     # Make copy for next step.
     new_rules_copy = copy.deepcopy(module.params["rules"])
     flag_index = 0
+
     for new_rule_index, rule in enumerate(module.params["rules"]):
         state = rule.get("rule_state", "present")
         if rule.get("rule_state"):
@@ -428,19 +429,28 @@ def _process_rules(module, patches, feature_flag):
 
         # Trim old rules, if state isn't add
         if new_index < old_rules and state != "add":
-            for i in range(new_index, old_rules):
-                path = _patch_path(module, "rules") + "/" + str(i)
-                # LD Patch requires value, so passing in dictionary
-                patches.append(dict(op="remove", path=path))
+            path = _patch_path(module, "rules") + "/" + str(new_index)
+            # LD Patch requires value, so passing in dictionary
+            patches.append(dict(op="remove", path=path))
 
         if new_rule_index <= old_rules and state != "add":
         # iterating over statements for range to be inclusive
-            if new_rule_index < len(feature_flag.rules):
+            if new_rule_index <= len(feature_flag.rules) - 1:
                 # API returns None for rollout and variation if not set
                 if not rule.get("rollout"):
                     rule["rollout"] = None
-                if not rule.get("variation"):
+                else:
+                    # If there's a role and no bucket_by, default to key
+                    rule["rollout"]["bucket_by"] = rule["rollout"].get("bucket_by", "key")
+                    # Weighted variations is internal ansible/API name, map to public
+                    rule["rollout"]["variations"] = rule["rollout"].pop("weighted_variations")
+
+                if rule.get("variation") is None:
                     rule["variation"] = None
+                for clause in rule["clauses"]:
+                   if clause.get("negate") is None:
+                       clause["negate"] = False
+
                 if list(
                     diff(
                         rule,
@@ -461,26 +471,29 @@ def _process_rules(module, patches, feature_flag):
                     except KeyError:
                         pass
 
-                    try:
-                        if rule["rollout"] is not None:
-                            patches.append(
-                                _patch_op(
-                                    "replace",
-                                    path + "/%d/rollout" % new_rule_index,
-                                    rule["rollout"],
-                                )
+                    if rule["rollout"]:
+                        flag = feature_flag.rules[new_rule_index].to_dict()
+                        if flag.get("variation") is not None:
+                            patches.append(dict(op="remove", path=path + "/%d/variation" % new_rule_index))
+                            op = "add"
+                        else:
+                            op = "replace"
+                        patches.append(
+                            _patch_op(
+                                op,
+                                path + "/%d/rollout" % new_rule_index,
+                                _build_rules(rule["rollout"]),
                             )
-                    except KeyError:
-                        pass
+                        )
 
                     if rule["clauses"] is not None:
-                        for idx, clause in enumerate(
+                        for clause_idx, clause in enumerate(
                             rule["clauses"]
                         ):
                             patches.append(
                                 _patch_op(
                                     "replace",
-                                    path + "/%d/clauses/%d/op" % (new_rule_index, idx),
+                                    path + "/%d/clauses/%d/op" % (new_rule_index, clause_idx),
                                     clause["op"],
                                 )
                             )
@@ -488,28 +501,35 @@ def _process_rules(module, patches, feature_flag):
                                 patches.append(
                                     _patch_op(
                                         "replace",
-                                        path + "/%d/clauses/%d/negate" % (new_rule_index, idx),
+                                        path + "/%d/clauses/%d/negate" % (new_rule_index, clause_idx),
                                         clause["negate"],
                                     )
                                 )
                             except KeyError:
-                                pass
+                                #pass
+                                patches.append(
+                                    _patch_op(
+                                        "replace",
+                                        path + "/%d/clauses/%d/negate" % (new_rule_index, clause_idx),
+                                        False,
+                                    )
+                                )
                             patches.append(
                                 _patch_op(
                                     "replace",
-                                    path + "/%d/clauses/%d/values" % (new_rule_index, idx),
+                                    path + "/%d/clauses/%d/values" % (new_rule_index, clause_idx),
                                     clause["values"],
                                 )
                             )
                             patches.append(
                                 _patch_op(
                                     "replace",
-                                    path + "/%d/clauses/%d/attribute" % (new_rule_index, idx),
+                                    path + "/%d/clauses/%d/attribute" % (new_rule_index, clause_idx),
                                     clause["attribute"],
                                 )
                             )
                 if new_rules_copy:
-                    new_rules_copy.pop()
+                    new_rules_copy.pop(0)
                 flag_index += 1
 
     result = []
@@ -547,6 +567,9 @@ def _process_rules(module, patches, feature_flag):
                     path = _patch_path(module, "rules") + "/" + str(new_flag_index)
                     patches.append(_patch_op("remove", path, rule))
             else:
+                # If a previous rule exists increment index to add new rule
+                if len(feature_flag.rules) > 0 and old_rules == 0:
+                    old_rules = 1
                 pos = old_rules + idx
                 path = _patch_path(module, "rules") + "/" + str(pos)
                 patches.append(_patch_op("add", path, rule))
@@ -554,19 +577,36 @@ def _process_rules(module, patches, feature_flag):
 
 
 def _build_rules(rule):
-    temp_rule = rule
-    if temp_rule.get("rollout"):
-        temp_cont = temp_rule["rollout"]
-        del temp_rule["rollout"]
+    temp_rule = copy.deepcopy(rule)
+    rollout_rule = temp_rule.get("rollout") or temp_rule.get("weighted_variations")
+    if rollout_rule is not None:
+        if temp_rule.get("rollout"):
+            temp_cont = temp_rule["rollout"]
+            del temp_rule["rollout"]
+
+        elif temp_rule.get("weighted_variations"):
+            temp_cont = {}
+            temp_cont["rollout"] = temp_rule.get("weighted_variations")
+
         bucket_by = temp_cont.get("bucket_by", "key")
+
         temp_rule["rollout"] = {"bucketBy": bucket_by, "variations": []}
-        for weighted_var in temp_cont["weighted_variations"]:
-            temp_rule["rollout"]["variations"].append(
-                {
-                    "variation": weighted_var["variation"],
-                    "weight": weighted_var["weight"],
-                }
-            )
+        try:
+            for weighted_var in temp_cont["weighted_variations"]:
+                temp_rule["rollout"]["variations"].append(
+                    {
+                        "variation": weighted_var["variation"],
+                        "weight": weighted_var["weight"],
+                    }
+                )
+        except KeyError:
+            pass
+
+        if temp_rule.get("weighted_variations"):
+            for weight_var in temp_rule["weighted_variations"]:
+                temp_rule["rollout"]["variations"].append(weight_var)
+
+            del temp_rule["weighted_variations"]
 
     try:
         if temp_rule["variation"] is None:
@@ -580,7 +620,11 @@ def _build_rules(rule):
     except KeyError:
         pass
 
-    return temp_rule
+
+    if rule.get("weighted_variations"):
+        return temp_rule["rollout"]
+    else:
+        return temp_rule
 
 
 def _check_prereqs(module, feature_flag):
