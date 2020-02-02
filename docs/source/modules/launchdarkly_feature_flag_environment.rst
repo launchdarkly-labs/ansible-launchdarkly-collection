@@ -173,7 +173,55 @@ Parameters
                                             <div>Assign users to a specific variation</div>
                                                         </td>
             </tr>
-                        </table>
+                                                            <tr>
+                                                    <td class="elbow-placeholder"></td>
+                                                <td colspan="1">
+                    <b>state</b>
+                    <div style="font-size: small">
+                        <span style="color: purple">-</span>
+                                                                    </div>
+                                    </td>
+                                <td>
+                                                                                                                            <ul style="margin: 0; padding: 0"><b>Choices:</b>
+                                                                                                                                                                <li>absent</li>
+                                                                                                                                                                                                <li>add</li>
+                                                                                                                                                                                                <li>remove</li>
+                                                                                                                                                                                                <li><div style="color: blue"><b>replace</b>&nbsp;&larr;</div></li>
+                                                                                    </ul>
+                                                                            </td>
+                                <td>
+                                                        </td>
+            </tr>
+                                <tr>
+                                                    <td class="elbow-placeholder"></td>
+                                                <td colspan="1">
+                    <b>values</b>
+                    <div style="font-size: small">
+                        <span style="color: purple">-</span>
+                                                                    </div>
+                                    </td>
+                                <td>
+                                                                                                                                                            </td>
+                                <td>
+                                            <div>individual targets to add to variation</div>
+                                                        </td>
+            </tr>
+                                <tr>
+                                                    <td class="elbow-placeholder"></td>
+                                                <td colspan="1">
+                    <b>variation</b>
+                    <div style="font-size: small">
+                        <span style="color: purple">integer</span>
+                                                                    </div>
+                                    </td>
+                                <td>
+                                                                                                                                                            </td>
+                                <td>
+                                            <div>index of variation to serve default. Exclusive of rollout.</div>
+                                                        </td>
+            </tr>
+                    
+                                        </table>
     <br/>
 
 
@@ -242,7 +290,7 @@ Common return values are documented :ref:`here <common_return_values>`, the foll
                                     </td>
                 <td>on success</td>
                 <td>
-                                            <div>Dictionary containing a <a href='https://github.com/launchdarkly/api-client-python/blob/2.0.24/docs/FeatureFlagConfig.md'>Feature Flag Config</a></div>
+                                            <div>Dictionary containing a <a href='https://github.com/launchdarkly/api-client-python/blob/2.0.26/docs/FeatureFlagConfig.md'>Feature Flag Config</a></div>
                                         <br/>
                                     </td>
             </tr>
