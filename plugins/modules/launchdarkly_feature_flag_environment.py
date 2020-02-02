@@ -139,7 +139,6 @@ from ansible.errors import AnsibleError
 from ansible.module_utils.basic import AnsibleModule, missing_required_lib
 from ansible.module_utils._text import to_native
 from ansible.module_utils.common._json_compat import json
-from ansible.module_utils.six import PY2
 
 from ansible_collections.launchdarkly_labs.collection.plugins.module_utils.base import (
     configure_instance,
@@ -290,7 +289,6 @@ def _configure_feature_flag_env(module, api_instance, feature_flag=None):
                             - set(flag_var_index[target["variation"]]["targets"])
                         )
                         target_index = str(flag_var_index[target["variation"]]["index"])
-                        val_index = flag_var_index[target["variation"]]["index"]
                         new_targets_idx = len(
                             flag_var_index[target["variation"]]["targets"]
                         )
@@ -359,138 +357,7 @@ def _configure_feature_flag_env(module, api_instance, feature_flag=None):
 
     # Loop over rules comparing
     if module.params["rules"] is not None:
-        old_rules = max(len(feature_flag.rules) - 1, 0)
-        new_rules = len(module.params["rules"])
-        new_index = new_rules - 1
-        # Make copy for next step.
-        new_rules_copy = copy.deepcopy(module.params["rules"])
-        flag_index = 0
-        remove_guard = False
-        for new_rule in module.params["rules"]:
-            state = new_rule.get("rule_state", "present")
-            if new_rule.get("rule_state"):
-                del new_rule["rule_state"]
-
-            if new_index < old_rules:
-                for i in range(new_index, old_rules):
-                    path = _patch_path(module, "rules") + "/" + str(i)
-                    # LD Patch requires value, so passing in dictionary
-                    patches.append(dict(op="remove", path=path))
-
-            if new_index <= old_rules and state != "add":
-                # iterating over statements for range to be inclusive
-                for i in range(new_index):
-                    if i <= len(feature_flag.rules):
-                        # API returns None for rollout and variation if not set
-                        if not module.params["rules"][i].get("rollout"):
-                            module.params["rules"][i]["rollout"] = None
-                        if not module.params["rules"][i].get("variation"):
-                            module.params["rules"][i]["variation"] = None
-                        if list(
-                            diff(
-                                module.params["rules"][i],
-                                feature_flag.rules[i].to_dict(),
-                                ignore=set(["id", "rule_state"]),
-                            )
-                        ):
-                            path = _patch_path(module, "rules")
-                            if module.params["rules"][i]["variation"] is not None:
-                                patches.append(
-                                    _patch_op(
-                                        "replace",
-                                        path + "/%d/variation" % i,
-                                        module.params["rules"][i]["variation"],
-                                    )
-                                )
-
-                            try:
-                                if module.params["rules"][i]["rollout"] is not None:
-                                    patches.append(
-                                        _patch_op(
-                                            "replace",
-                                            path + "/%d/rollout" % i,
-                                            module.params["rules"][i]["rollout"],
-                                        )
-                                    )
-                            except KeyError:
-                                pass
-
-                            if module.params["rules"][i]["clauses"] is not None:
-                                for idx, clause in enumerate(
-                                    module.params["rules"][i]["clauses"]
-                                ):
-                                    patches.append(
-                                        _patch_op(
-                                            "replace",
-                                            path + "/%d/clauses/%d/op" % (i, idx),
-                                            clause["op"],
-                                        )
-                                    )
-                                    patches.append(
-                                        _patch_op(
-                                            "replace",
-                                            path + "/%d/clauses/%d/negate" % (i, idx),
-                                            clause["negate"],
-                                        )
-                                    )
-                                    patches.append(
-                                        _patch_op(
-                                            "replace",
-                                            path + "/%d/clauses/%d/values" % (i, idx),
-                                            clause["values"],
-                                        )
-                                    )
-                                    patches.append(
-                                        _patch_op(
-                                            "replace",
-                                            path
-                                            + "/%d/clauses/%d/attribute" % (i, idx),
-                                            clause["attribute"],
-                                        )
-                                    )
-                        if new_rules_copy:
-                            new_rules_copy.pop()
-                        flag_index += 1
-
-        result = []
-        for idx, rule_change in enumerate(new_rules_copy):
-            rule = _build_rules(rule_change)
-            new_flag_index = flag_index + idx
-            rule_change["state"] = rule_change.get("state", "present")
-            if idx - 1 > old_rules:
-                path = _patch_path(module, "rules") + "/" + str(idx)
-                patches.append(_patch_op("add", path, rule))
-            # Non-idempotent operation - add
-            elif rule_change["state"] == "add":
-                pos = old_rules + idx
-                path = _patch_path(module, "rules") + "/" + str(pos)
-                patches.append(_patch_op("add", path, rule))
-            else:
-                state = rule_change["state"]
-                del rule_change["state"]
-
-                # Needed because nested defaults are not applying
-                for clause in rule_change["clauses"]:
-                    clause["negate"] = clause.get("negate", False)
-                if idx < old_rules:
-                    result = list(
-                        diff(
-                            rule_change,
-                            feature_flag.rules[idx].to_dict(),
-                            ignore=set(["id"]),
-                        )
-                    )
-                    if result:
-                        path = _patch_path(module, "rules") + "/" + str(new_flag_index)
-                        patches.append(_patch_op("replace", path, rule))
-                    elif not result and state == "absent":
-                        path = _patch_path(module, "rules") + "/" + str(new_flag_index)
-                        patches.append(_patch_op("remove", path, rule))
-                else:
-                    pos = old_rules + idx
-                    path = _patch_path(module, "rules") + "/" + str(pos)
-                    patches.append(_patch_op("add", path, rule))
-        del module.params["rules"]
+        _process_rules(module, patches, feature_flag)
 
     # Compare fallthrough
     fallthrough = diff(
@@ -524,6 +391,7 @@ def _configure_feature_flag_env(module, api_instance, feature_flag=None):
             patches.append(_parse_flag_param(module, key))
 
     if patches:
+        print(patches)
         comments = dict(comment=_build_comment(module), patch=patches)
         try:
             api_response = api_instance.patch_feature_flag(
@@ -545,6 +413,144 @@ def _configure_feature_flag_env(module, api_instance, feature_flag=None):
         msg="flag environment unchanged",
         feature_flag_environment=feature_flag.to_dict(),
     )
+
+
+def _process_rules(module, patches, feature_flag):
+    old_rules = max(len(feature_flag.rules) - 1, 0)
+    new_index = len(module.params["rules"]) - 1
+    # Make copy for next step.
+    new_rules_copy = copy.deepcopy(module.params["rules"])
+    flag_index = 0
+    for new_rule_index, rule in enumerate(module.params["rules"]):
+        state = rule.get("rule_state", "present")
+        if rule.get("rule_state"):
+            del rule["rule_state"]
+
+        # Trim old rules, if state isn't add
+        if new_index < old_rules and state != "add":
+            for i in range(new_index, old_rules):
+                path = _patch_path(module, "rules") + "/" + str(i)
+                # LD Patch requires value, so passing in dictionary
+                patches.append(dict(op="remove", path=path))
+
+        if new_rule_index <= old_rules and state != "add":
+        # iterating over statements for range to be inclusive
+            if new_rule_index < len(feature_flag.rules):
+                # API returns None for rollout and variation if not set
+                if not rule.get("rollout"):
+                    rule["rollout"] = None
+                if not rule.get("variation"):
+                    rule["variation"] = None
+                if list(
+                    diff(
+                        rule,
+                        feature_flag.rules[new_rule_index].to_dict(),
+                        ignore=set(["id", "rule_state"]),
+                    )
+                ):
+                    path = _patch_path(module, "rules")
+                    try:
+                        if rule["variation"] is not None:
+                            patches.append(
+                                _patch_op(
+                                    "replace",
+                                    path + "/%d/variation" % new_rule_index,
+                                    rule["variation"],
+                                )
+                            )
+                    except KeyError:
+                        pass
+
+                    try:
+                        if rule["rollout"] is not None:
+                            patches.append(
+                                _patch_op(
+                                    "replace",
+                                    path + "/%d/rollout" % new_rule_index,
+                                    rule["rollout"],
+                                )
+                            )
+                    except KeyError:
+                        pass
+
+                    if rule["clauses"] is not None:
+                        for idx, clause in enumerate(
+                            rule["clauses"]
+                        ):
+                            patches.append(
+                                _patch_op(
+                                    "replace",
+                                    path + "/%d/clauses/%d/op" % (new_rule_index, idx),
+                                    clause["op"],
+                                )
+                            )
+                            try:
+                                patches.append(
+                                    _patch_op(
+                                        "replace",
+                                        path + "/%d/clauses/%d/negate" % (new_rule_index, idx),
+                                        clause["negate"],
+                                    )
+                                )
+                            except KeyError:
+                                pass
+                            patches.append(
+                                _patch_op(
+                                    "replace",
+                                    path + "/%d/clauses/%d/values" % (new_rule_index, idx),
+                                    clause["values"],
+                                )
+                            )
+                            patches.append(
+                                _patch_op(
+                                    "replace",
+                                    path + "/%d/clauses/%d/attribute" % (new_rule_index, idx),
+                                    clause["attribute"],
+                                )
+                            )
+                if new_rules_copy:
+                    new_rules_copy.pop()
+                flag_index += 1
+
+    result = []
+    for idx, rule_change in enumerate(new_rules_copy):
+        rule = _build_rules(rule_change)
+        new_flag_index = flag_index + idx
+        rule_change["state"] = rule_change.get("state", "present")
+        if idx > old_rules:
+            path = _patch_path(module, "rules") + "/" + str(idx)
+            patches.append(_patch_op("add", path, rule))
+        # Non-idempotent operation - add
+        elif rule_change["state"] == "add":
+            pos = old_rules + idx
+            path = _patch_path(module, "rules") + "/" + str(pos)
+            patches.append(_patch_op("add", path, rule))
+        else:
+            state = rule_change["state"]
+            del rule_change["state"]
+
+            # Needed because nested defaults are not applying
+            for clause in rule_change["clauses"]:
+                clause["negate"] = clause.get("negate", False)
+            if idx < old_rules:
+                result = list(
+                    diff(
+                        rule_change,
+                        feature_flag.rules[idx].to_dict(),
+                        ignore=set(["id"]),
+                    )
+                )
+                if result:
+                    path = _patch_path(module, "rules") + "/" + str(new_flag_index)
+                    patches.append(_patch_op("replace", path, rule))
+                elif not result and state == "absent":
+                    path = _patch_path(module, "rules") + "/" + str(new_flag_index)
+                    patches.append(_patch_op("remove", path, rule))
+            else:
+                pos = old_rules + idx
+                path = _patch_path(module, "rules") + "/" + str(pos)
+                patches.append(_patch_op("add", path, rule))
+    del module.params["rules"]
 
 
 def _build_rules(rule):
