@@ -391,7 +391,7 @@ def _configure_feature_flag_env(module, api_instance, feature_flag=None):
             patches.append(_parse_flag_param(module, key))
 
     if patches:
-        #print(patches)
+        # print(patches)
         comments = dict(comment=_build_comment(module), patch=patches)
         try:
             api_response = api_instance.patch_feature_flag(
@@ -434,22 +434,26 @@ def _process_rules(module, patches, feature_flag):
             patches.append(dict(op="remove", path=path))
 
         if new_rule_index <= old_rules and state != "add":
-        # iterating over statements for range to be inclusive
+            # iterating over statements for range to be inclusive
             if new_rule_index <= len(feature_flag.rules) - 1:
                 # API returns None for rollout and variation if not set
                 if not rule.get("rollout"):
                     rule["rollout"] = None
                 else:
                     # If there's a role and no bucket_by, default to key
-                    rule["rollout"]["bucket_by"] = rule["rollout"].get("bucket_by", "key")
+                    rule["rollout"]["bucket_by"] = rule["rollout"].get(
+                        "bucket_by", "key"
+                    )
                     # Weighted variations is internal ansible/API name, map to public
-                    rule["rollout"]["variations"] = rule["rollout"].pop("weighted_variations")
+                    rule["rollout"]["variations"] = rule["rollout"].pop(
+                        "weighted_variations"
+                    )
 
                 if rule.get("variation") is None:
                     rule["variation"] = None
                 for clause in rule["clauses"]:
-                   if clause.get("negate") is None:
-                       clause["negate"] = False
+                    if clause.get("negate") is None:
+                        clause["negate"] = False
 
                 if list(
                     diff(
@@ -474,7 +478,12 @@ def _process_rules(module, patches, feature_flag):
                     if rule["rollout"]:
                         flag = feature_flag.rules[new_rule_index].to_dict()
                         if flag.get("variation") is not None:
-                            patches.append(dict(op="remove", path=path + "/%d/variation" % new_rule_index))
+                            patches.append(
+                                dict(
+                                    op="remove",
+                                    path=path + "/%d/variation" % new_rule_index,
+                                )
+                            )
                             op = "add"
                         else:
                             op = "replace"
@@ -487,13 +496,13 @@ def _process_rules(module, patches, feature_flag):
                         )
 
                     if rule["clauses"] is not None:
-                        for clause_idx, clause in enumerate(
-                            rule["clauses"]
-                        ):
+                        for clause_idx, clause in enumerate(rule["clauses"]):
                             patches.append(
                                 _patch_op(
                                     "replace",
-                                    path + "/%d/clauses/%d/op" % (new_rule_index, clause_idx),
+                                    path
+                                    + "/%d/clauses/%d/op"
+                                    % (new_rule_index, clause_idx),
                                     clause["op"],
                                 )
                             )
@@ -501,30 +510,38 @@ def _process_rules(module, patches, feature_flag):
                                 patches.append(
                                     _patch_op(
                                         "replace",
-                                        path + "/%d/clauses/%d/negate" % (new_rule_index, clause_idx),
+                                        path
+                                        + "/%d/clauses/%d/negate"
+                                        % (new_rule_index, clause_idx),
                                         clause["negate"],
                                     )
                                 )
                             except KeyError:
-                                #pass
+                                # pass
                                 patches.append(
                                     _patch_op(
                                         "replace",
-                                        path + "/%d/clauses/%d/negate" % (new_rule_index, clause_idx),
+                                        path
+                                        + "/%d/clauses/%d/negate"
+                                        % (new_rule_index, clause_idx),
                                         False,
                                     )
                                 )
                             patches.append(
                                 _patch_op(
                                     "replace",
-                                    path + "/%d/clauses/%d/values" % (new_rule_index, clause_idx),
+                                    path
+                                    + "/%d/clauses/%d/values"
+                                    % (new_rule_index, clause_idx),
                                     clause["values"],
                                 )
                             )
                             patches.append(
                                 _patch_op(
                                     "replace",
-                                    path + "/%d/clauses/%d/attribute" % (new_rule_index, clause_idx),
+                                    path
+                                    + "/%d/clauses/%d/attribute"
+                                    % (new_rule_index, clause_idx),
                                     clause["attribute"],
                                 )
                             )
@@ -619,7 +636,6 @@ def _build_rules(rule):
             del temp_rule["rollout"]
     except KeyError:
         pass
-
 
     if rule.get("weighted_variations"):
         return temp_rule["rollout"]
