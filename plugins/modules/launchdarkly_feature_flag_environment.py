@@ -338,10 +338,12 @@ def _configure_feature_flag_env(module, api_instance, feature_flag=None):
                     raise AnsibleError("Targets not found")
 
             elif target["state"] == "absent":
-                target_index = str(flag_var_index[target["variation"]]["index"])
-
-                path = _patch_path(module, "targets") + "/" + target_index
-                patches.append(dict(op="remove", path=path))
+                try:
+                    target_index = str(flag_var_index[target["variation"]]["index"])
+                    path = _patch_path(module, "targets") + "/" + target_index
+                    patches.append(dict(op="remove", path=path))
+                except KeyError:
+                    pass
                 continue
 
             path = _patch_path(module, "targets") + "/" + target_index
@@ -363,22 +365,27 @@ def _configure_feature_flag_env(module, api_instance, feature_flag=None):
         # Make copy for next step.
         new_rules_copy = copy.deepcopy(module.params["rules"])
         flag_index = 0
-        add_guard = False
+        remove_guard = False
         for new_rule in module.params["rules"]:
             state = new_rule.get("rule_state", "present")
-            del new_rule["rule_state"]
+            if new_rule.get("rule_state"):
+                del new_rule["rule_state"]
+
+            if new_index < old_rules:
+                for i in range(new_index, old_rules):
+                    path = _patch_path(module, "rules") + "/" + str(i)
+                    # LD Patch requires value, so passing in dictionary
+                    patches.append(dict(op="remove", path=path))
+
             if new_index <= old_rules and state != "add":
-                # iterating over statements for range to be inclusive
-                if not add_guard:
-                    # We only want to loop over old rules once removing
-                    add_guard = True
-                    for i in range(new_index, old_rules):
-                        path = _patch_path(module, "rules") + "/" + str(i)
-                        # LD Patch requires value, so passing in dictionary
-                        patches.append(dict(op="remove", path=path))
                 # iterating over statements for range to be inclusive
                 for i in range(new_index):
                     if i <= len(feature_flag.rules):
+                        # API returns None for rollout and variation if not set
+                        if not module.params["rules"][i].get("rollout"):
+                            module.params["rules"][i]["rollout"] = None
+                        if not module.params["rules"][i].get("variation"):
+                            module.params["rules"][i]["variation"] = None
                         if list(
                             diff(
                                 module.params["rules"][i],
@@ -450,7 +457,7 @@ def _configure_feature_flag_env(module, api_instance, feature_flag=None):
             rule = _build_rules(rule_change)
             new_flag_index = flag_index + idx
             rule_change["state"] = rule_change.get("state", "present")
-            if idx > old_rules:
+            if idx - 1 > old_rules:
                 path = _patch_path(module, "rules") + "/" + str(idx)
                 patches.append(_patch_op("add", path, rule))
             # Non-idempotent operation - add
@@ -465,7 +472,7 @@ def _configure_feature_flag_env(module, api_instance, feature_flag=None):
                 # Needed because nested defaults are not applying
                 for clause in rule_change["clauses"]:
                     clause["negate"] = clause.get("negate", False)
-                if idx <= old_rules:
+                if idx < old_rules:
                     result = list(
                         diff(
                             rule_change,

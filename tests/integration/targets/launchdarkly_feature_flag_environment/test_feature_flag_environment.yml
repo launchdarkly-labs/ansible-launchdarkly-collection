@@ -116,6 +116,39 @@
   - assert:
       that: results.changed == false
 
+  - name: Reorder Rules
+    launchdarkly_feature_flag_environment:
+      state: "enabled"
+      flag_key: example_test_flag
+      project_key: dano-test-project
+      environment_key: production
+      comment: "removing first rule"
+      targets:
+        - variation: 1
+          values:
+            - "test@example1.com"
+            - "test2@example.com"
+            - "test3@examplettt.com"
+      rules:
+        - variation: 0
+          clauses:
+          - attribute: test-attribute2
+            op: startsWith
+            values:
+              - 4
+              - 5
+      fallthrough:
+        variation: 1
+    register: results
+
+  - debug:
+      msg: "{{ results }}"
+
+  - assert:
+      that: results.feature_flag_environment.environments.production.rules.0.clauses.0.attribute == "test-attribute2"
+      that: results.feature_flag_environment.environments.production.rules.0.clauses.0.negate == "false"
+      that: results.feature_flag_environment.environments.production.rules.0.clauses.0.op == "startsWith"
+
   - name: Rollout Feature Flag Environment
     launchdarkly_feature_flag_environment:
       state: "enabled"

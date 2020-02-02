@@ -310,19 +310,12 @@ def _project_sync(
                 # Reset patches
                 del patches
 
-    if module.params.get("flag_tag") is not None:
-        tag = module.params.get("flag_tag")
-    else:
-        tag = ""
-    if len(tag) > 0:
-        summary = 1
-        src_ff = src_fflags.get_feature_flags(
-            module.params["project_key"], summary=1, tag=tag
-        ).to_dict()
-    else:
-        src_ff = src_fflags.get_feature_flags(
-            module.params["project_key"], summary=0
-        ).to_dict()
+    tag = module.params.get("flag_tag", "")
+    if tag:
+        tag = ",".join(tag)
+    src_ff = src_fflags.get_feature_flags(
+        module.params["project_key"], summary=1, tag=tag
+    ).to_dict()
 
     for flag in src_ff["items"]:
         fflag_body = dict(
