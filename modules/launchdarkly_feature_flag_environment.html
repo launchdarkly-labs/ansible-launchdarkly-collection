@@ -63,7 +63,7 @@
             
             
               <div class="version">
-                0.2.4
+                0.2.5
               </div>
             
           
@@ -80,11 +80,11 @@
             current_url = window.location.href;
             option = document.createElement("option");
             option.text = "latest";
-            if ( "latest" == "0.2.4" ) {
+            if ( "latest" == "0.2.5" ) {
               option.selected = true;
             }
-            if (current_url.search("0.2.4") > -1) {
-              option.value = current_url.replace("0.2.4","latest");
+            if (current_url.search("0.2.5") > -1) {
+              option.value = current_url.replace("0.2.5","latest");
             } else {
               option.value = current_url.replace("latest","latest");
             }
@@ -94,14 +94,14 @@
           <script>
             current_url = window.location.href;
             option = document.createElement("option");
-            option.text = "0.2.4";
-            if ( "0.2.4" == "0.2.4" ) {
+            option.text = "0.2.5";
+            if ( "0.2.5" == "0.2.5" ) {
               option.selected = true;
             }
-            if (current_url.search("0.2.4") > -1) {
-              option.value = current_url.replace("0.2.4","0.2.4");
+            if (current_url.search("0.2.5") > -1) {
+              option.value = current_url.replace("0.2.5","0.2.5");
             } else {
-              option.value = current_url.replace("latest","0.2.4");
+              option.value = current_url.replace("latest","0.2.5");
             }
             x.add(option);
           </script>
@@ -392,7 +392,55 @@
                                         <div>Assign users to a specific variation</div>
                                                     </td>
         </tr>
-                    </table>
+                                                        <tr>
+                                                <td class="elbow-placeholder"></td>
+                                            <td colspan="1">
+                <b>state</b>
+                <div style="font-size: small">
+                    <span style="color: purple">-</span>
+                                                                </div>
+                                </td>
+                            <td>
+                                                                                                                        <ul style="margin: 0; padding: 0"><b>Choices:</b>
+                                                                                                                                                            <li>absent</li>
+                                                                                                                                                                                            <li>add</li>
+                                                                                                                                                                                            <li>remove</li>
+                                                                                                                                                                                            <li><div style="color: blue"><b>replace</b>&nbsp;&larr;</div></li>
+                                                                                </ul>
+                                                                        </td>
+                            <td>
+                                                    </td>
+        </tr>
+                            <tr>
+                                                <td class="elbow-placeholder"></td>
+                                            <td colspan="1">
+                <b>values</b>
+                <div style="font-size: small">
+                    <span style="color: purple">-</span>
+                                                                </div>
+                                </td>
+                            <td>
+                                                                                                                                                        </td>
+                            <td>
+                                        <div>individual targets to add to variation</div>
+                                                    </td>
+        </tr>
+                            <tr>
+                                                <td class="elbow-placeholder"></td>
+                                            <td colspan="1">
+                <b>variation</b>
+                <div style="font-size: small">
+                    <span style="color: purple">integer</span>
+                                                                </div>
+                                </td>
+                            <td>
+                                                                                                                                                        </td>
+                            <td>
+                                        <div>index of variation to serve default. Exclusive of rollout.</div>
+                                                    </td>
+        </tr>
+
+                                    </table>
 <br/></div>
 <div class="section" id="examples">
 <h2><a class="toc-backref" href="#id3">Examples</a><a class="headerlink" href="#examples" title="Permalink to this headline">¶</a></h2>
@@ -449,7 +497,7 @@
                                 </td>
             <td>on success</td>
             <td>
-                                        <div>Dictionary containing a <a href='https://github.com/launchdarkly/api-client-python/blob/2.0.24/docs/FeatureFlagConfig.md'>Feature Flag Config</a></div>
+                                        <div>Dictionary containing a <a href='https://github.com/launchdarkly/api-client-python/blob/2.0.26/docs/FeatureFlagConfig.md'>Feature Flag Config</a></div>
                                     <br/>
                                 </td>
         </tr>

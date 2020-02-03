@@ -63,7 +63,7 @@
             
             
               <div class="version">
-                0.2.4
+                0.2.5
               </div>
             
           
@@ -80,11 +80,11 @@
             current_url = window.location.href;
             option = document.createElement("option");
             option.text = "latest";
-            if ( "latest" == "0.2.4" ) {
+            if ( "latest" == "0.2.5" ) {
               option.selected = true;
             }
-            if (current_url.search("0.2.4") > -1) {
-              option.value = current_url.replace("0.2.4","latest");
+            if (current_url.search("0.2.5") > -1) {
+              option.value = current_url.replace("0.2.5","latest");
             } else {
               option.value = current_url.replace("latest","latest");
             }
@@ -94,14 +94,14 @@
           <script>
             current_url = window.location.href;
             option = document.createElement("option");
-            option.text = "0.2.4";
-            if ( "0.2.4" == "0.2.4" ) {
+            option.text = "0.2.5";
+            if ( "0.2.5" == "0.2.5" ) {
               option.selected = true;
             }
-            if (current_url.search("0.2.4") > -1) {
-              option.value = current_url.replace("0.2.4","0.2.4");
+            if (current_url.search("0.2.5") > -1) {
+              option.value = current_url.replace("0.2.5","0.2.5");
             } else {
-              option.value = current_url.replace("latest","0.2.4");
+              option.value = current_url.replace("latest","0.2.5");
             }
             x.add(option);
           </script>
@@ -415,7 +415,7 @@
                                 </td>
             <td>on success</td>
             <td>
-                                        <div>Dictionary containing a <a href='https://github.com/launchdarkly/api-client-python/blob/2.0.24/docs/CustomRole.md'>Custom Role</a></div>
+                                        <div>Dictionary containing a <a href='https://github.com/launchdarkly/api-client-python/blob/2.0.26/docs/CustomRole.md'>Custom Role</a></div>
                                     <br/>
                                 </td>
         </tr>
