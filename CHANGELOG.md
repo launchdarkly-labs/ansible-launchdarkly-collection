@@ -3,6 +3,14 @@ Change log
 
 All notable changes to the LaunchDarkly Ansible Collection will be documented in this file. This project adheres to [Semantic Versioning](https://semver.org).
 
+## [0.2.5] - 2020-02-03
+### Fixed:
+- core: flag environment targeting bug
+- core: fix ability to add/remove individual targets instead of just replacing
+
+### Added:
+- test: more coverage of flag targeting rules
+
 ## [0.2.4] - 2020-01-19
 ### Fixed:
 - core: Some ApiExceptions were not causing modules to fail
