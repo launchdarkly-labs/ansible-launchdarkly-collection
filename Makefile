@@ -9,6 +9,7 @@ old_galaxy_version := $(shell git describe --abbrev=0 --tags)
 .PHONY: update_api_version_docs
 update_api_version_docs:
 	find . -name "*.py" -type f -print0 | xargs -0 sed -i 's/$(old_api_doc_version)/$(current_api_doc_version)/g'
+	find . -name "*.txt" -type f -print0 | xargs -0 sed -i 's/$(old_api_doc_version)/$(current_api_doc_version)/g'
 
 .PHONY: build_docs
 build_docs:
