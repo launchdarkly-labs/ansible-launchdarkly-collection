@@ -41,7 +41,7 @@ options:
             - Project key will group flags together
         default: 'default'
         required: yes
-    flag_key:
+    key:
         description:
             - A unique key that will be used to reference the flag in your code.
         required: yes
@@ -76,6 +76,7 @@ EXAMPLES = r"""
 - launchdarkly_feature_flag:
     name: example
     kind: bool
+    key: example_flag_creation1
     state: present
     tags:
      - tag1
