@@ -47,19 +47,6 @@ Parameters
             </tr>
                                 <tr>
                                                                 <td colspan="1">
-                    <b>flag_key</b>
-                    <div style="font-size: small">
-                        <span style="color: purple">string</span>
-                                                 / <span style="color: red">required</span>                    </div>
-                                    </td>
-                                <td>
-                                                                                                                                                            </td>
-                                <td>
-                                            <div>A unique key that will be used to reference the flag in your code.</div>
-                                                        </td>
-            </tr>
-                                <tr>
-                                                                <td colspan="1">
                     <b>include_in_snippet</b>
                     <div style="font-size: small">
                         <span style="color: purple">boolean</span>
@@ -73,6 +60,19 @@ Parameters
                                                                             </td>
                                 <td>
                                             <div>Whether or not this flag should be made available to the client-side JavaScript SDK</div>
+                                                        </td>
+            </tr>
+                                <tr>
+                                                                <td colspan="1">
+                    <b>key</b>
+                    <div style="font-size: small">
+                        <span style="color: purple">string</span>
+                                                 / <span style="color: red">required</span>                    </div>
+                                    </td>
+                                <td>
+                                                                                                                                                            </td>
+                                <td>
+                                            <div>A unique key that will be used to reference the flag in your code.</div>
                                                         </td>
             </tr>
                                 <tr>
@@ -207,6 +207,7 @@ Examples
     - launchdarkly_feature_flag:
         name: example
         kind: bool
+        key: example_flag_creation1
         state: present
         tags:
          - tag1
