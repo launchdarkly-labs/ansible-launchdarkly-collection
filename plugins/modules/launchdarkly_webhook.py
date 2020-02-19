@@ -200,7 +200,16 @@ def _create_webhook(module, api_instance):
         webhook_config["tags"] = module.params["tags"]
 
     if module.params["statements"]:
-        webhook_config["statements"] = module.params["statements"]
+        filtered_statements = []
+        for statement in module.params["statements"]:
+            filtered_statements.append(
+                dict(
+                    (launchdarkly_api.Statement.attribute_map[k], v)
+                    for k, v in statement.items()
+                    if v is not None
+                )
+            )
+        webhook_config["statements"] = filtered_statements
     webhook_body = launchdarkly_api.WebhookBody(**webhook_config)
 
     try:
