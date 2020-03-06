@@ -48,12 +48,20 @@ options:
                 description:
                     - Resource to use in policy
                 type: list
-                required: yes
+                required: no
+            not_resources:
+                description:
+                    - inverse of Resource to use in policy
+                type: list
+                required: no
             actions:
                 description:
                     - Identify actions of policy
                 type: str
-                default: "*"
+            not_actions:
+                description:
+                    - inverse of actions for policy
+                type: str
             effect:
                 description:
                     - Defines whether the statement allows or denies access to the named resources and actions.

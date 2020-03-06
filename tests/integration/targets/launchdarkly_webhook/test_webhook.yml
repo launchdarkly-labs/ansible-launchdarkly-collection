@@ -27,3 +27,45 @@
     launchdarkly_webhook:
       state: absent
       webhook_id: "{{ results.webhook.id }}"
+
+  - name: Create Webhook
+    launchdarkly_webhook:
+      url: http://webhooks.com/webhook
+      state: enabled
+      name: Test Webhook
+      tags:
+        - blue
+        - green
+      statements:
+        - not_resources:
+            - "proj/int-test"
+          actions:
+            - "*"
+          effect: "allow"
+    register: results
+
+  - name: Delete webhook
+    launchdarkly_webhook:
+      state: absent
+      webhook_id: "{{ results.webhook.id }}"
+
+  - name: Create Webhook
+    launchdarkly_webhook:
+      url: http://webhooks.com/webhook
+      state: enabled
+      name: Test Webhook
+      tags:
+        - blue
+        - green
+      statements:
+        - resources:
+            - "proj/*:env/*:flag/*"
+          not_actions:
+            - "*"
+          effect: "allow"
+    register: results
+
+  - name: Delete webhook
+    launchdarkly_webhook:
+      state: absent
+      webhook_id: "{{ results.webhook.id }}"
