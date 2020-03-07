@@ -24,6 +24,6 @@ def rule_argument_spec():
                 ),
             ),
             clauses=clause_argument_spec(),
-            track_events=dict(type="bool", default=False)
+            track_events=dict(type="bool", default=False),
         ),
     )
