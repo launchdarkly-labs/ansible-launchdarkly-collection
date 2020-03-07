@@ -261,6 +261,12 @@ def _configure_feature_flag_env(module, api_instance, feature_flag=None):
     ):
         del module.params["off_variation"]
 
+    if (
+        feature_flag.track_events == module.params["track_events"]
+        or module.params.get("track_events") is None
+    ):
+        del module.params["track_events"]
+
     # Loop over prerequisites comparing
     _check_prereqs(module, feature_flag)
     # Loop over targets comparing
@@ -394,7 +400,6 @@ def _configure_feature_flag_env(module, api_instance, feature_flag=None):
             patches.append(_parse_flag_param(module, key))
 
     if patches:
-        # print(patches)
         comments = dict(comment=_build_comment(module), patch=patches)
         try:
             api_response = api_instance.patch_feature_flag(
