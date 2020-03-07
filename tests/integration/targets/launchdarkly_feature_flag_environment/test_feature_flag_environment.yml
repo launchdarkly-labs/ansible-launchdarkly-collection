@@ -89,6 +89,9 @@
 
   - assert:
       that: results.changed == true
+      that: results.feature_flag_environment.environments.production.rules.0.clauses.0.attribute == "test-attribute"
+      that: results.feature_flag_environment.environments.production.rules.0.clauses.0.negate == "true"
+      that: results.feature_flag_environment.environments.production.rules.0.clauses.0.op == "contains"
 
   - name: Idempotent Feature Flag Environment
     launchdarkly_feature_flag_environment:
