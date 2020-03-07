@@ -410,12 +410,14 @@ def _configure_feature_flag_env(module, api_instance, feature_flag=None):
             )
         except Exception as e:
             raise AnsibleError("Error applying configuration: %s" % to_native(e))
-
+        output_patches = []
+        for patch in patches:
+            output_patches.append(patch.to_dict())
         module.exit_json(
             changed=True,
             msg="flag environment successfully configured",
             feature_flag_environment=api_response.to_dict(),
-            patches=patches,
+            patches=output_patches,
         )
 
     module.exit_json(
