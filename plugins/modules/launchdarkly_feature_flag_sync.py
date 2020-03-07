@@ -63,7 +63,8 @@ EXAMPLES = r"""
         - staging
         - production
     flag_key: test_flag_1
-    includedActions:
+    project_key: test_project
+    included_actions:
       - updateOn
       - updateRules
 """
@@ -175,7 +176,7 @@ def _configure_flag_sync(module, api_instance):
             response, status, headers = api_instance.copy_feature_flag_with_http_info(
                 module.params["project_key"],
                 module.params["flag_key"],
-                feature_flag_copy_body,
+                launchdarkly_api.FeatureFlagCopyBody(**feature_flag_copy_body),
             )
 
             if idx == max_targets:

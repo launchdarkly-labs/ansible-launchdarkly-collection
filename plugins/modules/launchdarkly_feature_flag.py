@@ -228,7 +228,7 @@ def _configure_flag(module, api_instance, feature_flag=None):
                 if variation in ["variations"]
             ]
         # TODO fix logic to pass in name and description for bool
-        if len(changed) > 0 and module.params["kind"] != "bool":
+        if len(changed) > 0 and module.params["variations"]:
             _patch_variations(module, feature_flag.variations, patches)
             del module.params["variations"]
         else:
