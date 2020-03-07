@@ -115,7 +115,7 @@ EXAMPLES = r"""
 RETURN = r"""
 ---
 feature_flag_environment:
-    description: Dictionary containing a L(Feature Flag Config, https://github.com/launchdarkly/api-client-python/blob/2.0.26/docs/FeatureFlagConfig.md)
+    description: Dictionary containing a L(Feature Flag Config, https://github.com/launchdarkly/api-client-python/blob/2.0.30/docs/FeatureFlagConfig.md)
     type: dict
     returned: on success
 """
@@ -255,8 +255,17 @@ def _configure_feature_flag_env(module, api_instance, feature_flag=None):
 
     _toggle_flag(module, patches, feature_flag)
 
-    if feature_flag.off_variation == module.params["off_variation"]:
+    if (
+        feature_flag.off_variation == module.params["off_variation"]
+        or module.params.get("off_variation") is None
+    ):
         del module.params["off_variation"]
+
+    if (
+        feature_flag.track_events == module.params["track_events"]
+        or module.params.get("track_events") is None
+    ):
+        del module.params["track_events"]
 
     # Loop over prerequisites comparing
     _check_prereqs(module, feature_flag)
@@ -385,13 +394,13 @@ def _configure_feature_flag_env(module, api_instance, feature_flag=None):
                 "project_key",
                 "flag_key",
                 "comment",
+                "salt",
             ]
             and module.params[key] is not None
         ):
             patches.append(_parse_flag_param(module, key))
 
     if patches:
-        # print(patches)
         comments = dict(comment=_build_comment(module), patch=patches)
         try:
             api_response = api_instance.patch_feature_flag(
@@ -401,11 +410,17 @@ def _configure_feature_flag_env(module, api_instance, feature_flag=None):
             )
         except Exception as e:
             raise AnsibleError("Error applying configuration: %s" % to_native(e))
-
+        output_patches = []
+        for patch in patches:
+            if type(patch) is dict:
+                output_patches.append(patch)
+            else:
+                output_patches.append(patch.to_dict())
         module.exit_json(
             changed=True,
             msg="flag environment successfully configured",
             feature_flag_environment=api_response.to_dict(),
+            patches=output_patches,
         )
 
     module.exit_json(
@@ -455,12 +470,9 @@ def _process_rules(module, patches, feature_flag):
                     if clause.get("negate") is None:
                         clause["negate"] = False
 
+                flag = feature_flag.rules[new_rule_index].to_dict()
                 if list(
-                    diff(
-                        rule,
-                        feature_flag.rules[new_rule_index].to_dict(),
-                        ignore=set(["id", "rule_state"]),
-                    )
+                    diff(rule, flag, ignore=set(["id", "rule_state", "track_events"]),)
                 ):
                     path = _patch_path(module, "rules")
                     try:
@@ -476,7 +488,6 @@ def _process_rules(module, patches, feature_flag):
                         pass
 
                     if rule["rollout"]:
-                        flag = feature_flag.rules[new_rule_index].to_dict()
                         if flag.get("variation") is not None:
                             patches.append(
                                 dict(
@@ -653,6 +664,8 @@ def _check_prereqs(module, feature_flag):
 
         if not list(prereq_result):
             del module.params["prerequisites"]
+    else:
+        del module.params["prerequisites"]
 
 
 def _fetch_feature_flag(module, api_instance):

@@ -86,7 +86,7 @@ EXAMPLES = r"""
 RETURN = r"""
 ---
 custom_role:
-    description: Dictionary containing a L(Custom Role, https://github.com/launchdarkly/api-client-python/blob/2.0.26/docs/CustomRole.md)
+    description: Dictionary containing a L(Custom Role, https://github.com/launchdarkly/api-client-python/blob/2.0.30/docs/CustomRole.md)
     type: dict
     returned: on success
 """

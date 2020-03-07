@@ -86,7 +86,7 @@ EXAMPLES = r"""
 
 RETURN = r"""
 feature_flag:
-    description: Dictionary containing a L(Feature Flag, https://github.com/launchdarkly/api-client-python/blob/2.0.26/docs/FeatureFlag.md)
+    description: Dictionary containing a L(Feature Flag, https://github.com/launchdarkly/api-client-python/blob/2.0.30/docs/FeatureFlag.md)
     type: dict
     returned: on success
 """
@@ -228,7 +228,7 @@ def _configure_flag(module, api_instance, feature_flag=None):
                 if variation in ["variations"]
             ]
         # TODO fix logic to pass in name and description for bool
-        if len(changed) > 0 and module.params["kind"] != "bool":
+        if len(changed) > 0 and module.params["variations"]:
             _patch_variations(module, feature_flag.variations, patches)
             del module.params["variations"]
         else:
