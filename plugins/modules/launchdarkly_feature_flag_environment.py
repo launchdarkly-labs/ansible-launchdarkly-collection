@@ -255,7 +255,7 @@ def _configure_feature_flag_env(module, api_instance, feature_flag=None):
 
     _toggle_flag(module, patches, feature_flag)
 
-    if feature_flag.off_variation == module.params["off_variation"]:
+    if feature_flag.off_variation == module.params["off_variation"] or module.params.get("off_variation") is None:
         del module.params["off_variation"]
 
     # Loop over prerequisites comparing
@@ -653,6 +653,8 @@ def _check_prereqs(module, feature_flag):
 
         if not list(prereq_result):
             del module.params["prerequisites"]
+    else:
+        del module.params["prerequisites"]
 
 
 def _fetch_feature_flag(module, api_instance):
