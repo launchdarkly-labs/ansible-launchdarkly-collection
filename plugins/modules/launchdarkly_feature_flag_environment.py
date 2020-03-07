@@ -470,12 +470,9 @@ def _process_rules(module, patches, feature_flag):
                     if clause.get("negate") is None:
                         clause["negate"] = False
 
+                flag = feature_flag.rules[new_rule_index].to_dict()
                 if list(
-                    diff(
-                        rule,
-                        feature_flag.rules[new_rule_index].to_dict(),
-                        ignore=set(["id", "rule_state", "track_events"]),
-                    )
+                    diff(rule, flag, ignore=set(["id", "rule_state", "track_events"]),)
                 ):
                     path = _patch_path(module, "rules")
                     try:
@@ -491,7 +488,6 @@ def _process_rules(module, patches, feature_flag):
                         pass
 
                     if rule["rollout"]:
-                        flag = feature_flag.rules[new_rule_index].to_dict()
                         if flag.get("variation") is not None:
                             patches.append(
                                 dict(
