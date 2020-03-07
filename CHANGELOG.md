@@ -3,6 +3,15 @@ Change log
 
 All notable changes to the LaunchDarkly Ansible Collection will be documented in this file. This project adheres to [Semantic Versioning](https://semver.org).
 
+## [0.2.7] -
+### Fixed:
+- core: flag variation bug if updating flag
+- core: flag sync to correctly use included and excluded actions
+
+## [0.2.6] - 2020-02-20
+## Added:
+- core: Use notresources and notactions in policies
+
 ## [0.2.5] - 2020-02-03
 ### Fixed:
 - core: flag environment targeting bug
