@@ -262,7 +262,6 @@ def _configure_flag(module, api_instance, feature_flag=None):
         comment = module.params["comment"]
     else:
         comment = "Ansible generated operation."
-    # print(patches)
     comments = dict(comment=comment, patch=patches)
 
     try:
