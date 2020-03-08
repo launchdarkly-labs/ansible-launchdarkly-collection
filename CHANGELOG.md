@@ -3,7 +3,14 @@ Change log
 
 All notable changes to the LaunchDarkly Ansible Collection will be documented in this file. This project adheres to [Semantic Versioning](https://semver.org).
 
-## [0.2.7] -
+## [0.2.9] - 2020-03-08
+### Fixed:
+- core: add missing launchdarkly_feature_flag_info file
+
+### Added:
+- core: rate limiting check for feature_flag_info
+
+## [0.2.7] - 2020-03-07
 ### Fixed:
 - core: flag variation bug if updating flag
 - core: flag sync to correctly use included and excluded actions

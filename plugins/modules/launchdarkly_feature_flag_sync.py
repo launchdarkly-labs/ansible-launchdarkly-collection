@@ -78,6 +78,7 @@ feature_flag:
 
 import inspect
 import traceback
+import time
 
 LD_IMP_ERR = None
 try:
@@ -96,6 +97,7 @@ from ansible.module_utils.common._json_compat import json
 
 from ansible_collections.launchdarkly_labs.collection.plugins.module_utils.base import (
     configure_instance,
+    reset_rate,
     fail_exit,
 )
 
@@ -182,8 +184,17 @@ def _configure_flag_sync(module, api_instance):
             if idx == max_targets:
                 # LD Returns a FeatureFlag Object containing all Environments. Only need last one.
                 feature_flag = response.to_dict()
+
         except ApiException as e:
-            fail_exit(module, e)
+            if status == 429:
+                time.sleep(reset_rate(headers["X-RateLimit-Reset"]))
+                api_instance.copy_feature_flag_with_http_info(
+                    module.params["project_key"],
+                    module.params["flag_key"],
+                    launchdarkly_api.FeatureFlagCopyBody(**feature_flag_copy_body),
+                )
+            else:
+                fail_exit(module, e)
 
     module.exit_json(
         changed=True, msg="feature flags synced", feature_flag=feature_flag
