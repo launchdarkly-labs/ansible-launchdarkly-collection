@@ -26,9 +26,9 @@
     register: project
 
   - assert:
-    that: project.changed == true
-    that: project.project.name == "Ansible Integration Project"
-    that: "'yellow' in results.project.tags"
+      that: project.changed == true
+      that: project.project.name == "Ansible Integration Project"
+      that: "'yellow' in results.project.tags"
 
   - name: Delete Project
     launchdarkly_project:
