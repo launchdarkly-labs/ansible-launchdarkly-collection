@@ -210,7 +210,7 @@ Common return values are documented :ref:`here <common_return_values>`, the foll
                                     </td>
                 <td>on success</td>
                 <td>
-                                            <div>Dictionary containing a <a href='https://github.com/launchdarkly/api-client-python/blob/2.0.26/docs/Webhook.md'>Webhook</a></div>
+                                            <div>Dictionary containing a <a href='https://github.com/launchdarkly/api-client-python/blob/2.0.30/docs/Webhook.md'>Webhook</a></div>
                                         <br/>
                                     </td>
             </tr>

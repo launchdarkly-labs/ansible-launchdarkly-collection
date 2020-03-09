@@ -160,7 +160,8 @@ Examples
             - staging
             - production
         flag_key: test_flag_1
-        includedActions:
+        project_key: test_project
+        included_actions:
           - updateOn
           - updateRules
 
@@ -188,7 +189,7 @@ Common return values are documented :ref:`here <common_return_values>`, the foll
                                     </td>
                 <td>on success</td>
                 <td>
-                                            <div>Dictionary containing a <a href='https://github.com/launchdarkly/api-client-python/blob/2.0.26/docs/FeatureFlag.md'>Feature Flag</a></div>
+                                            <div>Dictionary containing a <a href='https://github.com/launchdarkly/api-client-python/blob/2.0.30/docs/FeatureFlag.md'>Feature Flag</a></div>
                                         <br/>
                                     </td>
             </tr>
