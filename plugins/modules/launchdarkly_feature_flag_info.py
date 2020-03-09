@@ -12,7 +12,7 @@ ANSIBLE_METADATA = {
 
 DOCUMENTATION = r"""
 ---
-module: launchdarkly_variation_info
+module: launchdarkly_feature_flag_info
 short_description: Return a list of Feature Flags
 description:
      - Return value from Feature Flag Evaluation

@@ -106,8 +106,7 @@ Parameters
                                                                     </div>
                                     </td>
                                 <td>
-                                                                                                                                                                    <b>Default:</b><br/><div style="color: blue">"*"</div>
-                                    </td>
+                                                                                                                                                            </td>
                                 <td>
                                             <div>Identify actions of policy</div>
                                                         </td>
@@ -133,10 +132,38 @@ Parameters
                                 <tr>
                                                     <td class="elbow-placeholder"></td>
                                                 <td colspan="1">
+                    <b>not_actions</b>
+                    <div style="font-size: small">
+                        <span style="color: purple">string</span>
+                                                                    </div>
+                                    </td>
+                                <td>
+                                                                                                                                                            </td>
+                                <td>
+                                            <div>inverse of actions for policy</div>
+                                                        </td>
+            </tr>
+                                <tr>
+                                                    <td class="elbow-placeholder"></td>
+                                                <td colspan="1">
+                    <b>not_resources</b>
+                    <div style="font-size: small">
+                        <span style="color: purple">list</span>
+                                                                    </div>
+                                    </td>
+                                <td>
+                                                                                                                                                            </td>
+                                <td>
+                                            <div>inverse of Resource to use in policy</div>
+                                                        </td>
+            </tr>
+                                <tr>
+                                                    <td class="elbow-placeholder"></td>
+                                                <td colspan="1">
                     <b>resources</b>
                     <div style="font-size: small">
                         <span style="color: purple">list</span>
-                                                 / <span style="color: red">required</span>                    </div>
+                                                                    </div>
                                     </td>
                                 <td>
                                                                                                                                                             </td>
@@ -208,7 +235,7 @@ Common return values are documented :ref:`here <common_return_values>`, the foll
                                     </td>
                 <td>on success</td>
                 <td>
-                                            <div>Dictionary containing a <a href='https://github.com/launchdarkly/api-client-python/blob/2.0.26/docs/CustomRole.md'>Custom Role</a></div>
+                                            <div>Dictionary containing a <a href='https://github.com/launchdarkly/api-client-python/blob/2.0.30/docs/CustomRole.md'>Custom Role</a></div>
                                         <br/>
                                     </td>
             </tr>

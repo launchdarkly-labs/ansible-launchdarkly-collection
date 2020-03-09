@@ -260,7 +260,7 @@ Common return values are documented :ref:`here <common_return_values>`, the foll
                                     </td>
                 <td>on success</td>
                 <td>
-                                            <div>Returns dictionary containing an <a href='https://github.com/launchdarkly/api-client-python/blob/2.0.26/docs/Environment.md'>Environment</a></div>
+                                            <div>Returns dictionary containing an <a href='https://github.com/launchdarkly/api-client-python/blob/2.0.30/docs/Environment.md'>Environment</a></div>
                                         <br/>
                                     </td>
             </tr>
