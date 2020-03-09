@@ -13,10 +13,10 @@ ANSIBLE_METADATA = {
 DOCUMENTATION = r"""
 ---
 module: launchdarkly_project_info
-short_description: Return a list of Feature Flags
+short_description: Return a single Project
 description:
-     - Return value from Feature Flag Evaluation
-version_added: "0.2.8"
+     - Return a dictionary of a single LaunchDarkly Project
+version_added: "0.2.11"
 options:
     project_key:
         description:
@@ -29,20 +29,16 @@ extends_documentation_fragment: launchdarkly_labs.collection.launchdarkly
 
 EXAMPLES = r"""
 # Get list of flags filtered to production environment.
-- launchdarkly_feature_flag_info:
+- launchdarkly_project_info:
     api_key: api-12345
     project_key: dano-test-project
-    env: production
 """
 
 RETURN = r"""
-type:
-    description: Type of return value
-    type: string
-    returned: always
-results:
-    description: List of Feature Flags.
-    returned: always
+project:
+    description: Dictionary containing a L(Project, https://github.com/launchdarkly/api-client-python/blob/2.0.30/docs/Project.md)
+    type: dict
+    returned: on success
 """
 
 import inspect

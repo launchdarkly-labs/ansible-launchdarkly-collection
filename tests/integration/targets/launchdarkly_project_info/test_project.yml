@@ -5,6 +5,8 @@
   module_defaults:
     launchdarkly_project:
       api_key: "{{ ld_api_key }}"
+    launchdarkly_project_info:
+      api_key: "{{ ld_api_key }}"
 
   tasks:
   - name: Create Project
@@ -20,7 +22,7 @@
         color: "FFFFFF"
         name: "test-env-ans"
 
-  - name: Idempotent Project
+  - name: Get Project
     launchdarkly_project_info:
       project_key: ansible-int-proj
     register: project
@@ -28,7 +30,7 @@
   - assert:
       that: project.changed == true
       that: project.project.name == "Ansible Integration Project"
-      that: "'yellow' in results.project.tags"
+      that: '"yellow" in project.project.tags'
 
   - name: Delete Project
     launchdarkly_project:
