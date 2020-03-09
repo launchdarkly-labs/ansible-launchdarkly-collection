@@ -472,7 +472,7 @@ def _process_rules(module, patches, feature_flag):
 
                 flag = feature_flag.rules[new_rule_index].to_dict()
                 if list(
-                    diff(rule, flag, ignore=set(["id", "rule_state", "track_events"]),)
+                    diff(rule, flag, ignore=set(["id", "rule_state", "track_events"]))
                 ):
                     path = _patch_path(module, "rules")
                     try:
