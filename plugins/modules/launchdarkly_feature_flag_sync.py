@@ -186,8 +186,8 @@ def _configure_flag_sync(module, api_instance):
                 feature_flag = response.to_dict()
 
         except ApiException as e:
-            if status == 429:
-                time.sleep(reset_rate(headers["X-RateLimit-Reset"]))
+            if e.status == 429:
+                time.sleep(reset_rate(e.headers["X-RateLimit-Reset"]))
                 api_instance.copy_feature_flag_with_http_info(
                     module.params["project_key"],
                     module.params["flag_key"],
