@@ -62,7 +62,7 @@
             
             
               <div class="version">
-                0.2.9
+                0.2.10
               </div>
             
           
@@ -79,11 +79,11 @@
             current_url = window.location.href;
             option = document.createElement("option");
             option.text = "latest";
-            if ( "latest" == "0.2.9" ) {
+            if ( "latest" == "0.2.10" ) {
               option.selected = true;
             }
-            if (current_url.search("0.2.9") > -1) {
-              option.value = current_url.replace("0.2.9","latest");
+            if (current_url.search("0.2.10") > -1) {
+              option.value = current_url.replace("0.2.10","latest");
             } else {
               option.value = current_url.replace("latest","latest");
             }
@@ -93,14 +93,14 @@
           <script>
             current_url = window.location.href;
             option = document.createElement("option");
-            option.text = "0.2.9";
-            if ( "0.2.9" == "0.2.9" ) {
+            option.text = "0.2.10";
+            if ( "0.2.10" == "0.2.10" ) {
               option.selected = true;
             }
-            if (current_url.search("0.2.9") > -1) {
-              option.value = current_url.replace("0.2.9","0.2.9");
+            if (current_url.search("0.2.10") > -1) {
+              option.value = current_url.replace("0.2.10","0.2.10");
             } else {
-              option.value = current_url.replace("latest","0.2.9");
+              option.value = current_url.replace("latest","0.2.10");
             }
             x.add(option);
           </script>
@@ -135,6 +135,7 @@
 <li class="toctree-l1"><a class="reference internal" href="modules/launchdarkly_environment.html">launchdarkly_environment – Create Launchdarkly Project specific Environment</a></li>
 <li class="toctree-l1"><a class="reference internal" href="modules/launchdarkly_feature_flag.html">launchdarkly_feature_flag – Interact with projects, flags of LaunchDarkly</a></li>
 <li class="toctree-l1"><a class="reference internal" href="modules/launchdarkly_feature_flag_environment.html">launchdarkly_feature_flag_environment – Create Environment specific flag targeting</a></li>
+<li class="toctree-l1"><a class="reference internal" href="modules/launchdarkly_feature_flag_info.html">launchdarkly_feature_flag_info – Return a list of Feature Flags</a></li>
 <li class="toctree-l1"><a class="reference internal" href="modules/launchdarkly_feature_flag_sync.html">launchdarkly_feature_flag_sync – Sync LaunchDarkly Feature Flags across Environments</a></li>
 <li class="toctree-l1"><a class="reference internal" href="modules/launchdarkly_project.html">launchdarkly_project – Create Project</a></li>
 <li class="toctree-l1"><a class="reference internal" href="modules/launchdarkly_project_copy.html">launchdarkly_project_copy – Copy LaunchDarkly Projects in or between accounts.</a></li>
@@ -224,6 +225,7 @@
 <li class="toctree-l1"><a class="reference internal" href="modules/launchdarkly_environment.html">launchdarkly_environment – Create Launchdarkly Project specific Environment</a></li>
 <li class="toctree-l1"><a class="reference internal" href="modules/launchdarkly_feature_flag.html">launchdarkly_feature_flag – Interact with projects, flags of LaunchDarkly</a></li>
 <li class="toctree-l1"><a class="reference internal" href="modules/launchdarkly_feature_flag_environment.html">launchdarkly_feature_flag_environment – Create Environment specific flag targeting</a></li>
+<li class="toctree-l1"><a class="reference internal" href="modules/launchdarkly_feature_flag_info.html">launchdarkly_feature_flag_info – Return a list of Feature Flags</a></li>
 <li class="toctree-l1"><a class="reference internal" href="modules/launchdarkly_feature_flag_sync.html">launchdarkly_feature_flag_sync – Sync LaunchDarkly Feature Flags across Environments</a></li>
 <li class="toctree-l1"><a class="reference internal" href="modules/launchdarkly_project.html">launchdarkly_project – Create Project</a></li>
 <li class="toctree-l1"><a class="reference internal" href="modules/launchdarkly_project_copy.html">launchdarkly_project_copy – Copy LaunchDarkly Projects in or between accounts.</a></li>

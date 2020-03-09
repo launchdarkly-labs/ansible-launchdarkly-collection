@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>launchdarkly_user_segment_sync – Sync LaunchDarkly User Segments across Environments &mdash; LaunchDarkly Ansible Collection  documentation</title>
+  <title>launchdarkly_feature_flag_info – Return a list of Feature Flags &mdash; LaunchDarkly Ansible Collection  documentation</title>
   
 
   
@@ -40,8 +40,8 @@
   <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="launchdarkly_variation_info – Return value from Feature Flag Evaluation" href="launchdarkly_variation_info.html" />
-    <link rel="prev" title="launchdarkly_user_segment – Manage User Segments" href="launchdarkly_user_segment.html" /> <script src="//cdnjs.cloudflare.com/ajax/libs/modernizr/2.6.2/modernizr.min.js"></script> 
+    <link rel="next" title="launchdarkly_feature_flag_sync – Sync LaunchDarkly Feature Flags across Environments" href="launchdarkly_feature_flag_sync.html" />
+    <link rel="prev" title="launchdarkly_feature_flag_environment – Create Environment specific flag targeting" href="launchdarkly_feature_flag_environment.html" /> <script src="//cdnjs.cloudflare.com/ajax/libs/modernizr/2.6.2/modernizr.min.js"></script> 
 </head>
 
 <body class="wy-body-for-nav">
@@ -136,19 +136,20 @@
 <li class="toctree-l1"><a class="reference internal" href="launchdarkly_environment.html">launchdarkly_environment – Create Launchdarkly Project specific Environment</a></li>
 <li class="toctree-l1"><a class="reference internal" href="launchdarkly_feature_flag.html">launchdarkly_feature_flag – Interact with projects, flags of LaunchDarkly</a></li>
 <li class="toctree-l1"><a class="reference internal" href="launchdarkly_feature_flag_environment.html">launchdarkly_feature_flag_environment – Create Environment specific flag targeting</a></li>
-<li class="toctree-l1"><a class="reference internal" href="launchdarkly_feature_flag_info.html">launchdarkly_feature_flag_info – Return a list of Feature Flags</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">launchdarkly_feature_flag_info – Return a list of Feature Flags</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#synopsis">Synopsis</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#parameters">Parameters</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#examples">Examples</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#return-values">Return Values</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#status">Status</a></li>
+</ul>
+</li>
 <li class="toctree-l1"><a class="reference internal" href="launchdarkly_feature_flag_sync.html">launchdarkly_feature_flag_sync – Sync LaunchDarkly Feature Flags across Environments</a></li>
 <li class="toctree-l1"><a class="reference internal" href="launchdarkly_project.html">launchdarkly_project – Create Project</a></li>
 <li class="toctree-l1"><a class="reference internal" href="launchdarkly_project_copy.html">launchdarkly_project_copy – Copy LaunchDarkly Projects in or between accounts.</a></li>
 <li class="toctree-l1"><a class="reference internal" href="launchdarkly_test_generator.html">launchdarkly_test_generator – Create a JSON file for testing</a></li>
 <li class="toctree-l1"><a class="reference internal" href="launchdarkly_user_segment.html">launchdarkly_user_segment – Manage User Segments</a></li>
-<li class="toctree-l1 current"><a class="current reference internal" href="#">launchdarkly_user_segment_sync – Sync LaunchDarkly User Segments across Environments</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="#synopsis">Synopsis</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#parameters">Parameters</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#examples">Examples</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#status">Status</a></li>
-</ul>
-</li>
+<li class="toctree-l1"><a class="reference internal" href="launchdarkly_user_segment_sync.html">launchdarkly_user_segment_sync – Sync LaunchDarkly User Segments across Environments</a></li>
 <li class="toctree-l1"><a class="reference internal" href="launchdarkly_variation_info.html">launchdarkly_variation_info – Return value from Feature Flag Evaluation</a></li>
 <li class="toctree-l1"><a class="reference internal" href="launchdarkly_webhook.html">launchdarkly_webhook – Manage LaunchDarkly Webhooks</a></li>
 </ul>
@@ -199,7 +200,7 @@
     
       <li><a href="../index.html">Docs</a> &raquo;</li>
         
-      <li>launchdarkly_user_segment_sync – Sync LaunchDarkly User Segments across Environments</li>
+      <li>launchdarkly_feature_flag_info – Return a list of Feature Flags</li>
     
     
       <li class="wy-breadcrumbs-aside">
@@ -208,7 +209,7 @@
             
               <!-- Ansible-specific additions for modules etc -->
                 
-                  <a href="https://github.com/launchdarkly-labs/ansible-launchdarkly-collection//tree/master/plugins/modules/launchdarkly_user_segment_sync.rst?description=%23%23%23%23%23%20SUMMARY%0A%3C!---%20Your%20description%20here%20--%3E%0A%0A%0A%23%23%23%23%23%20ISSUE%20TYPE%0A-%20Docs%20Pull%20Request%0A%0A%2Blabel:%20docsite_pr" class="fa fa-github"> Edit on GitHub</a>
+                  <a href="https://github.com/launchdarkly-labs/ansible-launchdarkly-collection//tree/master/plugins/modules/launchdarkly_feature_flag_info.rst?description=%23%23%23%23%23%20SUMMARY%0A%3C!---%20Your%20description%20here%20--%3E%0A%0A%0A%23%23%23%23%23%20ISSUE%20TYPE%0A-%20Docs%20Pull%20Request%0A%0A%2Blabel:%20docsite_pr" class="fa fa-github"> Edit on GitHub</a>
                 
             
           
@@ -223,23 +224,24 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
             
-  <div class="section" id="launchdarkly-user-segment-sync-sync-launchdarkly-user-segments-across-environments">
-<span id="launchdarkly-user-segment-sync"></span><h1>launchdarkly_user_segment_sync – Sync LaunchDarkly User Segments across Environments<a class="headerlink" href="#launchdarkly-user-segment-sync-sync-launchdarkly-user-segments-across-environments" title="Permalink to this headline">¶</a></h1>
+  <div class="section" id="launchdarkly-feature-flag-info-return-a-list-of-feature-flags">
+<span id="launchdarkly-feature-flag-info"></span><h1>launchdarkly_feature_flag_info – Return a list of Feature Flags<a class="headerlink" href="#launchdarkly-feature-flag-info-return-a-list-of-feature-flags" title="Permalink to this headline">¶</a></h1>
 <div class="versionadded">
-<p><span class="versionmodified added">New in version 0.1.0.</span></p>
+<p><span class="versionmodified added">New in version 0.2.8.</span></p>
 </div>
 <div class="contents local topic" id="contents">
 <ul class="simple">
 <li><p><a class="reference internal" href="#synopsis" id="id1">Synopsis</a></p></li>
 <li><p><a class="reference internal" href="#parameters" id="id2">Parameters</a></p></li>
 <li><p><a class="reference internal" href="#examples" id="id3">Examples</a></p></li>
-<li><p><a class="reference internal" href="#status" id="id4">Status</a></p></li>
+<li><p><a class="reference internal" href="#return-values" id="id4">Return Values</a></p></li>
+<li><p><a class="reference internal" href="#status" id="id5">Status</a></p></li>
 </ul>
 </div>
 <div class="section" id="synopsis">
 <h2><a class="toc-backref" href="#id1">Synopsis</a><a class="headerlink" href="#synopsis" title="Permalink to this headline">¶</a></h2>
 <ul class="simple">
-<li><p>Sync LaunchDarkly User Segments across Environments</p></li>
+<li><p>Return value from Feature Flag Evaluation</p></li>
 </ul>
 </div>
 <div class="section" id="parameters">
@@ -265,7 +267,37 @@
         </tr>
                             <tr>
                                                             <td colspan="1">
-                <b>environment_key</b>
+                <b>archived</b>
+                <div style="font-size: small">
+                    <span style="color: purple">boolean</span>
+                                                                </div>
+                                </td>
+                            <td>
+                                                                                                                                                                    <ul style="margin: 0; padding: 0"><b>Choices:</b>
+                                                                                                                                                            <li>no</li>
+                                                                                                                                                                                            <li>yes</li>
+                                                                                </ul>
+                                                                        </td>
+                            <td>
+                                        <div>Include archived flags.</div>
+                                                    </td>
+        </tr>
+                            <tr>
+                                                            <td colspan="1">
+                <b>env</b>
+                <div style="font-size: small">
+                    <span style="color: purple">string</span>
+                                                                </div>
+                                </td>
+                            <td>
+                                                                                                                                                        </td>
+                            <td>
+                                        <div>Filter for a specific environment.</div>
+                                                    </td>
+        </tr>
+                            <tr>
+                                                            <td colspan="1">
+                <b>key</b>
                 <div style="font-size: small">
                     <span style="color: purple">string</span>
                                              / <span style="color: red">required</span>                    </div>
@@ -273,103 +305,104 @@
                             <td>
                                                                                                                                                         </td>
                             <td>
-                                        <div>A unique key that will be used to determine source environment.</div>
-                                                    </td>
-        </tr>
-                            <tr>
-                                                            <td colspan="1">
-                <b>environment_targets</b>
-                <div style="font-size: small">
-                    <span style="color: purple">list</span>
-                                             / <span style="color: red">required</span>                    </div>
-                                </td>
-                            <td>
-                                                                                                                                                        </td>
-                            <td>
-                                        <div>A list of environments that flag settings will be copied to.</div>
-                                                    </td>
-        </tr>
-                            <tr>
-                                                            <td colspan="1">
-                <b>excludedActions</b>
-                <div style="font-size: small">
-                    <span style="color: purple">list</span>
-                                                                </div>
-                                </td>
-                            <td>
-                                                                                                                        <ul style="margin: 0; padding: 0"><b>Choices:</b>
-                                                                                                                                                            <li>updateTargets&#39;</li>
-                                                                                                                                                                                            <li>updateRules</li>
-                                                                                </ul>
-                                                                        </td>
-                            <td>
-                                        <div>Manage a list of excluded actions for copying.</div>
-                                                    </td>
-        </tr>
-                            <tr>
-                                                            <td colspan="1">
-                <b>includedActions</b>
-                <div style="font-size: small">
-                    <span style="color: purple">list</span>
-                                                                </div>
-                                </td>
-                            <td>
-                                                                                                                        <ul style="margin: 0; padding: 0"><b>Choices:</b>
-                                                                                                                                                            <li>updateTargets</li>
-                                                                                                                                                                                            <li>updateRules</li>
-                                                                                </ul>
-                                                                        </td>
-                            <td>
-                                        <div>Manage a list of included actions for copying.</div>
+                                        <div>Unique key for feature flag.</div>
                                                     </td>
         </tr>
                             <tr>
                                                             <td colspan="1">
                 <b>project_key</b>
                 <div style="font-size: small">
-                    <span style="color: purple">string</span>
-                                                                </div>
+                    <span style="color: purple">-</span>
+                                             / <span style="color: red">required</span>                    </div>
                                 </td>
                             <td>
                                                                                                                                                                 <b>Default:</b><br/><div style="color: blue">"default"</div>
                                 </td>
                             <td>
-                                        <div>Project key to look for flag</div>
+                                        <div>Project key will group flags together</div>
                                                     </td>
         </tr>
                             <tr>
                                                             <td colspan="1">
-                <b>user_segment_key</b>
+                <b>summary</b>
+                <div style="font-size: small">
+                    <span style="color: purple">boolean</span>
+                                                                </div>
+                                </td>
+                            <td>
+                                                                                                                                                                    <ul style="margin: 0; padding: 0"><b>Choices:</b>
+                                                                                                                                                            <li>no</li>
+                                                                                                                                                                                            <li>yes</li>
+                                                                                </ul>
+                                                                        </td>
+                            <td>
+                                        <div>Flags will not include their list of prerequisites, targets or rules. Set to false to include these fields for each flag returned</div>
+                                                    </td>
+        </tr>
+                            <tr>
+                                                            <td colspan="1">
+                <b>tag</b>
                 <div style="font-size: small">
                     <span style="color: purple">string</span>
-                                             / <span style="color: red">required</span>                    </div>
+                                                                </div>
                                 </td>
                             <td>
                                                                                                                                                         </td>
                             <td>
-                                        <div>A unique key that will be used to reference the user segment in this environment.</div>
+                                        <div>Filter for a specific tag.</div>
                                                     </td>
         </tr>
                     </table>
 <br/></div>
 <div class="section" id="examples">
 <h2><a class="toc-backref" href="#id3">Examples</a><a class="headerlink" href="#examples" title="Permalink to this headline">¶</a></h2>
-<div class="highlight-yaml+jinja notranslate"><div class="highlight"><pre><span></span><span class="c1"># Sync a LaunchDarkly User Segment to multiple environments</span>
-<span class="p p-Indicator">-</span> <span class="nt">launchdarkly_user_segment_sync</span><span class="p">:</span>
-    <span class="nt">environment_key</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">test-environment-1</span>
-    <span class="nt">environment_targets</span><span class="p">:</span>
-        <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">dev</span>
-        <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">staging</span>
-        <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">production</span>
-    <span class="nt">name</span><span class="p">:</span> <span class="s">&quot;Test</span><span class="nv"> </span><span class="s">Segment&quot;</span>
-    <span class="nt">includedActions</span><span class="p">:</span>
-      <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">updateOn</span>
-      <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">updateRules</span>
+<div class="highlight-yaml+jinja notranslate"><div class="highlight"><pre><span></span><span class="c1"># Get list of flags filtered to production environment.</span>
+<span class="p p-Indicator">-</span> <span class="nt">launchdarkly_feature_flag_info</span><span class="p">:</span>
+    <span class="nt">api_key</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">api-12345</span>
+    <span class="nt">project_key</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">dano-test-project</span>
+    <span class="nt">env</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">production</span>
 </pre></div>
 </div>
 </div>
+<div class="section" id="return-values">
+<h2><a class="toc-backref" href="#id4">Return Values</a><a class="headerlink" href="#return-values" title="Permalink to this headline">¶</a></h2>
+<p>Common return values are documented <span class="xref std std-ref">here</span>, the following are the fields unique to this :</p>
+<table border=0 cellpadding=0 class="documentation-table">
+    <tr>
+        <th colspan="1">Key</th>
+        <th>Returned</th>
+        <th width="100%">Description</th>
+    </tr>
+                <tr>
+                            <td colspan="1">
+                <b>results</b>
+                <div style="font-size: small">
+                  <span style="color: purple">-</span>
+                                      </div>
+                                </td>
+            <td>always</td>
+            <td>
+                                        <div>List of Feature Flags.</div>
+                                    <br/>
+                                </td>
+        </tr>
+                            <tr>
+                            <td colspan="1">
+                <b>type</b>
+                <div style="font-size: small">
+                  <span style="color: purple">string</span>
+                                      </div>
+                                </td>
+            <td>always</td>
+            <td>
+                                        <div>Type of return value</div>
+                                    <br/>
+                                </td>
+        </tr>
+                    </table>
+<br/><br/></div>
 <div class="section" id="status">
-<h2><a class="toc-backref" href="#id4">Status</a><a class="headerlink" href="#status" title="Permalink to this headline">¶</a></h2>
+<h2><a class="toc-backref" href="#id5">Status</a><a class="headerlink" href="#status" title="Permalink to this headline">¶</a></h2>
 <ul class="simple">
 <li><p>This  is not guaranteed to have a backwards compatible interface. <em>[preview]</em></p></li>
 <li><p>This  is <span class="xref std std-ref">maintained by the Ansible Community</span>. <em>[community]</em></p></li>
@@ -393,10 +426,10 @@
   
     <div class="rst-footer-buttons">
       
-        <a href="launchdarkly_variation_info.html" class="btn btn-neutral float-right" title="launchdarkly_variation_info – Return value from Feature Flag Evaluation"/>Next <span class="icon icon-circle-arrow-right"></span></a>
+        <a href="launchdarkly_feature_flag_sync.html" class="btn btn-neutral float-right" title="launchdarkly_feature_flag_sync – Sync LaunchDarkly Feature Flags across Environments"/>Next <span class="icon icon-circle-arrow-right"></span></a>
       
       
-        <a href="launchdarkly_user_segment.html" class="btn btn-neutral" title="launchdarkly_user_segment – Manage User Segments"><span class="icon icon-circle-arrow-left"></span> Previous</a>
+        <a href="launchdarkly_feature_flag_environment.html" class="btn btn-neutral" title="launchdarkly_feature_flag_environment – Create Environment specific flag targeting"><span class="icon icon-circle-arrow-left"></span> Previous</a>
       
     </div>
   

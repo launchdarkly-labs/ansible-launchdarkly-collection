@@ -1,13 +1,13 @@
 :source: 
 
 
-.. _launchdarkly_feature_flag_:
+.. _launchdarkly_feature_flag_info_:
 
 
-launchdarkly_feature_flag -- Interact with projects, flags of LaunchDarkly
-++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+launchdarkly_feature_flag_info -- Return a list of Feature Flags
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
-.. versionadded:: 0.1.0
+.. versionadded:: 0.2.8
 
 .. contents::
    :local:
@@ -16,7 +16,7 @@ launchdarkly_feature_flag -- Interact with projects, flags of LaunchDarkly
 
 Synopsis
 --------
-- Manage LaunchDarkly manage feature flags and account settings.
+- Return value from Feature Flag Evaluation
 
 
 
@@ -47,7 +47,7 @@ Parameters
             </tr>
                                 <tr>
                                                                 <td colspan="1">
-                    <b>include_in_snippet</b>
+                    <b>archived</b>
                     <div style="font-size: small">
                         <span style="color: purple">boolean</span>
                                                                     </div>
@@ -59,7 +59,20 @@ Parameters
                                                                                     </ul>
                                                                             </td>
                                 <td>
-                                            <div>Whether or not this flag should be made available to the client-side JavaScript SDK</div>
+                                            <div>Include archived flags.</div>
+                                                        </td>
+            </tr>
+                                <tr>
+                                                                <td colspan="1">
+                    <b>env</b>
+                    <div style="font-size: small">
+                        <span style="color: purple">string</span>
+                                                                    </div>
+                                    </td>
+                                <td>
+                                                                                                                                                            </td>
+                                <td>
+                                            <div>Filter for a specific environment.</div>
                                                         </td>
             </tr>
                                 <tr>
@@ -72,39 +85,7 @@ Parameters
                                 <td>
                                                                                                                                                             </td>
                                 <td>
-                                            <div>A unique key that will be used to reference the flag in your code.</div>
-                                                        </td>
-            </tr>
-                                <tr>
-                                                                <td colspan="1">
-                    <b>kind</b>
-                    <div style="font-size: small">
-                        <span style="color: purple">-</span>
-                                                                    </div>
-                                    </td>
-                                <td>
-                                                                                                                            <ul style="margin: 0; padding: 0"><b>Choices:</b>
-                                                                                                                                                                <li><div style="color: blue"><b>bool</b>&nbsp;&larr;</div></li>
-                                                                                                                                                                                                <li>str</li>
-                                                                                                                                                                                                <li>number</li>
-                                                                                                                                                                                                <li>json</li>
-                                                                                    </ul>
-                                                                            </td>
-                                <td>
-                                            <div>Set what type of flag this will be.</div>
-                                                        </td>
-            </tr>
-                                <tr>
-                                                                <td colspan="1">
-                    <b>name</b>
-                    <div style="font-size: small">
-                        <span style="color: purple">-</span>
-                                                                    </div>
-                                    </td>
-                                <td>
-                                                                                                                                                            </td>
-                                <td>
-                                            <div>Name of the flag, if not provided and API calls requires it, key value will be used.</div>
+                                            <div>Unique key for feature flag.</div>
                                                         </td>
             </tr>
                                 <tr>
@@ -123,40 +104,7 @@ Parameters
             </tr>
                                 <tr>
                                                                 <td colspan="1">
-                    <b>state</b>
-                    <div style="font-size: small">
-                        <span style="color: purple">-</span>
-                                                                    </div>
-                                    </td>
-                                <td>
-                                                                                                                            <ul style="margin: 0; padding: 0"><b>Choices:</b>
-                                                                                                                                                                <li>absent</li>
-                                                                                                                                                                                                <li>enabled</li>
-                                                                                                                                                                                                <li>disabled</li>
-                                                                                                                                                                                                <li>deleted</li>
-                                                                                                                                                                                                <li><div style="color: blue"><b>present</b>&nbsp;&larr;</div></li>
-                                                                                    </ul>
-                                                                            </td>
-                                <td>
-                                            <div>Indicate desired state of the resource</div>
-                                                        </td>
-            </tr>
-                                <tr>
-                                                                <td colspan="1">
-                    <b>tags</b>
-                    <div style="font-size: small">
-                        <span style="color: purple">string</span>
-                                                                    </div>
-                                    </td>
-                                <td>
-                                                                                                                                                            </td>
-                                <td>
-                                            <div>An array of tags for this feature flag.</div>
-                                                        </td>
-            </tr>
-                                <tr>
-                                                                <td colspan="1">
-                    <b>temporary</b>
+                    <b>summary</b>
                     <div style="font-size: small">
                         <span style="color: purple">boolean</span>
                                                                     </div>
@@ -164,24 +112,24 @@ Parameters
                                 <td>
                                                                                                                                                                         <ul style="margin: 0; padding: 0"><b>Choices:</b>
                                                                                                                                                                 <li>no</li>
-                                                                                                                                                                                                <li><div style="color: blue"><b>yes</b>&nbsp;&larr;</div></li>
+                                                                                                                                                                                                <li>yes</li>
                                                                                     </ul>
                                                                             </td>
                                 <td>
-                                            <div>Toggle if flag is temporary or permanent</div>
+                                            <div>Flags will not include their list of prerequisites, targets or rules. Set to false to include these fields for each flag returned</div>
                                                         </td>
             </tr>
                                 <tr>
                                                                 <td colspan="1">
-                    <b>variations</b>
+                    <b>tag</b>
                     <div style="font-size: small">
-                        <span style="color: purple">list</span>
+                        <span style="color: purple">string</span>
                                                                     </div>
                                     </td>
                                 <td>
                                                                                                                                                             </td>
                                 <td>
-                                            <div>An array of dictionaries containing possible variations for the flag.</div>
+                                            <div>Filter for a specific tag.</div>
                                                         </td>
             </tr>
                         </table>
@@ -196,23 +144,11 @@ Examples
 .. code-block:: yaml+jinja
 
     
-    # Create a new flag
-    - launchdarkly_feature_flag:
-        name: example
-        kind: bool
-        state: present
-        temporary: false
-        key: example_flag_creation
-
-    - launchdarkly_feature_flag:
-        name: example
-        kind: bool
-        key: example_flag_creation1
-        state: present
-        tags:
-         - tag1
-         - tag2
-        include_in_snippet: true
+    # Get list of flags filtered to production environment.
+    - launchdarkly_feature_flag_info:
+        api_key: api-12345
+        project_key: dano-test-project
+        env: production
 
 
 
@@ -231,14 +167,27 @@ Common return values are documented :ref:`here <common_return_values>`, the foll
         </tr>
                     <tr>
                                 <td colspan="1">
-                    <b>feature_flag</b>
+                    <b>results</b>
                     <div style="font-size: small">
-                      <span style="color: purple">dictionary</span>
+                      <span style="color: purple">-</span>
                                           </div>
                                     </td>
-                <td>on success</td>
+                <td>always</td>
                 <td>
-                                            <div>Dictionary containing a <a href='https://github.com/launchdarkly/api-client-python/blob/2.0.30/docs/FeatureFlag.md'>Feature Flag</a></div>
+                                            <div>List of Feature Flags.</div>
+                                        <br/>
+                                    </td>
+            </tr>
+                                <tr>
+                                <td colspan="1">
+                    <b>type</b>
+                    <div style="font-size: small">
+                      <span style="color: purple">string</span>
+                                          </div>
+                                    </td>
+                <td>always</td>
+                <td>
+                                            <div>Type of return value</div>
                                         <br/>
                                     </td>
             </tr>
