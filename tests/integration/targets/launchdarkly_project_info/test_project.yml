@@ -1,0 +1,36 @@
+---
+- name: Test Ansible Collection
+  hosts: localhost
+  gather_facts: no
+  module_defaults:
+    launchdarkly_project:
+      api_key: "{{ ld_api_key }}"
+
+  tasks:
+  - name: Create Project
+    launchdarkly_project:
+      state: present
+      project_key: ansible-int-proj
+      name: "Ansible Integration Project"
+      tags:
+        - yellow
+        - red
+      environments:
+      - key: "test-env-ans"
+        color: "FFFFFF"
+        name: "test-env-ans"
+
+  - name: Idempotent Project
+    launchdarkly_project_info:
+      project_key: ansible-int-proj
+    register: project
+
+  - assert:
+    that: project.changed == true
+    that: project.project.name == "Ansible Integration Project"
+    that: "'yellow' in results.project.tags"
+
+  - name: Delete Project
+    launchdarkly_project:
+      state: absent
+      project_key: ansible-int-proj

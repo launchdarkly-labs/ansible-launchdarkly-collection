@@ -29,6 +29,7 @@ license_file: 'LICENSE.txt'
 # requirements as 'namespace' and 'name'
 tags:
   - feature_flags
+  - feature_management
   - web
   - development
 
