@@ -20,7 +20,12 @@
       include_in_snippet: true
       description: "This is an awesome feature that will be implemented."
 
-  - name: Get Test
+  - name: Get Flags
+    launchdarkly_test_generator:
+
+    register: results
+
+  - name: Flag Overrides
     launchdarkly_test_generator:
       overrides_flag:
         - example_test_flag-3: False

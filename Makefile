@@ -19,3 +19,4 @@ build_docs:
 update_galaxy_version:
 	sed -i 's/version: $(old_galaxy_version)/version: $(new_galaxy_version)/g' galaxy.yml
 	sed -i 's/$(old_galaxy_version)/$(new_galaxy_version)/g' docs/source/conf.py
+	sed -i 's/VERSION = "$(old_galaxy_version)"/VERSION = "$(new_galaxy_version)"/g' plugins/module_utils/base.py
