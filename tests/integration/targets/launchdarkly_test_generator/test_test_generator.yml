@@ -27,7 +27,6 @@
 
   - name: Flag Overrides
     launchdarkly_test_generator:
-      key:
       overrides_flag:
         - example_test_flag-3: False
         - example_test_flag: True
@@ -36,4 +35,5 @@
   - name: Delete flag
     launchdarkly_feature_flag:
       state: absent
+      key: example_test_flag
       project_key: dano-test-project
