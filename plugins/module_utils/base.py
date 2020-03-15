@@ -5,10 +5,13 @@ from ansible.errors import AnsibleError, AnsibleAuthenticationFailure
 from ansible.module_utils.common._json_compat import json
 from ansible.module_utils.basic import env_fallback
 
+VERSION = "0.2.12"
+
 
 def configure_instance(api_key):
     configuration = launchdarkly_api.Configuration()
     configuration.api_key["Authorization"] = api_key
+    configuration.user_agent = "launchdarkly-ansible-collection/%s" % VERSION
     return configuration
 
 
