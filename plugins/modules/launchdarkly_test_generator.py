@@ -18,9 +18,9 @@ description:
      - Create a JSON file for local testing
 version_added: "0.2.0"
 options:
-    project_key:
+    sdk_key:
         description:
-            - Project key will group flags together.
+            - SDK Key to retrieve flags for an environment.
         default: 'default'
         required: yes
         type: str

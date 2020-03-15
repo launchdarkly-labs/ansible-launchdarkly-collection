@@ -60,7 +60,7 @@ Parameters
             </tr>
                                 <tr>
                                                                 <td colspan="1">
-                    <b>project_key</b>
+                    <b>sdk_key</b>
                     <div style="font-size: small">
                         <span style="color: purple">string</span>
                                                  / <span style="color: red">required</span>                    </div>
@@ -69,7 +69,7 @@ Parameters
                                                                                                                                                                     <b>Default:</b><br/><div style="color: blue">"default"</div>
                                     </td>
                                 <td>
-                                            <div>Project key will group flags together.</div>
+                                            <div>SDK Key to retrieve flags for an environment.</div>
                                                         </td>
             </tr>
                         </table>
