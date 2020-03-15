@@ -36,5 +36,4 @@
   - name: Delete flag
     launchdarkly_feature_flag:
       state: absent
-      key: example_test_flag
       project_key: dano-test-project
