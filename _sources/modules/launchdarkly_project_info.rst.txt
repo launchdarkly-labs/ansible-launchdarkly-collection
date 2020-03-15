@@ -1,13 +1,13 @@
 :source: 
 
 
-.. _launchdarkly_test_generator_:
+.. _launchdarkly_project_info_:
 
 
-launchdarkly_test_generator -- Create a JSON file for testing
-+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+launchdarkly_project_info -- Return a single Project
+++++++++++++++++++++++++++++++++++++++++++++++++++++
 
-.. versionadded:: 0.2.0
+.. versionadded:: 0.2.11
 
 .. contents::
    :local:
@@ -16,7 +16,7 @@ launchdarkly_test_generator -- Create a JSON file for testing
 
 Synopsis
 --------
-- Create a JSON file for local testing
+- Return a dictionary of a single LaunchDarkly Project
 
 
 
@@ -34,7 +34,7 @@ Parameters
         </tr>
                     <tr>
                                                                 <td colspan="1">
-                    <b>environment_key</b>
+                    <b>api_key</b>
                     <div style="font-size: small">
                         <span style="color: purple">string</span>
                                                  / <span style="color: red">required</span>                    </div>
@@ -42,34 +42,21 @@ Parameters
                                 <td>
                                                                                                                                                             </td>
                                 <td>
-                                            <div>A unique key that will be used to reference the flag in your code.</div>
+                                            <div>LaunchDarkly API Key. May be set as <code>LAUNCHDARKLY_ACCESS_TOKEN</code> environment variable.</div>
                                                         </td>
             </tr>
                                 <tr>
                                                                 <td colspan="1">
-                    <b>overrides_flag</b>
+                    <b>project_key</b>
                     <div style="font-size: small">
-                        <span style="color: purple">list</span>
-                                                                    </div>
-                                    </td>
-                                <td>
-                                                                                                                                                            </td>
-                                <td>
-                                            <div>override specific keys</div>
-                                                        </td>
-            </tr>
-                                <tr>
-                                                                <td colspan="1">
-                    <b>sdk_key</b>
-                    <div style="font-size: small">
-                        <span style="color: purple">string</span>
+                        <span style="color: purple">-</span>
                                                  / <span style="color: red">required</span>                    </div>
                                     </td>
                                 <td>
                                                                                                                                                                     <b>Default:</b><br/><div style="color: blue">"default"</div>
                                     </td>
                                 <td>
-                                            <div>SDK Key to retrieve flags for an environment.</div>
+                                            <div>Project key will group flags together</div>
                                                         </td>
             </tr>
                         </table>
@@ -84,13 +71,10 @@ Examples
 .. code-block:: yaml+jinja
 
     
-    # Create a new LaunchDarkly Project with tags
-      - name: Generate Test JSON
-        launchdarkly_test_generator:
-          sdk_key: sdk-test-123456
-          overrides_flag:
-            - example_test_flag: True
-        register: results
+    # Get list of flags filtered to production environment.
+    - launchdarkly_project_info:
+        api_key: api-12345
+        project_key: dano-test-project
 
 
 
@@ -109,14 +93,14 @@ Common return values are documented :ref:`here <common_return_values>`, the foll
         </tr>
                     <tr>
                                 <td colspan="1">
-                    <b>content</b>
+                    <b>project</b>
                     <div style="font-size: small">
-                      <span style="color: purple">json</span>
+                      <span style="color: purple">dictionary</span>
                                           </div>
                                     </td>
                 <td>on success</td>
                 <td>
-                                            <div>Dictionary containing a JSON object that can be used as a file source.</div>
+                                            <div>Dictionary containing a <a href='https://github.com/launchdarkly/api-client-python/blob/2.0.30/docs/Project.md'>Project</a></div>
                                         <br/>
                                     </td>
             </tr>

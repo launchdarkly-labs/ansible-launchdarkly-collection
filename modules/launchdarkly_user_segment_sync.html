@@ -63,7 +63,7 @@
             
             
               <div class="version">
-                0.2.10
+                0.2.12
               </div>
             
           
@@ -80,11 +80,11 @@
             current_url = window.location.href;
             option = document.createElement("option");
             option.text = "latest";
-            if ( "latest" == "0.2.10" ) {
+            if ( "latest" == "0.2.12" ) {
               option.selected = true;
             }
-            if (current_url.search("0.2.10") > -1) {
-              option.value = current_url.replace("0.2.10","latest");
+            if (current_url.search("0.2.12") > -1) {
+              option.value = current_url.replace("0.2.12","latest");
             } else {
               option.value = current_url.replace("latest","latest");
             }
@@ -94,14 +94,14 @@
           <script>
             current_url = window.location.href;
             option = document.createElement("option");
-            option.text = "0.2.10";
-            if ( "0.2.10" == "0.2.10" ) {
+            option.text = "0.2.12";
+            if ( "0.2.12" == "0.2.12" ) {
               option.selected = true;
             }
-            if (current_url.search("0.2.10") > -1) {
-              option.value = current_url.replace("0.2.10","0.2.10");
+            if (current_url.search("0.2.12") > -1) {
+              option.value = current_url.replace("0.2.12","0.2.12");
             } else {
-              option.value = current_url.replace("latest","0.2.10");
+              option.value = current_url.replace("latest","0.2.12");
             }
             x.add(option);
           </script>
@@ -140,6 +140,7 @@
 <li class="toctree-l1"><a class="reference internal" href="launchdarkly_feature_flag_sync.html">launchdarkly_feature_flag_sync – Sync LaunchDarkly Feature Flags across Environments</a></li>
 <li class="toctree-l1"><a class="reference internal" href="launchdarkly_project.html">launchdarkly_project – Create Project</a></li>
 <li class="toctree-l1"><a class="reference internal" href="launchdarkly_project_copy.html">launchdarkly_project_copy – Copy LaunchDarkly Projects in or between accounts.</a></li>
+<li class="toctree-l1"><a class="reference internal" href="launchdarkly_project_info.html">launchdarkly_project_info – Return a single Project</a></li>
 <li class="toctree-l1"><a class="reference internal" href="launchdarkly_test_generator.html">launchdarkly_test_generator – Create a JSON file for testing</a></li>
 <li class="toctree-l1"><a class="reference internal" href="launchdarkly_user_segment.html">launchdarkly_user_segment – Manage User Segments</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">launchdarkly_user_segment_sync – Sync LaunchDarkly User Segments across Environments</a><ul>
