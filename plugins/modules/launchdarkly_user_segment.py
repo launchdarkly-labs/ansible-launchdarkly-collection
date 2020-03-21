@@ -154,9 +154,7 @@ def main():
         )
     )
 
-    module = AnsibleModule(
-        argument_spec=argument_spec
-    )
+    module = AnsibleModule(argument_spec=argument_spec)
 
     if not HAS_LD:
         module.fail_json(
@@ -273,7 +271,7 @@ def _configure_user_segment(module, api_instance, api_response=None, ans_changed
                     "key",
                     "version",
                     "user_segment_key",
-                    "conftest"
+                    "conftest",
                 ]
             ),
         )
@@ -286,7 +284,7 @@ def _configure_user_segment(module, api_instance, api_response=None, ans_changed
             "environment_key",
             "project_key",
             "user_segment_key",
-            "conftest"
+            "conftest",
         ]:
             if module.params[key] is not None:
                 patches.append(parse_user_param(module.params, key))

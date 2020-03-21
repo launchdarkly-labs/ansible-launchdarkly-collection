@@ -215,7 +215,7 @@ def _configure_project(module, api_instance, project=None, changed=False):
             "api_key",
             "environments",
             "project_key",
-            "conftest"
+            "conftest",
         ]:
             patches.append(_parse_project_param(module, key))
 

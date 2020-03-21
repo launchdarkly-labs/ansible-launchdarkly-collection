@@ -131,7 +131,7 @@ from ansible_collections.launchdarkly_labs.collection.plugins.module_utils.base 
     configure_instance,
     fail_exit,
     ld_common_argument_spec,
-    rego_test
+    validate_params,
 )
 
 
@@ -301,7 +301,7 @@ def _parse_flag_param(module, param_name, key, op="replace"):
 def _create_flag(module, api_instance):
     # Variations can only be set at time of flag creation.
     if module.params["conftest"]["enabled"]:
-        rego_test(module)
+        validate_params(module)
 
     if module.params["kind"] == "bool":
         variations = [

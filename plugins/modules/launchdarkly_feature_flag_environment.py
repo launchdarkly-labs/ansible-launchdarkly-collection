@@ -399,7 +399,7 @@ def _configure_feature_flag_env(module, api_instance, feature_flag=None):
                 "flag_key",
                 "comment",
                 "salt",
-                "conftest"
+                "conftest",
             ]
             and module.params[key] is not None
         ):

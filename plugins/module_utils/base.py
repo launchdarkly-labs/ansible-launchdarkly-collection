@@ -62,6 +62,7 @@ def fail_exit(module, e):
     else:
         return module.exit_json(failed=True, msg=to_native(e.reason))
 
+
 def ld_common_argument_spec():
     return dict(
         api_key=dict(
@@ -70,26 +71,42 @@ def ld_common_argument_spec():
             no_log=True,
             fallback=(env_fallback, ["LAUNCHDARKLY_ACCESS_TOKEN"]),
         ),
-        conftest=dict(type="dict",
+        conftest=dict(
+            type="dict",
             apply_defaults=True,
             options=dict(
                 dir=dict(type="str", default="policy"),
                 namespace=dict(type="str", default="launchdarkly"),
-                enabled=dict(type="bool", default=False)
-            )),
+                enabled=dict(type="bool", default=False),
+            ),
+        ),
     )
 
-def rego_test(module):
+
+def rego_test(module, validate):
     try:
         from policykit import Conftest
     except ImportError:
         module.fail_json(
             msg=missing_required_lib("policykit"), exception=traceback.format_exc()
         )
-    params = json.dumps(module.params)
     try:
-        run = Conftest(module.params["conftest"]["dir"]).test(params, namespace=module.params["conftest"]["namespace"])
+        run = Conftest(module.params["conftest"]["dir"]).test(
+            namespace=module.params["conftest"]["namespace"], json_input=validate
+        )
     except Exception as e:
         raise AnsibleError(e)
-    if not run.success:
-        return module.exit_json(failed=True, msg="policy failed: %s" % run.results.failures)
+
+    return run
+
+
+def validate_params(module):
+    keys = ["api_key", "state"]
+
+    check_params = dict((k, module.params[k]) for k in module.params if k not in keys)
+    result = rego_test(module, check_params)
+
+    if result.results[0].failures:
+        module.exit_json(
+            failed=True, msg="policy failed: %s" % result.results[0].failures
+        )
