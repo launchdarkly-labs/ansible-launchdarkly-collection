@@ -107,6 +107,4 @@ def validate_params(module):
     result = rego_test(module, check_params)
 
     if result.results[0].failures:
-        module.exit_json(
-            failed=True, msg="policy failed: %s" % result.results[0].failures
-        )
+        module.exit_json(failed=True, validation=result.results[0].failures)

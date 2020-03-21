@@ -75,7 +75,9 @@ options:
                 description:
                     - Rego namespace to run the tests against
 
-extends_documentation_fragment: launchdarkly_labs.collection.launchdarkly
+extends_documentation_fragment:
+    - launchdarkly_labs.collection.launchdarkly
+    - launchdarkly_labs.collection.launchdarkly_conftest
 """
 
 EXAMPLES = r"""

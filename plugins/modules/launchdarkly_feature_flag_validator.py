@@ -13,10 +13,10 @@ ANSIBLE_METADATA = {
 DOCUMENTATION = r"""
 ---
 module: launchdarkly_feature_flag_validator
-short_description: Validate Flags against Conftest(OPA) Policies
+short_description: Validate Flags against Conftest OPA Policies written in Rego
 description:
-     - Return value from Feature Flag Evaluation
-version_added: "0.2.8"
+     - Validate Feature Flags in a Project
+version_added: "0.3.0"
 options:
     project_key:
         description:
@@ -28,13 +28,10 @@ options:
             - Filter for a specific environment.
         required: no
         type: str
-    tag:
-        description:
-            - Filter for a specific tag.
-        required: no
-        type: str
 
-extends_documentation_fragment: launchdarkly_labs.collection.launchdarkly
+extends_documentation_fragment:
+    - launchdarkly_labs.collection.launchdarkly
+    - launchdarkly_labs.collection.launchdarkly_conftest
 """
 
 EXAMPLES = r"""
@@ -42,7 +39,6 @@ EXAMPLES = r"""
 - launchdarkly_feature_flag_info:
     api_key: api-12345
     project_key: dano-test-project
-    env: production
 """
 
 RETURN = r"""
@@ -110,10 +106,13 @@ def main():
     for flag in flags:
         result = rego_test(module, flag)
         if result.results[0].failures:
-            results.append({"key": flag["key"], "failures": result.results[0].failures})
+            validation_fail = {"key": flag["key"], "failures": []}
+            for failure in result.results[0].failures:
+                validation_fail["failures"].append(failure["msg"])
+            results.append(validation_fail)
 
     if results:
-        module.exit_json(failed=True, msg="policy failed: %s" % results)
+        module.exit_json(failed=True, validated=False, validation=results)
     else:
         module.exit_json(changed=True, validated=True)
 

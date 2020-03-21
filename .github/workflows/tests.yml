@@ -41,4 +41,4 @@ jobs:
         - name: Install Requirements
           run: pip install -r requirements.txt --disable-pip-version-check
         - name: Run integration tests
-          run: ansible-test integration --docker centos7 -v --color --retry-on-error --requirements
+          run: ansible-test integration --docker 'intheclouddan/ansible-test-container:0.1.0' -v --color --retry-on-error --requirements

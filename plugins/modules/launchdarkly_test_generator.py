@@ -24,11 +24,6 @@ options:
         default: 'default'
         required: yes
         type: str
-    environment_key:
-        description:
-            - A unique key that will be used to reference the flag in your code.
-        required: yes
-        type: str
     overrides_flag:
         description:
             - override specific keys
