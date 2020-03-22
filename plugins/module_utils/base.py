@@ -5,7 +5,7 @@ from ansible.errors import AnsibleError, AnsibleAuthenticationFailure
 from ansible.module_utils.common._json_compat import json
 from ansible.module_utils.basic import env_fallback
 
-VERSION = "0.2.12"
+VERSION = "0.3.0"
 
 
 def configure_instance(api_key):
@@ -70,5 +70,41 @@ def ld_common_argument_spec():
             type="str",
             no_log=True,
             fallback=(env_fallback, ["LAUNCHDARKLY_ACCESS_TOKEN"]),
-        )
+        ),
+        conftest=dict(
+            type="dict",
+            apply_defaults=True,
+            options=dict(
+                dir=dict(type="str", default="policy"),
+                namespace=dict(type="str", default="launchdarkly"),
+                enabled=dict(type="bool", default=False),
+            ),
+        ),
     )
+
+
+def rego_test(module, validate):
+    try:
+        from policykit import Conftest
+    except ImportError:
+        module.fail_json(
+            msg=missing_required_lib("policykit"), exception=traceback.format_exc()
+        )
+    try:
+        run = Conftest(module.params["conftest"]["dir"]).test(
+            namespace=module.params["conftest"]["namespace"], json_input=validate
+        )
+    except Exception as e:
+        raise AnsibleError(e)
+
+    return run
+
+
+def validate_params(module):
+    keys = ["api_key", "state"]
+
+    check_params = dict((k, module.params[k]) for k in module.params if k not in keys)
+    result = rego_test(module, check_params)
+
+    if result.results[0].failures:
+        module.exit_json(failed=True, validation=result.results[0].failures)

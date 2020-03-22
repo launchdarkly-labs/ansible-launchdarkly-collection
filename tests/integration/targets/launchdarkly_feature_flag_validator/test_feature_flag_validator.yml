@@ -1,0 +1,36 @@
+---
+- name: Test Ansible Collection
+  hosts: localhost
+  gather_facts: no
+  module_defaults:
+    launchdarkly_feature_flag:
+      api_key: "{{ ld_api_key }}"
+    launchdarkly_feature_flag_validator:
+      api_key: "{{ ld_api_key }}"
+
+  tasks:
+  - name: Create Feature Flag
+    launchdarkly_feature_flag:
+      kind: bool
+      state: present
+      key: example_test_flag
+      project_key: dano-test-project
+      tags: ["yellow", "green"]
+      name: ansible-random-new-name
+      include_in_snippet: true
+      description: "This is an awesome feature that will be implemented."
+
+  - name: Update Feature Flag
+    launchdarkly_feature_flag_validator:
+      project_key: dano-test-project
+    ignore_errors: true
+    register: results
+
+  - assert:
+      that: results.validation[0].failures[0] == "Need at least one tag"
+
+  - name: Delete flag
+    launchdarkly_feature_flag:
+      state: absent
+      key: example_test_flag
+      project_key: dano-test-project

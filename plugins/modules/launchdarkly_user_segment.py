@@ -120,6 +120,8 @@ from ansible_collections.launchdarkly_labs.collection.plugins.module_utils.base 
     _patch_path,
     parse_user_param,
     fail_exit,
+    ld_common_argument_spec,
+    rego_test,
 )
 
 
@@ -136,15 +138,10 @@ def usr_argument_spec():
 
 
 def main():
-    module = AnsibleModule(
-        argument_spec=dict(
+    argument_spec = ld_common_argument_spec()
+    argument_spec.update(
+        dict(
             state=dict(type="str", default="present", choices=["absent", "present"]),
-            api_key=dict(
-                required=True,
-                type="str",
-                no_log=True,
-                fallback=(env_fallback, ["LAUNCHDARKLY_ACCESS_TOKEN"]),
-            ),
             environment_key=dict(type="str", required=True),
             project_key=dict(type="str", required=True),
             user_segment_key=dict(type="str", required=True),
@@ -156,6 +153,8 @@ def main():
             rules=usr_argument_spec(),
         )
     )
+
+    module = AnsibleModule(argument_spec=argument_spec)
 
     if not HAS_LD:
         module.fail_json(
@@ -190,6 +189,9 @@ def _delete_user_segment(module, api_instance):
 
 
 def _create_user_segment(module, api_instance):
+    if module.params["conftest"]["enabled"]:
+        rego_test(module)
+
     name = (
         module.params["name"]
         if module.params["name"] is not None
@@ -269,6 +271,7 @@ def _configure_user_segment(module, api_instance, api_response=None, ans_changed
                     "key",
                     "version",
                     "user_segment_key",
+                    "conftest",
                 ]
             ),
         )
@@ -281,6 +284,7 @@ def _configure_user_segment(module, api_instance, api_response=None, ans_changed
             "environment_key",
             "project_key",
             "user_segment_key",
+            "conftest",
         ]:
             if module.params[key] is not None:
                 patches.append(parse_user_param(module.params, key))

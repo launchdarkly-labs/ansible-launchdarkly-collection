@@ -93,6 +93,8 @@ from ansible.module_utils.six import PY2, iteritems, string_types
 from ansible_collections.launchdarkly_labs.collection.plugins.module_utils.base import (
     configure_instance,
     fail_exit,
+    ld_common_argument_spec,
+    rego_test,
 )
 from ansible_collections.launchdarkly_labs.collection.plugins.module_utils.environment import (
     ld_env_arg_spec,
@@ -101,16 +103,10 @@ from ansible_collections.launchdarkly_labs.collection.plugins.module_utils.envir
 
 
 def main():
-
-    module = AnsibleModule(
-        argument_spec=dict(
+    argument_spec = ld_common_argument_spec()
+    argument_spec.update(
+        dict(
             state=dict(type="str", default="present", choices=["absent", "present"]),
-            api_key=dict(
-                required=True,
-                type="str",
-                no_log=True,
-                fallback=(env_fallback, ["LAUNCHDARKLY_ACCESS_TOKEN"]),
-            ),
             project_key=dict(type="str", required=True),
             name=dict(type="str", required_if=["state", "present"]),
             environments=dict(type="list", elements="dict", options=ld_env_arg_spec()),
@@ -118,6 +114,7 @@ def main():
             include_in_snippet_by_default=dict(type="bool"),
         )
     )
+    module = AnsibleModule(argument_spec=argument_spec)
 
     if not HAS_LD:
         module.fail_json(
@@ -163,6 +160,8 @@ def _delete_project(module, api_instance):
 
 
 def _create_project(module, api_instance):
+    if module.params["conftest"]["enabled"]:
+        rego_test(module)
 
     project_config = {
         "name": module.params["name"],
@@ -194,6 +193,9 @@ def _create_project(module, api_instance):
 
 
 def _configure_project(module, api_instance, project=None, changed=False):
+    if module.params["conftest"]["enabled"]:
+        rego_test(module)
+
     patches = []
 
     if project:
@@ -213,6 +215,7 @@ def _configure_project(module, api_instance, project=None, changed=False):
             "api_key",
             "environments",
             "project_key",
+            "conftest",
         ]:
             patches.append(_parse_project_param(module, key))
 

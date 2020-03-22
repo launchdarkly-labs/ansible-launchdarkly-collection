@@ -91,6 +91,7 @@ from ansible.module_utils.common._json_compat import json
 from ansible_collections.launchdarkly_labs.collection.plugins.module_utils.base import (
     configure_instance,
     fail_exit,
+    ld_common_argument_spec,
 )
 
 

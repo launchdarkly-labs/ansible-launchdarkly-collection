@@ -102,3 +102,44 @@
       state: absent
       key: example_test_flag_1
       project_key: dano-test-project
+
+  - name: Fail Conftest Feature Flag
+    launchdarkly_feature_flag:
+      kind: bool
+      state: present
+      key: example_test_flag
+      project_key: dano-test-project
+      tags: ["yellow", "green"]
+      name: ansible-random-new-name
+      include_in_snippet: true
+      description: "This is an awesome feature that will be implemented."
+      conftest:
+        enabled: true
+    ignore_errors: true
+    register: results
+
+  - assert:
+      that: results.failed == true
+
+  - name: Succeed Conftest Feature Flag
+    launchdarkly_feature_flag:
+      kind: bool
+      state: present
+      key: test_conftest_flag
+      project_key: dano-test-project
+      tags: ["yellow", "green"]
+      name: "test conftest flag"
+      include_in_snippet: true
+      description: "This is an awesome feature that will be implemented."
+      conftest:
+        enabled: true
+    register: results
+
+  - assert:
+      that: results.changed == true
+
+  - name: Delete JSON Feature Flag
+    launchdarkly_feature_flag:
+      state: absent
+      key: test_conftest_flag
+      project_key: dano-test-project

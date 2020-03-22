@@ -34,19 +34,6 @@ Parameters
         </tr>
                     <tr>
                                                                 <td colspan="1">
-                    <b>environment_key</b>
-                    <div style="font-size: small">
-                        <span style="color: purple">string</span>
-                                                 / <span style="color: red">required</span>                    </div>
-                                    </td>
-                                <td>
-                                                                                                                                                            </td>
-                                <td>
-                                            <div>A unique key that will be used to reference the flag in your code.</div>
-                                                        </td>
-            </tr>
-                                <tr>
-                                                                <td colspan="1">
                     <b>overrides_flag</b>
                     <div style="font-size: small">
                         <span style="color: purple">list</span>

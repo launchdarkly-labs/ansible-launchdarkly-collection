@@ -147,6 +147,7 @@ from ansible_collections.launchdarkly_labs.collection.plugins.module_utils.base 
     _build_comment,
     fail_exit,
     ld_common_argument_spec,
+    rego_test,
 )
 from ansible_collections.launchdarkly_labs.collection.plugins.module_utils.rule import (
     rule_argument_spec,
@@ -251,6 +252,9 @@ def _parse_flag_param(module, key, op="replace"):
 
 
 def _configure_feature_flag_env(module, api_instance, feature_flag=None):
+    if module.params["conftest"]["enabled"]:
+        rego_test(module)
+
     patches = []
 
     _toggle_flag(module, patches, feature_flag)
@@ -395,6 +399,7 @@ def _configure_feature_flag_env(module, api_instance, feature_flag=None):
                 "flag_key",
                 "comment",
                 "salt",
+                "conftest",
             ]
             and module.params[key] is not None
         ):
