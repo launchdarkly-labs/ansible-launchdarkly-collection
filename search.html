@@ -62,7 +62,7 @@
             
             
               <div class="version">
-                0.2.12
+                0.3.0
               </div>
             
           
@@ -79,11 +79,11 @@
             current_url = window.location.href;
             option = document.createElement("option");
             option.text = "latest";
-            if ( "latest" == "0.2.12" ) {
+            if ( "latest" == "0.3.0" ) {
               option.selected = true;
             }
-            if (current_url.search("0.2.12") > -1) {
-              option.value = current_url.replace("0.2.12","latest");
+            if (current_url.search("0.3.0") > -1) {
+              option.value = current_url.replace("0.3.0","latest");
             } else {
               option.value = current_url.replace("latest","latest");
             }
@@ -93,14 +93,14 @@
           <script>
             current_url = window.location.href;
             option = document.createElement("option");
-            option.text = "0.2.12";
-            if ( "0.2.12" == "0.2.12" ) {
+            option.text = "0.3.0";
+            if ( "0.3.0" == "0.3.0" ) {
               option.selected = true;
             }
-            if (current_url.search("0.2.12") > -1) {
-              option.value = current_url.replace("0.2.12","0.2.12");
+            if (current_url.search("0.3.0") > -1) {
+              option.value = current_url.replace("0.3.0","0.3.0");
             } else {
-              option.value = current_url.replace("latest","0.2.12");
+              option.value = current_url.replace("latest","0.3.0");
             }
             x.add(option);
           </script>
@@ -137,6 +137,7 @@
 <li class="toctree-l1"><a class="reference internal" href="modules/launchdarkly_feature_flag_environment.html">launchdarkly_feature_flag_environment – Create Environment specific flag targeting</a></li>
 <li class="toctree-l1"><a class="reference internal" href="modules/launchdarkly_feature_flag_info.html">launchdarkly_feature_flag_info – Return a list of Feature Flags</a></li>
 <li class="toctree-l1"><a class="reference internal" href="modules/launchdarkly_feature_flag_sync.html">launchdarkly_feature_flag_sync – Sync LaunchDarkly Feature Flags across Environments</a></li>
+<li class="toctree-l1"><a class="reference internal" href="modules/launchdarkly_feature_flag_validator.html">launchdarkly_feature_flag_validator – Validate Flags against Conftest OPA Policies written in Rego</a></li>
 <li class="toctree-l1"><a class="reference internal" href="modules/launchdarkly_project.html">launchdarkly_project – Create Project</a></li>
 <li class="toctree-l1"><a class="reference internal" href="modules/launchdarkly_project_copy.html">launchdarkly_project_copy – Copy LaunchDarkly Projects in or between accounts.</a></li>
 <li class="toctree-l1"><a class="reference internal" href="modules/launchdarkly_project_info.html">launchdarkly_project_info – Return a single Project</a></li>
