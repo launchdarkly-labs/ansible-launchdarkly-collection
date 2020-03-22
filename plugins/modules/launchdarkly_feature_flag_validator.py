@@ -42,13 +42,13 @@ EXAMPLES = r"""
 """
 
 RETURN = r"""
-type:
-    description: Type of return value
-    type: string
+validated:
+    description: If the policies were all successfully validated.
+    type: bool
     returned: always
-results:
-    description: List of Feature Flags.
-    returned: always
+validation:
+    description: List of Dictionaries, container flag key and list of failures as strings.
+    returned: failure
 """
 
 import inspect

@@ -167,27 +167,27 @@ Common return values are documented :ref:`here <common_return_values>`, the foll
         </tr>
                     <tr>
                                 <td colspan="1">
-                    <b>results</b>
+                    <b>validated</b>
                     <div style="font-size: small">
-                      <span style="color: purple">-</span>
+                      <span style="color: purple">boolean</span>
                                           </div>
                                     </td>
                 <td>always</td>
                 <td>
-                                            <div>List of Feature Flags.</div>
+                                            <div>If the policies were all successfully validated.</div>
                                         <br/>
                                     </td>
             </tr>
                                 <tr>
                                 <td colspan="1">
-                    <b>type</b>
+                    <b>validation</b>
                     <div style="font-size: small">
-                      <span style="color: purple">string</span>
+                      <span style="color: purple">-</span>
                                           </div>
                                     </td>
-                <td>always</td>
+                <td>failure</td>
                 <td>
-                                            <div>Type of return value</div>
+                                            <div>List of Dictionaries, container flag key and list of failures as strings.</div>
                                         <br/>
                                     </td>
             </tr>
