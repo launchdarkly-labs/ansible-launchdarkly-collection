@@ -15,7 +15,7 @@ DOCUMENTATION = r"""
 module: launchdarkly_feature_flag_validator
 short_description: Validate Flags against Conftest OPA Policies written in Rego
 description:
-     - Validate Feature Flags in a Project
+     - Validate Feature Flags in a Project. Conftest 0.18.0 is required as a binary in your PATH.
 version_added: "0.3.0"
 options:
     project_key:
