@@ -217,7 +217,10 @@ def _create_custom_role(module, api_instance):
 def _configure_custom_role(module, api_instance):
     patches = []
     for key in module.params:
-        if key not in ["state", "api_key", "key", "conftest"] and module.params[key] is not None:
+        if (
+            key not in ["state", "api_key", "key", "conftest"]
+            and module.params[key] is not None
+        ):
             patches.append(_parse_custom_role_param(module, key))
 
     if len(patches) > 0:
