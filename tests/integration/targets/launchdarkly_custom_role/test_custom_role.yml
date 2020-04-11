@@ -21,8 +21,8 @@
     register: response
 
   - assert:
-    that: response.key == "ans-test-custom-role"
-    that: response.changed == True
+      that: response.key == "ans-test-custom-role"
+      that: response.changed == True
 
   - name: Delete Custom Role
     launchdarkly_custom_role:
