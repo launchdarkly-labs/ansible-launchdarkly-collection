@@ -20,8 +20,9 @@
           effect: "allow"
     register: response
 
-    - assert:
-      that: response.changed == True
+  - assert:
+    that: response.key == "ans-test-custom-role"
+    that: response.changed == True
 
   - name: Delete Custom Role
     launchdarkly_custom_role:
