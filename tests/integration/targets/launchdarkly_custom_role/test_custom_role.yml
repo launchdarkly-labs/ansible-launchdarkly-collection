@@ -20,6 +20,13 @@
           effect: "allow"
     register: response
 
+  - assert:
+      that: response.key == "ans-test-custom-role"
+      that: response.policy.0.resources == "proj/*:env/*:flag/*"
+      that: response.policy.0.actions == "*"
+      that: response.policy.0.effect == "allow"
+      that: response.changed == True
+
   - name: Delete Custom Role
     launchdarkly_custom_role:
       state: absent
