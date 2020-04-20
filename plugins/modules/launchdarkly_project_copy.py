@@ -353,15 +353,15 @@ def _project_sync(
                 fflag_env = dict(
                     on=flag["environments"][fenv_key]["on"],
                     targets=flag["environments"][fenv_key]["targets"],
-                    off_variation=flag["environments"][fenv_key]["off_variation"],
-                    track_events=flag["environments"][fenv_key]["track_events"],
+                    offVariation=flag["environments"][fenv_key]["off_variation"],
+                    trackEvents=flag["environments"][fenv_key]["track_events"],
                     prerequisites=flag["environments"][fenv_key]["prerequisites"],
                     fallthrough=flag["environments"][fenv_key]["fallthrough"],
                 )
 
                 path = "/environments/" + fenv_key + "/"
                 for key in fflag_env:
-                    if fflag_env.get(key) and fflag_env[key] is not None:
+                    if fflag_env.get(key) is not None:
                         patch = dict(
                             path=path + key, op="replace", value=fflag_env[key]
                         )
