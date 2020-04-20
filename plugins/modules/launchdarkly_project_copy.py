@@ -334,9 +334,15 @@ def _project_sync(
             include_in_snippet=flag["include_in_snippet"],
         )
 
+        fflag_body_mapped = dict(
+            (launchdarkly_api.FeatureFlagBody.attribute_map[k], v)
+                    for k, v in fflag_body.items()
+                    if v is not None
+        )
+
         try:
             response, status, headers = dest_fflags.post_feature_flag_with_http_info(
-                module.params["project_key_dest"], fflag_body
+                module.params["project_key_dest"], fflag_body_mapped
             )
         except ApiException as e:
             if e.status == 429:
@@ -364,11 +370,16 @@ def _project_sync(
                     fallthrough=flag["environments"][fenv_key]["fallthrough"],
                 )
 
+                fflag_env_mapped = dict(
+                    (launchdarkly_api.FeatureFlagConfig.attribute_map[k], v)
+                            for k, v in fflag_env.items()
+                            if v is not None
+                    )
                 path = "/environments/" + fenv_key + "/"
-                for key in fflag_env:
-                    if fflag_env.get(key) and fflag_env[key] is not None:
+                for key in fflag_env_mapped:
+                    if fflag_env_mapped.get(key) is not None:
                         patch = dict(
-                            path=path + key, op="replace", value=fflag_env[key]
+                            path=path + key, op="replace", value=fflag_env_mapped[key]
                         )
                         patches.append(launchdarkly_api.PatchOperation(**patch))
                         del patch
