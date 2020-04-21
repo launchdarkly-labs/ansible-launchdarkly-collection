@@ -336,8 +336,8 @@ def _project_sync(
 
         fflag_body_mapped = dict(
             (launchdarkly_api.FeatureFlagBody.attribute_map[k], v)
-                    for k, v in fflag_body.items()
-                    if v is not None
+            for k, v in fflag_body.items()
+            if v is not None
         )
 
         try:
@@ -372,9 +372,9 @@ def _project_sync(
 
                 fflag_env_mapped = dict(
                     (launchdarkly_api.FeatureFlagConfig.attribute_map[k], v)
-                            for k, v in fflag_env.items()
-                            if v is not None
-                    )
+                    for k, v in fflag_env.items()
+                    if v is not None
+                )
                 path = "/environments/" + fenv_key + "/"
                 for key in fflag_env_mapped:
                     if fflag_env_mapped.get(key) is not None:
