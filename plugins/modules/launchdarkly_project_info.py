@@ -17,12 +17,23 @@ short_description: Return a single Project
 description:
      - Return a dictionary of a single LaunchDarkly Project
 version_added: "0.2.11"
+version_updated: "0.3.32"
 options:
     project_key:
         description:
-            - Project key will group flags together
-        default: 'default'
-        required: yes
+            - Project key is used to return a single project matching that key.
+        required: no
+        type: str
+    tags:
+        description:
+            - list of tags to filter projects. Only projects that contain one of the tags will be returned
+        required: no
+        type: list
+    environment_tags:
+        description:
+            - list of tags to filter environments within the project. Only environments that contain one of the tags will be returned.
+        required: no
+        type: list
 
 extends_documentation_fragment: launchdarkly_labs.collection.launchdarkly
 """
@@ -37,7 +48,7 @@ EXAMPLES = r"""
 RETURN = r"""
 project:
     description: Dictionary containing a L(Project, https://github.com/launchdarkly/api-client-python/blob/2.0.30/docs/Project.md)
-    type: dict
+    type: dict or list
     returned: on success
 """
 
@@ -73,7 +84,9 @@ def main():
                 no_log=True,
                 fallback=(env_fallback, ["LAUNCHDARKLY_ACCESS_TOKEN"]),
             ),
-            project_key=dict(type="str", required=True),
+            project_key=dict(type="str", required=False),
+            tags=dict(type="list", required=False),
+            environment_tags=dict(type="list", required=False),
         )
     )
 
@@ -88,16 +101,46 @@ def main():
         launchdarkly_api.ApiClient(configuration)
     )
 
-    project = _fetch_project(module, api_instance)
+    project = _fetch_projects(module, api_instance)
 
     module.exit_json(changed=True, project=project)
 
 
-def _fetch_project(module, api_instance):
+def _fetch_projects(module, api_instance):
     try:
-        response = api_instance.get_project(module.params["project_key"])
+        if module.params.get("project_key"):
+            response = api_instance.get_project(module.params["project_key"]).to_dict()
 
-        return response.to_dict()
+        else:
+            get_projects = api_instance.get_projects()
+            if module.params.get("tags"):
+                projects = [proj.to_dict() for proj in get_projects.items]
+                filter_projects = [
+                    d
+                    for d in projects
+                    if len(set(d["tags"]).intersection(module.params["tags"]))
+                ]
+                final_projects = []
+                for i, proj in enumerate(filter_projects):
+                    filtered_environments = []
+                    for env in proj["environments"]:
+                        if module.params.get("environment_tags") and set(
+                            env["tags"]
+                        ).intersection(module.params["environment_tags"]):
+                            filtered_environments.append(env)
+                        elif module.params.get("environment_tags"):
+                            continue
+                        else:
+                            filtered_environments = env
+                    filter_projects[i]["environments"] = filtered_environments
+                    final_projects.append(filter_projects)
+                get_projects = [
+                    d for d in filter_projects if len(d["environments"]) > 0
+                ]
+
+            response = get_projects
+
+        return response
     except launchdarkly_api.rest.ApiException as e:
         if e.status == 404:
             return None
