@@ -144,8 +144,10 @@ def _fetch_projects(module, api_instance):
                 ]
 
             if module.params.get("environment_tags"):
-                try: filter_projects
-                except NameError: filter_projects = None
+                try:
+                    filter_projects
+                except NameError:
+                    filter_projects = None
 
                 if filter_projects:
                     env_projects = filter_projects
@@ -167,9 +169,7 @@ def _fetch_projects(module, api_instance):
             else:
                 final_projects = filter_projects
 
-            get_projects = [
-                d for d in final_projects if len(d["environments"]) > 0
-            ]
+            get_projects = [d for d in final_projects if len(d["environments"]) > 0]
 
             response = get_projects
 
