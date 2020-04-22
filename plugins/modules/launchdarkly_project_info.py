@@ -57,6 +57,12 @@ EXAMPLES = r"""
       - dev
     environment_tags:
       - prod
+
+# Get list of all projects only return environments tagged "prod"
+- launchdarkly_project_info:
+    api_key: api-12345
+    environment_tags:
+      - prod
 """
 
 RETURN = r"""
