@@ -98,7 +98,8 @@ def main():
 def _fetch_projects(module, api_instance):
     try:
         if module.params.get("project_key"):
-            response = api_instance.get_project(module.params["project_key"])
+            response = api_instance.get_project(module.params["project_key"]).to_dict()
+
         else:
             get_projects = api_instance.get_projects()
             if module.params.get("tags"):
@@ -108,14 +109,20 @@ def _fetch_projects(module, api_instance):
                     for d in projects
                     if len(set(d["tags"]).intersection(module.params["tags"]))
                 ]
+                final_projects = []
                 for i, proj in enumerate(filter_projects):
                     filtered_environments = []
                     for env in proj["environments"]:
-                        if set(env["tags"]).intersection(
+                        if module.params.get("environment_tags") and set(env["tags"]).intersection(
                             module.params["environment_tags"]
                         ):
                             filtered_environments.append(env)
+                        elif module.params.get("environment_tags"):
+                            continue
+                        else:
+                            filtered_environments = env
                     filter_projects[i]["environments"] = filtered_environments
+                    final_projects.append(filter_projects)
                 get_projects = [
                     d for d in filter_projects if len(d["environments"]) > 0
                 ]

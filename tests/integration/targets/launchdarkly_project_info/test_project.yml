@@ -54,16 +54,24 @@
     register: project
 
   - assert:
-    that: project.changed == true
-    that: project.project[0].name == "Ansible Integration Project"
-    that: '"yellow" in project.project.tags'
-    that: project.project[1].key == "ansible-int-proj2"
+      that: project.changed == true
+      that: project.project[0].name == "Ansible Integration Project"
+      that: '"yellow" in project.project.tags'
+      that: project.project[1].name == "Ansible Integration Project"
 
   - name: Get Project tags
     launchdarkly_project_info:
       tags:
         - yellow
+      environment_tags:
+        - yellow
     register: project
+
+  - assert:
+      that: project.changed == true
+      that: project.project[0].name == "Ansible Integration Project"
+      that: '"yellow" in project.project.tags'
+      that: '"yellow" in project.project[0].environments[0].tags'
 
   - name: Delete Project
     launchdarkly_project:
