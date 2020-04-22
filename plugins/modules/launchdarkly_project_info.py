@@ -127,15 +127,25 @@ def _fetch_projects(module, api_instance):
 
         else:
             get_projects = api_instance.get_projects()
+            projects = [proj.to_dict() for proj in get_projects.items]
+            final_projects = []
             if module.params.get("tags"):
-                projects = [proj.to_dict() for proj in get_projects.items]
+
                 filter_projects = [
                     d
                     for d in projects
                     if len(set(d["tags"]).intersection(module.params["tags"]))
                 ]
-                final_projects = []
-                for i, proj in enumerate(filter_projects):
+
+            if module.params.get("environment_tags"):
+                try: filter_projects
+                except NameError: filter_projects = None
+
+                if filter_projects:
+                    env_projects = filter_projects
+                else:
+                    env_projects = projects
+                for i, proj in enumerate(env_projects):
                     filtered_environments = []
                     for env in proj["environments"]:
                         if module.params.get("environment_tags") and set(
@@ -146,11 +156,14 @@ def _fetch_projects(module, api_instance):
                             continue
                         else:
                             filtered_environments = env
-                    filter_projects[i]["environments"] = filtered_environments
-                    final_projects.append(filter_projects)
-                get_projects = [
-                    d for d in filter_projects if len(d["environments"]) > 0
-                ]
+                    env_projects[i]["environments"] = filtered_environments
+                final_projects = env_projects
+            else:
+                final_projects = filter_projects
+
+            get_projects = [
+                d for d in final_projects if len(d["environments"]) > 0
+            ]
 
             response = get_projects
 
