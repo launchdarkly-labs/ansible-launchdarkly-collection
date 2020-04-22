@@ -13,9 +13,9 @@ ANSIBLE_METADATA = {
 DOCUMENTATION = r"""
 ---
 module: launchdarkly_project_info
-short_description: Return a single Project
+short_description: Return a Project or List of Projects
 description:
-     - Return a dictionary of a single LaunchDarkly Project
+     - Return a dictionary of a single LaunchDarkly Project or List of dictionaries containing LaunchDarkly Projects
 version_added: "0.2.11"
 version_updated: "0.3.32"
 options:
@@ -39,15 +39,29 @@ extends_documentation_fragment: launchdarkly_labs.collection.launchdarkly
 """
 
 EXAMPLES = r"""
-# Get list of flags filtered to production environment.
+# Get project based on its key.
 - launchdarkly_project_info:
     api_key: api-12345
-    project_key: dano-test-project
+    project_key: example-project
+
+# Get list of projects that are tagged "dev"
+- launchdarkly_project_info:
+    api_key: api-12345
+    tags:
+      - dev
+
+# Get list of projects that are tagged "dev" and only return environments tagged "prod"
+- launchdarkly_project_info:
+    api_key: api-12345
+    tags:
+      - dev
+    environment_tags:
+      - prod
 """
 
 RETURN = r"""
 project:
-    description: Dictionary containing a L(Project, https://github.com/launchdarkly/api-client-python/blob/2.0.30/docs/Project.md)
+    description: Dictionary or List of Dictionaries containing a L(Project, https://github.com/launchdarkly/api-client-python/blob/2.0.30/docs/Project.md)
     type: dict or list
     returned: on success
 """
