@@ -12,9 +12,9 @@ ANSIBLE_METADATA = {
 DOCUMENTATION = r"""
 ---
 module: launchdarkly_project_copy
-short_description: Copy LaunchDarkly Projects in or between accounts.
+short_description: Copy source LaunchDarkly Project in or between accounts.
 description:
-     - Copy LaunchDarkly Projects in or between accounts.
+     - Copy source LaunchDarkly Project in or between accounts. This can be used to make a clone of an existing project.
 version_added: "0.2.2"
 options:
     api_key:
@@ -42,6 +42,10 @@ options:
             - Copy only flags which have the specified tag
         required: no
         type: str
+    environments_copy:
+        description:
+            - C(Bool) flag to determine whether to copy source environments to the new project.
+        default: true
 
 extends_documentation_fragment: launchdarkly_labs.collection.launchdarkly
 """
@@ -334,9 +338,15 @@ def _project_sync(
             include_in_snippet=flag["include_in_snippet"],
         )
 
+        fflag_body_mapped = dict(
+            (launchdarkly_api.FeatureFlagBody.attribute_map[k], v)
+            for k, v in fflag_body.items()
+            if v is not None
+        )
+
         try:
             response, status, headers = dest_fflags.post_feature_flag_with_http_info(
-                module.params["project_key_dest"], fflag_body
+                module.params["project_key_dest"], fflag_body_mapped
             )
         except ApiException as e:
             if e.status == 429:
@@ -364,11 +374,16 @@ def _project_sync(
                     fallthrough=flag["environments"][fenv_key]["fallthrough"],
                 )
 
+                fflag_env_mapped = dict(
+                    (launchdarkly_api.FeatureFlagConfig.attribute_map[k], v)
+                    for k, v in fflag_env.items()
+                    if v is not None
+                )
                 path = "/environments/" + fenv_key + "/"
-                for key in fflag_env:
-                    if fflag_env.get(key) and fflag_env[key] is not None:
+                for key in fflag_env_mapped:
+                    if fflag_env_mapped.get(key) is not None:
                         patch = dict(
-                            path=path + key, op="replace", value=fflag_env[key]
+                            path=path + key, op="replace", value=fflag_env_mapped[key]
                         )
                         patches.append(launchdarkly_api.PatchOperation(**patch))
                         del patch

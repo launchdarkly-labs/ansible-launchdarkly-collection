@@ -4,8 +4,8 @@
 .. _launchdarkly_project_copy_:
 
 
-launchdarkly_project_copy -- Copy LaunchDarkly Projects in or between accounts.
-+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+launchdarkly_project_copy -- Copy source LaunchDarkly Project in or between accounts.
++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 .. versionadded:: 0.2.2
 
@@ -16,7 +16,7 @@ launchdarkly_project_copy -- Copy LaunchDarkly Projects in or between accounts.
 
 Synopsis
 --------
-- Copy LaunchDarkly Projects in or between accounts.
+- Copy source LaunchDarkly Project in or between accounts. This can be used to make a clone of an existing project.
 
 
 
@@ -56,6 +56,20 @@ Parameters
                                                                                                                                                             </td>
                                 <td>
                                             <div>LaunchDarkly API Destination Key.</div>
+                                                        </td>
+            </tr>
+                                <tr>
+                                                                <td colspan="1">
+                    <b>environments_copy</b>
+                    <div style="font-size: small">
+                        <span style="color: purple">-</span>
+                                                                    </div>
+                                    </td>
+                                <td>
+                                                                                                                                                                                                                <b>Default:</b><br/><div style="color: blue">"yes"</div>
+                                    </td>
+                                <td>
+                                            <div><code>Bool</code> flag to determine whether to copy source environments to the new project.</div>
                                                         </td>
             </tr>
                                 <tr>
