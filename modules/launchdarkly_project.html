@@ -40,7 +40,7 @@
   <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="launchdarkly_project_copy – Copy LaunchDarkly Projects in or between accounts." href="launchdarkly_project_copy.html" />
+    <link rel="next" title="launchdarkly_project_copy – Copy source LaunchDarkly Project in or between accounts." href="launchdarkly_project_copy.html" />
     <link rel="prev" title="launchdarkly_feature_flag_validator – Validate Flags against Conftest OPA Policies written in Rego" href="launchdarkly_feature_flag_validator.html" /> <script src="//cdnjs.cloudflare.com/ajax/libs/modernizr/2.6.2/modernizr.min.js"></script> 
 </head>
 
@@ -63,7 +63,7 @@
             
             
               <div class="version">
-                0.3.0
+                0.3.2
               </div>
             
           
@@ -80,11 +80,11 @@
             current_url = window.location.href;
             option = document.createElement("option");
             option.text = "latest";
-            if ( "latest" == "0.3.0" ) {
+            if ( "latest" == "0.3.2" ) {
               option.selected = true;
             }
-            if (current_url.search("0.3.0") > -1) {
-              option.value = current_url.replace("0.3.0","latest");
+            if (current_url.search("0.3.2") > -1) {
+              option.value = current_url.replace("0.3.2","latest");
             } else {
               option.value = current_url.replace("latest","latest");
             }
@@ -94,14 +94,14 @@
           <script>
             current_url = window.location.href;
             option = document.createElement("option");
-            option.text = "0.3.0";
-            if ( "0.3.0" == "0.3.0" ) {
+            option.text = "0.3.2";
+            if ( "0.3.2" == "0.3.2" ) {
               option.selected = true;
             }
-            if (current_url.search("0.3.0") > -1) {
-              option.value = current_url.replace("0.3.0","0.3.0");
+            if (current_url.search("0.3.2") > -1) {
+              option.value = current_url.replace("0.3.2","0.3.2");
             } else {
-              option.value = current_url.replace("latest","0.3.0");
+              option.value = current_url.replace("latest","0.3.2");
             }
             x.add(option);
           </script>
@@ -147,7 +147,7 @@
 <li class="toctree-l2"><a class="reference internal" href="#status">Status</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="launchdarkly_project_copy.html">launchdarkly_project_copy – Copy LaunchDarkly Projects in or between accounts.</a></li>
+<li class="toctree-l1"><a class="reference internal" href="launchdarkly_project_copy.html">launchdarkly_project_copy – Copy source LaunchDarkly Project in or between accounts.</a></li>
 <li class="toctree-l1"><a class="reference internal" href="launchdarkly_project_info.html">launchdarkly_project_info – Return a single Project</a></li>
 <li class="toctree-l1"><a class="reference internal" href="launchdarkly_test_generator.html">launchdarkly_test_generator – Create a JSON file for testing</a></li>
 <li class="toctree-l1"><a class="reference internal" href="launchdarkly_user_segment.html">launchdarkly_user_segment – Manage User Segments</a></li>
@@ -419,7 +419,7 @@
   
     <div class="rst-footer-buttons">
       
-        <a href="launchdarkly_project_copy.html" class="btn btn-neutral float-right" title="launchdarkly_project_copy – Copy LaunchDarkly Projects in or between accounts."/>Next <span class="icon icon-circle-arrow-right"></span></a>
+        <a href="launchdarkly_project_copy.html" class="btn btn-neutral float-right" title="launchdarkly_project_copy – Copy source LaunchDarkly Project in or between accounts."/>Next <span class="icon icon-circle-arrow-right"></span></a>
       
       
         <a href="launchdarkly_feature_flag_validator.html" class="btn btn-neutral" title="launchdarkly_feature_flag_validator – Validate Flags against Conftest OPA Policies written in Rego"><span class="icon icon-circle-arrow-left"></span> Previous</a>

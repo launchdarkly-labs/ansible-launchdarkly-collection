@@ -63,7 +63,7 @@
             
             
               <div class="version">
-                0.3.0
+                0.3.2
               </div>
             
           
@@ -80,11 +80,11 @@
             current_url = window.location.href;
             option = document.createElement("option");
             option.text = "latest";
-            if ( "latest" == "0.3.0" ) {
+            if ( "latest" == "0.3.2" ) {
               option.selected = true;
             }
-            if (current_url.search("0.3.0") > -1) {
-              option.value = current_url.replace("0.3.0","latest");
+            if (current_url.search("0.3.2") > -1) {
+              option.value = current_url.replace("0.3.2","latest");
             } else {
               option.value = current_url.replace("latest","latest");
             }
@@ -94,14 +94,14 @@
           <script>
             current_url = window.location.href;
             option = document.createElement("option");
-            option.text = "0.3.0";
-            if ( "0.3.0" == "0.3.0" ) {
+            option.text = "0.3.2";
+            if ( "0.3.2" == "0.3.2" ) {
               option.selected = true;
             }
-            if (current_url.search("0.3.0") > -1) {
-              option.value = current_url.replace("0.3.0","0.3.0");
+            if (current_url.search("0.3.2") > -1) {
+              option.value = current_url.replace("0.3.2","0.3.2");
             } else {
-              option.value = current_url.replace("latest","0.3.0");
+              option.value = current_url.replace("latest","0.3.2");
             }
             x.add(option);
           </script>
@@ -140,7 +140,7 @@
 <li class="toctree-l1"><a class="reference internal" href="launchdarkly_feature_flag_sync.html">launchdarkly_feature_flag_sync – Sync LaunchDarkly Feature Flags across Environments</a></li>
 <li class="toctree-l1"><a class="reference internal" href="launchdarkly_feature_flag_validator.html">launchdarkly_feature_flag_validator – Validate Flags against Conftest OPA Policies written in Rego</a></li>
 <li class="toctree-l1"><a class="reference internal" href="launchdarkly_project.html">launchdarkly_project – Create Project</a></li>
-<li class="toctree-l1"><a class="reference internal" href="launchdarkly_project_copy.html">launchdarkly_project_copy – Copy LaunchDarkly Projects in or between accounts.</a></li>
+<li class="toctree-l1"><a class="reference internal" href="launchdarkly_project_copy.html">launchdarkly_project_copy – Copy source LaunchDarkly Project in or between accounts.</a></li>
 <li class="toctree-l1"><a class="reference internal" href="launchdarkly_project_info.html">launchdarkly_project_info – Return a single Project</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">launchdarkly_test_generator – Create a JSON file for testing</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="#synopsis">Synopsis</a></li>

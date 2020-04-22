@@ -16,7 +16,7 @@ launchdarkly_feature_flag_validator -- Validate Flags against Conftest OPA Polic
 
 Synopsis
 --------
-- Validate Feature Flags in a Project
+- Validate Feature Flags in a Project. Conftest 0.18.0 is required as a binary in your PATH.
 
 
 
