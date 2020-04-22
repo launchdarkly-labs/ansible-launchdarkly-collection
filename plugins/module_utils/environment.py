@@ -7,7 +7,7 @@ def ld_env_arg_spec():
         tags=dict(type="list", elements="str"),
         confirm_changes=dict(type="bool"),
         require_comments=dict(type="bool"),
-        default_track_events=dict(type="bool")
+        default_track_events=dict(type="bool"),
     )
 
 
