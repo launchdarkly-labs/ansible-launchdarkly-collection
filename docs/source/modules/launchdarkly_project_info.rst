@@ -4,8 +4,8 @@
 .. _launchdarkly_project_info_:
 
 
-launchdarkly_project_info -- Return a single Project
-++++++++++++++++++++++++++++++++++++++++++++++++++++
+launchdarkly_project_info -- Return a Project or List of Projects
++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 .. versionadded:: 0.2.11
 
@@ -16,7 +16,7 @@ launchdarkly_project_info -- Return a single Project
 
 Synopsis
 --------
-- Return a dictionary of a single LaunchDarkly Project
+- Return a dictionary of a single LaunchDarkly Project or List of dictionaries containing LaunchDarkly Projects
 
 
 
@@ -96,10 +96,24 @@ Examples
 .. code-block:: yaml+jinja
 
     
-    # Get list of flags filtered to production environment.
+    # Get project based on its key.
     - launchdarkly_project_info:
         api_key: api-12345
-        project_key: dano-test-project
+        project_key: example-project
+
+    # Get list of projects that are tagged "dev"
+    - launchdarkly_project_info:
+        api_key: api-12345
+        tags:
+          - dev
+
+    # Get list of projects that are tagged "dev" and only return environments tagged "prod"
+    - launchdarkly_project_info:
+        api_key: api-12345
+        tags:
+          - dev
+        environment_tags:
+          - prod
 
 
 
@@ -125,7 +139,7 @@ Common return values are documented :ref:`here <common_return_values>`, the foll
                                     </td>
                 <td>on success</td>
                 <td>
-                                            <div>Dictionary containing a <a href='https://github.com/launchdarkly/api-client-python/blob/2.0.30/docs/Project.md'>Project</a></div>
+                                            <div>Dictionary or List of Dictionaries containing a <a href='https://github.com/launchdarkly/api-client-python/blob/2.0.30/docs/Project.md'>Project</a></div>
                                         <br/>
                                     </td>
             </tr>
