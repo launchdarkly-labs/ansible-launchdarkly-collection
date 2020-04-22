@@ -73,7 +73,9 @@ def main():
                 no_log=True,
                 fallback=(env_fallback, ["LAUNCHDARKLY_ACCESS_TOKEN"]),
             ),
-            project_key=dict(type="str", required=True),
+            project_key=dict(type="str", required=False),
+            tags=dict(type="list", required=False),
+            environment_tags=dict(type="list", required=False),
         )
     )
 
@@ -88,16 +90,39 @@ def main():
         launchdarkly_api.ApiClient(configuration)
     )
 
-    project = _fetch_project(module, api_instance)
+    project = _fetch_projects(module, api_instance)
 
     module.exit_json(changed=True, project=project)
 
 
-def _fetch_project(module, api_instance):
+def _fetch_projects(module, api_instance):
     try:
-        response = api_instance.get_project(module.params["project_key"])
+        if module.params.get("project_key"):
+            response = api_instance.get_project(module.params["project_key"])
+        else:
+            get_projects = api_instance.get_projects()
+            if module.params.get("tags"):
+                projects = [proj.to_dict() for proj in get_projects.items]
+                filter_projects = [
+                    d
+                    for d in projects
+                    if len(set(d["tags"]).intersection(module.params["tags"]))
+                ]
+                for i, proj in enumerate(filter_projects):
+                    filtered_environments = []
+                    for env in proj["environments"]:
+                        if set(env["tags"]).intersection(
+                            module.params["environment_tags"]
+                        ):
+                            filtered_environments.append(env)
+                    filter_projects[i]["environments"] = filtered_environments
+                get_projects = [
+                    d for d in filter_projects if len(d["environments"]) > 0
+                ]
 
-        return response.to_dict()
+            response = get_projects
+
+        return response
     except launchdarkly_api.rest.ApiException as e:
         if e.status == 404:
             return None

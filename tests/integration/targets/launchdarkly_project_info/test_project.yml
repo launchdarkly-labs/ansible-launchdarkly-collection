@@ -22,6 +22,21 @@
         color: "FFFFFF"
         name: "test-env-ans"
 
+  - name: Create Project
+    launchdarkly_project:
+      state: present
+      project_key: ansible-int-proj2
+      name: "Ansible Integration Project"
+      tags:
+        - yellow
+        - red
+      environments:
+      - key: "test2-env-ans"
+        color: "FFFFFF"
+        name: "test-env-ans"
+        tags:
+          - yellow
+
   - name: Get Project
     launchdarkly_project_info:
       project_key: ansible-int-proj
@@ -32,7 +47,30 @@
       that: project.project.name == "Ansible Integration Project"
       that: '"yellow" in project.project.tags'
 
+  - name: Get Project tags
+    launchdarkly_project_info:
+      tags:
+        - yellow
+    register: project
+
+  - assert:
+    that: project.changed == true
+    that: project.project[0].name == "Ansible Integration Project"
+    that: '"yellow" in project.project.tags'
+    that: project.project[1].key == "ansible-int-proj2"
+
+  - name: Get Project tags
+    launchdarkly_project_info:
+      tags:
+        - yellow
+    register: project
+
   - name: Delete Project
     launchdarkly_project:
       state: absent
       project_key: ansible-int-proj
+
+  - name: Delete Project
+    launchdarkly_project:
+      state: absent
+      project_key: ansible-int-proj2
