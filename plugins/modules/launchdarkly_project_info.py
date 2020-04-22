@@ -113,9 +113,9 @@ def _fetch_projects(module, api_instance):
                 for i, proj in enumerate(filter_projects):
                     filtered_environments = []
                     for env in proj["environments"]:
-                        if module.params.get("environment_tags") and set(env["tags"]).intersection(
-                            module.params["environment_tags"]
-                        ):
+                        if module.params.get("environment_tags") and set(
+                            env["tags"]
+                        ).intersection(module.params["environment_tags"]):
                             filtered_environments.append(env)
                         elif module.params.get("environment_tags"):
                             continue
