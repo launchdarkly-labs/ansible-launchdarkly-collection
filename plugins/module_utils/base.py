@@ -5,7 +5,7 @@ from ansible.errors import AnsibleError, AnsibleAuthenticationFailure
 from ansible.module_utils.common._json_compat import json
 from ansible.module_utils.basic import env_fallback
 
-VERSION = "0.3.0"
+VERSION = "0.3.1"
 
 
 def configure_instance(api_key):
