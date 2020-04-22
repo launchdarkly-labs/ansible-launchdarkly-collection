@@ -47,16 +47,41 @@ Parameters
             </tr>
                                 <tr>
                                                                 <td colspan="1">
+                    <b>environment_tags</b>
+                    <div style="font-size: small">
+                        <span style="color: purple">list</span>
+                                                                    </div>
+                                    </td>
+                                <td>
+                                                                                                                                                            </td>
+                                <td>
+                                            <div>list of tags to filter environments within the project. Only environments that contain one of the tags will be returned.</div>
+                                                        </td>
+            </tr>
+                                <tr>
+                                                                <td colspan="1">
                     <b>project_key</b>
                     <div style="font-size: small">
-                        <span style="color: purple">-</span>
-                                                 / <span style="color: red">required</span>                    </div>
+                        <span style="color: purple">string</span>
+                                                                    </div>
                                     </td>
                                 <td>
-                                                                                                                                                                    <b>Default:</b><br/><div style="color: blue">"default"</div>
+                                                                                                                                                            </td>
+                                <td>
+                                            <div>Project key is used to return a single project matching that key.</div>
+                                                        </td>
+            </tr>
+                                <tr>
+                                                                <td colspan="1">
+                    <b>tags</b>
+                    <div style="font-size: small">
+                        <span style="color: purple">list</span>
+                                                                    </div>
                                     </td>
                                 <td>
-                                            <div>Project key will group flags together</div>
+                                                                                                                                                            </td>
+                                <td>
+                                            <div>list of tags to filter projects. Only projects that contain one of the tags will be returned</div>
                                                         </td>
             </tr>
                         </table>
@@ -95,7 +120,7 @@ Common return values are documented :ref:`here <common_return_values>`, the foll
                                 <td colspan="1">
                     <b>project</b>
                     <div style="font-size: small">
-                      <span style="color: purple">dictionary</span>
+                      <span style="color: purple">dict or list</span>
                                           </div>
                                     </td>
                 <td>on success</td>

@@ -17,12 +17,23 @@ short_description: Return a single Project
 description:
      - Return a dictionary of a single LaunchDarkly Project
 version_added: "0.2.11"
+version_updated: "0.3.32"
 options:
     project_key:
         description:
-            - Project key will group flags together
-        default: 'default'
-        required: yes
+            - Project key is used to return a single project matching that key.
+        required: no
+        type: str
+    tags:
+        description:
+            - list of tags to filter projects. Only projects that contain one of the tags will be returned
+        required: no
+        type: list
+    environment_tags:
+        description:
+            - list of tags to filter environments within the project. Only environments that contain one of the tags will be returned.
+        required: no
+        type: list
 
 extends_documentation_fragment: launchdarkly_labs.collection.launchdarkly
 """
@@ -37,7 +48,7 @@ EXAMPLES = r"""
 RETURN = r"""
 project:
     description: Dictionary containing a L(Project, https://github.com/launchdarkly/api-client-python/blob/2.0.30/docs/Project.md)
-    type: dict
+    type: dict or list
     returned: on success
 """
 
