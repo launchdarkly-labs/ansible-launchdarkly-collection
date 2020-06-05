@@ -85,6 +85,7 @@ except ImportError:
 from ansible.module_utils.basic import AnsibleModule, missing_required_lib, env_fallback
 from ansible.module_utils._text import to_native
 from ansible.module_utils.common._json_compat import json
+
 from ansible_collections.launchdarkly_labs.collection.plugins.module_utils.base import (
     configure_instance,
     parse_env_param,
@@ -235,7 +236,16 @@ def _project_sync(
                     module.params["project_key_dest"], env["key"], patch_delta=patches
                 )
             except ApiException as e:
-                fail_exit(module, e)
+                if status == 429:
+                    time.sleep(reset_rate(headers["X-RateLimit-Reset"]))
+                    # Retry
+                    dest_env_api.patch_environment(
+                        module.params["project_key_dest"],
+                        env["key"],
+                        patch_delta=patches,
+                    )
+                else:
+                    fail_exit(module, e)
             # Reset patches
             patches = []
 
@@ -255,10 +265,21 @@ def _project_sync(
 
                 if segment["tags"]:
                     new_segment_body["tags"] = segment["tags"]
-
-                dest_user_sgmt.post_user_segment(
-                    module.params["project_key_dest"], env["key"], new_segment_body
-                )
+                try:
+                    dest_user_sgmt.post_user_segment(
+                        module.params["project_key_dest"], env["key"], new_segment_body
+                    )
+                except ApiException as e:
+                    if status == 429:
+                        time.sleep(reset_rate(headers["X-RateLimit-Reset"]))
+                        # Retry
+                        dest_user_sgmt.post_user_segment(
+                            module.params["project_key_dest"],
+                            env["key"],
+                            new_segment_body,
+                        )
+                    else:
+                        fail_exit(module, e)
 
                 patch_sgmt = dict(key=segment["key"])
                 if segment["included"] is not None:
@@ -317,15 +338,28 @@ def _project_sync(
 
     tag = module.params.get("flag_tag", None)
     src_ff = {}
-    if tag:
-        tag = ",".join(tag)
-        src_ff = src_fflags.get_feature_flags(
-            module.params["project_key"], summary=0, tag=tag
-        ).to_dict()
-    else:
-        src_ff = src_fflags.get_feature_flags(
-            module.params["project_key"], summary=0
-        ).to_dict()
+    try:
+        if tag:
+            tag = ",".join(tag)
+            src_ff = src_fflags.get_feature_flags(
+                module.params["project_key"], summary=0, tag=tag
+            ).to_dict()
+        else:
+            src_ff = src_fflags.get_feature_flags(
+                module.params["project_key"], summary=0
+            ).to_dict()
+    except ApiException as e:
+        if status == 429:
+            time.sleep(reset_rate(headers["X-RateLimit-Reset"]))
+            if tag:
+                tag = ",".join(tag)
+                src_ff = src_fflags.get_feature_flags(
+                    module.params["project_key"], summary=0, tag=tag
+                ).to_dict()
+            else:
+                src_ff = src_fflags.get_feature_flags(
+                    module.params["project_key"], summary=0
+                ).to_dict()
 
     for flag in src_ff["items"]:
         fflag_body = dict(
