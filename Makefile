@@ -5,6 +5,14 @@ old_api_doc_version := 2.0.21
 
 old_galaxy_version := $(shell git describe --abbrev=0 --tags)
 
+.PHONY: help
+help:
+	@echo "This project assumes an active Python virtualev is present."
+	@echo "The following Make targets are available:"
+	@echo "		help				display this help and exit"
+	@echo "		update_api_version_docs		Used when API Client version changes"
+	@echo "		update_galaxy_version		Update Ansible Collection version"
+
 
 .PHONY: update_api_version_docs
 update_api_version_docs:
