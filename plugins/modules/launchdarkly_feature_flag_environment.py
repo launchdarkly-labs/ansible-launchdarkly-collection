@@ -511,7 +511,7 @@ def _process_rules(module, patches, feature_flag):
                             )
                         )
 
-                    if rule["clauses"] is not None:
+                    if rule["clauses"] is not None and list(diff(rule["clauses"], flag.clauses, ignore=set(["id"]))):
                         for clause_idx, clause in enumerate(rule["clauses"]):
                             patches.append(
                                 _patch_op(
