@@ -27,7 +27,7 @@
       include_in_snippet: true
       description: "This is an awesome feature that will be implemented."
 
-  - name: Set Feature Flag Environment
+  - name: Set Feature Flag Environment - Settings
     launchdarkly_feature_flag_environment:
       state: "enabled"
       flag_key: example_test_flag
