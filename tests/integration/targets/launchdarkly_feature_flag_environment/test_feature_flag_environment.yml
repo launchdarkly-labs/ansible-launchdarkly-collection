@@ -32,7 +32,7 @@
       state: "enabled"
       flag_key: example_test_flag
       project_key: dano-test-project
-      environment_key: production
+      environment_key: "production"
       comment: "Set Flag values"
       targets:
         - variation: 1
