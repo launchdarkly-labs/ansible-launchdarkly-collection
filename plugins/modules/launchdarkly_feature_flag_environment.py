@@ -511,7 +511,7 @@ def _process_rules(module, patches, feature_flag):
                             )
                         )
 
-                    if rule["clauses"] is not None and (
+                    if rule["clauses"] is not None or (
                         flag.get("clauses")
                         and list(
                             diff(rule["clauses"], flag["clauses"], ignore=set(["id"]))
@@ -679,12 +679,14 @@ def _check_prereqs(module, feature_flag):
 
 
 def _fetch_feature_flag(module, api_instance):
+    get_environment = []
+    get_environment.append(module.params["environment_key"])
     try:
         # Get an environment given a project and key.
         feature_flag = api_instance.get_feature_flag(
             module.params["project_key"],
             module.params["flag_key"],
-            env=module.params["environment_key"],
+            env=get_environment,
         )
         return feature_flag.environments[module.params["environment_key"]]
     except ApiException as e:
