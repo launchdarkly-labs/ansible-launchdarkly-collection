@@ -3,7 +3,7 @@ import time
 from ansible.module_utils._text import to_native
 from ansible.errors import AnsibleError, AnsibleAuthenticationFailure
 from ansible.module_utils.common._json_compat import json
-from ansible.module_utils.basic import env_fallback
+from ansible.module_utils.basic import env_fallback, missing_required_lib
 
 VERSION = "0.3.4"
 
