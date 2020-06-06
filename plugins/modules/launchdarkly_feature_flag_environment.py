@@ -153,7 +153,6 @@ from ansible_collections.launchdarkly_labs.collection.plugins.module_utils.rule 
 )
 
 
-
 def main():
     argument_spec = ld_common_argument_spec()
     argument_spec.update(
