@@ -139,20 +139,7 @@ from ansible.errors import AnsibleError
 from ansible.module_utils.basic import AnsibleModule, missing_required_lib
 from ansible.module_utils._text import to_native
 
-# from ansible_collections.launchdarkly_labs.collection.plugins.module_utils.base import (
-#     configure_instance,
-#     _patch_path,
-#     _patch_op,
-#     _build_comment,
-#     fail_exit,
-#     ld_common_argument_spec,
-#     rego_test,
-# )
-# from ansible_collections.launchdarkly_labs.collection.plugins.module_utils.rule import (
-#     rule_argument_spec,
-# )
-
-from base import (
+from ansible_collections.launchdarkly_labs.collection.plugins.module_utils.base import (
     configure_instance,
     _patch_path,
     _patch_op,
@@ -161,7 +148,10 @@ from base import (
     ld_common_argument_spec,
     rego_test,
 )
-from rule import rule_argument_spec
+from ansible_collections.launchdarkly_labs.collection.plugins.module_utils.rule import (
+    rule_argument_spec,
+)
+
 
 
 def main():
