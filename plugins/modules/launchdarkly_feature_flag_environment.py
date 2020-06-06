@@ -161,9 +161,8 @@ from base import (
     ld_common_argument_spec,
     rego_test,
 )
-from rule import (
-    rule_argument_spec,
-)
+from rule import rule_argument_spec
+
 
 def main():
     argument_spec = ld_common_argument_spec()
@@ -384,9 +383,7 @@ def _configure_feature_flag_env(module, api_instance, feature_flag=None):
 
     # Compare fallthrough
     fallthrough = diff(
-        module.params["fallthrough"],
-        feature_flag["fallthrough"],
-        ignore=set(["id"]),
+        module.params["fallthrough"], feature_flag["fallthrough"], ignore=set(["id"]),
     )
     if not list(fallthrough):
         del module.params["fallthrough"]
@@ -602,11 +599,7 @@ def _process_rules(module, patches, feature_flag):
                 clause["negate"] = clause.get("negate", False)
             if idx < old_rules:
                 result = list(
-                    diff(
-                        rule_change,
-                        feature_flag["rules"][idx],
-                        ignore=set(["id"]),
-                    )
+                    diff(rule_change, feature_flag["rules"][idx], ignore=set(["id"]),)
                 )
                 if result:
                     path = _patch_path(module, "rules") + "/" + str(new_flag_index)
