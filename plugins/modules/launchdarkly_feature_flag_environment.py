@@ -168,7 +168,6 @@ def main():
             off_variation=dict(type="int"),
             track_events=dict(type="bool"),
             comment=dict(type="str"),
-            salt=dict(type="str"),
             targets=dict(
                 type="list",
                 elements="dict",
@@ -394,7 +393,6 @@ def _configure_feature_flag_env(module, api_instance, feature_flag=None):
                 "project_key",
                 "flag_key",
                 "comment",
-                "salt",
                 "conftest",
             ]
             and module.params[key] is not None
