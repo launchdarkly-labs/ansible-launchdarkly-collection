@@ -138,9 +138,21 @@ except ImportError:
 from ansible.errors import AnsibleError
 from ansible.module_utils.basic import AnsibleModule, missing_required_lib
 from ansible.module_utils._text import to_native
-from ansible.module_utils.common._json_compat import json
 
-from ansible_collections.launchdarkly_labs.collection.plugins.module_utils.base import (
+# from ansible_collections.launchdarkly_labs.collection.plugins.module_utils.base import (
+#     configure_instance,
+#     _patch_path,
+#     _patch_op,
+#     _build_comment,
+#     fail_exit,
+#     ld_common_argument_spec,
+#     rego_test,
+# )
+# from ansible_collections.launchdarkly_labs.collection.plugins.module_utils.rule import (
+#     rule_argument_spec,
+# )
+
+from base import (
     configure_instance,
     _patch_path,
     _patch_op,
@@ -149,10 +161,9 @@ from ansible_collections.launchdarkly_labs.collection.plugins.module_utils.base 
     ld_common_argument_spec,
     rego_test,
 )
-from ansible_collections.launchdarkly_labs.collection.plugins.module_utils.rule import (
+from rule import (
     rule_argument_spec,
 )
-
 
 def main():
     argument_spec = ld_common_argument_spec()
@@ -234,9 +245,9 @@ def _toggle_flag(module, patches, feature_flag):
     elif module.params["state"] == "disabled":
         value = False
     else:
-        value = feature_flag.on
+        value = feature_flag["on"]
 
-    if feature_flag.on != value:
+    if feature_flag["on"] != value:
         path = _patch_path(module, "on")
         patches.append(
             launchdarkly_api.PatchOperation(path=path, op="replace", value=value)
@@ -260,13 +271,13 @@ def _configure_feature_flag_env(module, api_instance, feature_flag=None):
     _toggle_flag(module, patches, feature_flag)
 
     if (
-        feature_flag.off_variation == module.params["off_variation"]
+        feature_flag["off_variation"] == module.params["off_variation"]
         or module.params.get("off_variation") is None
     ):
         del module.params["off_variation"]
 
     if (
-        feature_flag.track_events == module.params["track_events"]
+        feature_flag["track_events"] == module.params["track_events"]
         or module.params.get("track_events") is None
     ):
         del module.params["track_events"]
@@ -277,8 +288,8 @@ def _configure_feature_flag_env(module, api_instance, feature_flag=None):
     if module.params["targets"] is not None:
         flag_var_index = {}
         # Map variation to index flag targets first:
-        for idx, target in enumerate(feature_flag.targets):
-            target_dict = target.to_dict()
+        for idx, target in enumerate(feature_flag["targets"]):
+            target_dict = target
             target_index = str(target_dict["variation"])
             wtf = str(idx)
             flag_var_index = {
@@ -344,7 +355,6 @@ def _configure_feature_flag_env(module, api_instance, feature_flag=None):
                 ):
                     new_targets = set(target["values"])
                     target_index = str(flag_var_index[target["variation"]]["index"])
-                    val_index = str(flag_var_index[target["variation"]]["index"])
                 else:
                     raise AnsibleError("Targets not found")
 
@@ -375,7 +385,7 @@ def _configure_feature_flag_env(module, api_instance, feature_flag=None):
     # Compare fallthrough
     fallthrough = diff(
         module.params["fallthrough"],
-        feature_flag.fallthrough.to_dict(),
+        feature_flag["fallthrough"],
         ignore=set(["id"]),
     )
     if not list(fallthrough):
@@ -431,12 +441,12 @@ def _configure_feature_flag_env(module, api_instance, feature_flag=None):
     module.exit_json(
         changed=False,
         msg="flag environment unchanged",
-        feature_flag_environment=feature_flag.to_dict(),
+        feature_flag_environment=feature_flag,
     )
 
 
 def _process_rules(module, patches, feature_flag):
-    old_rules = max(len(feature_flag.rules) - 1, 0)
+    old_rules = max(len(feature_flag["rules"]) - 1, 0)
     new_index = len(module.params["rules"]) - 1
     # Make copy for next step.
     new_rules_copy = copy.deepcopy(module.params["rules"])
@@ -455,7 +465,7 @@ def _process_rules(module, patches, feature_flag):
 
         if new_rule_index <= old_rules and state != "add":
             # iterating over statements for range to be inclusive
-            if new_rule_index <= len(feature_flag.rules) - 1:
+            if new_rule_index <= len(feature_flag["rules"]) - 1:
                 # API returns None for rollout and variation if not set
                 if not rule.get("rollout"):
                     rule["rollout"] = None
@@ -475,7 +485,7 @@ def _process_rules(module, patches, feature_flag):
                     if clause.get("negate") is None:
                         clause["negate"] = False
 
-                flag = feature_flag.rules[new_rule_index].to_dict()
+                flag = feature_flag["rules"][new_rule_index]
                 if list(
                     diff(rule, flag, ignore=set(["id", "rule_state", "track_events"]))
                 ):
@@ -594,7 +604,7 @@ def _process_rules(module, patches, feature_flag):
                 result = list(
                     diff(
                         rule_change,
-                        feature_flag.rules[idx].to_dict(),
+                        feature_flag["rules"][idx],
                         ignore=set(["id"]),
                     )
                 )
@@ -606,7 +616,7 @@ def _process_rules(module, patches, feature_flag):
                     patches.append(_patch_op("remove", path, rule))
             else:
                 # If a previous rule exists increment index to add new rule
-                if len(feature_flag.rules) > 0 and old_rules == 0:
+                if len(feature_flag["rules"]) > 0 and old_rules == 0:
                     old_rules = 1
                 pos = old_rules + idx
                 path = _patch_path(module, "rules") + "/" + str(pos)
@@ -667,10 +677,10 @@ def _build_rules(rule):
 def _check_prereqs(module, feature_flag):
     if module.params["prerequisites"] is not None:
         for idx, target in enumerate(module.params["prerequisites"]):
-            if idx > len(feature_flag.prerequisites) - 1:
+            if idx > len(feature_flag["prerequisites"]) - 1:
                 prereq_result = ["break"]
                 break
-            prereq_result = diff(target, feature_flag.prerequisites[idx].to_dict())
+            prereq_result = diff(target, feature_flag["prerequisites"][idx])
 
         if not list(prereq_result):
             del module.params["prerequisites"]
@@ -686,9 +696,12 @@ def _fetch_feature_flag(module, api_instance):
         feature_flag = api_instance.get_feature_flag(
             module.params["project_key"],
             module.params["flag_key"],
-            env=get_environment,
-        )
-        return feature_flag.environments[module.params["environment_key"]]
+            env=module.params["environment_key"],
+        ).to_dict()
+        for key in list(feature_flag.keys()):
+            if key == "id":
+                del feature_flag[key]
+        return feature_flag["environments"][module.params["environment_key"]]
     except ApiException as e:
         if e.status == 404:
             raise AnsibleError(
