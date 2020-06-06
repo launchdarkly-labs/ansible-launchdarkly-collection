@@ -254,6 +254,8 @@ def _configure_feature_flag_env(module, api_instance, feature_flag=None):
         rego_test(module)
 
     patches = []
+    clause_list = []
+
 
     _toggle_flag(module, patches, feature_flag)
 
@@ -420,6 +422,7 @@ def _configure_feature_flag_env(module, api_instance, feature_flag=None):
             msg="flag environment successfully configured",
             feature_flag_environment=api_response.to_dict(),
             patches=output_patches,
+            clauses=clauses
         )
 
     module.exit_json(
@@ -429,7 +432,7 @@ def _configure_feature_flag_env(module, api_instance, feature_flag=None):
     )
 
 
-def _process_rules(module, patches, feature_flag):
+def _process_rules(module, patches, feature_flag, clause_list):
     old_rules = max(len(feature_flag["rules"]) - 1, 0)
     new_index = len(module.params["rules"]) - 1
     # Make copy for next step.
@@ -504,7 +507,9 @@ def _process_rules(module, patches, feature_flag):
                                 _build_rules(rule["rollout"]),
                             )
                         )
-
+                    clause_list.append(list(
+                            diff(rule["clauses"], flag["clauses"], ignore=set(["id"]))
+                        ))
                     if rule["clauses"] is not None or (
                         flag.get("clauses")
                         and list(
