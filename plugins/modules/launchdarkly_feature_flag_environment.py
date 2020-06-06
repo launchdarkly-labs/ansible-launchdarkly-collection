@@ -678,7 +678,7 @@ def _fetch_feature_flag(module, api_instance):
         feature_flag = api_instance.get_feature_flag(
             module.params["project_key"],
             module.params["flag_key"],
-            env=module.params["environment_key"],
+            env=get_environment,
         ).to_dict()
         for key in list(feature_flag.keys()):
             if key == "id":
