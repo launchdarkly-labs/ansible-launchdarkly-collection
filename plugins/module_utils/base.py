@@ -109,25 +109,3 @@ def validate_params(module):
 
     if result.results[0].failures:
         module.exit_json(failed=True, validation=result.results[0].failures)
-
-
-# https://stackoverflow.com/a/49723101
-def delete_keys_from_dict(dictionary, keys):
-    keys_set = set(keys)  # Just an optimization for the "if key in keys" lookup.
-
-    modified_dict = {}
-    for key, value in dictionary.items():
-        if key not in keys_set:
-            if isinstance(value, MutableMapping):
-                modified_dict[key] = delete_keys_from_dict(value, keys_set)
-            else:
-                modified_dict[
-                    key
-                ] = value  # or copy.deepcopy(value) if a copy is desired for non-dicts.
-    return modified_dict
-
-
-class AttrDict(dict):
-    def __init__(self, *args, **kwargs):
-        super(AttrDict, self).__init__(*args, **kwargs)
-        self.__dict__ = self

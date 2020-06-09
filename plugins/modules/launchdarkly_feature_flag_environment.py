@@ -148,8 +148,6 @@ from ansible_collections.launchdarkly_labs.collection.plugins.module_utils.base 
     fail_exit,
     ld_common_argument_spec,
     rego_test,
-    delete_keys_from_dict,
-    AttrDict,
 )
 from ansible_collections.launchdarkly_labs.collection.plugins.module_utils.rule import (
     rule_argument_spec,
@@ -484,8 +482,7 @@ def _process_rules(module, patches, feature_flag, clauses_list):
                 if flag.get("clauses"):
                     for clause in flag["clauses"]:
                         del clause["id"]
-                # flag = delete_keys_from_dict(orig_flag, "id")
-                # clauses_list.append(flag)
+
                 if list(
                     diff(rule, flag, ignore=set(["id", "rule_state", "track_events"]))
                 ):
