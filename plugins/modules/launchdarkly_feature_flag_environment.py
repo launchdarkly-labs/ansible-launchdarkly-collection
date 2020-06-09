@@ -479,9 +479,13 @@ def _process_rules(module, patches, feature_flag, clauses_list):
                     if clause.get("negate") is None:
                         clause["negate"] = False
 
-                orig_flag = feature_flag.rules[new_rule_index].to_dict()
-                flag = delete_keys_from_dict(orig_flag, "id")
-                clauses_list.append(flag)
+                flag = feature_flag.rules[new_rule_index].to_dict()
+                # Deleting in place is not optimal but whole dict is being iterated over before being used.
+                if flag.get("clauses"):
+                    for clause in flag["clauses"]:
+                        del clause["id"]
+                # flag = delete_keys_from_dict(orig_flag, "id")
+                # clauses_list.append(flag)
                 if list(
                     diff(rule, flag, ignore=set(["id", "rule_state", "track_events"]))
                 ):
