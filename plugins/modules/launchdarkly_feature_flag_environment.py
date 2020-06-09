@@ -679,7 +679,7 @@ def _fetch_feature_flag(module, api_instance):
         feature_flag = api_instance.get_feature_flag(
             module.params["project_key"],
             module.params["flag_key"],
-            env=module.params["environment_key"],
+            env=[module.params["environment_key"]],
         )
         return feature_flag.environments[module.params["environment_key"]]
     except ApiException as e:
