@@ -697,9 +697,6 @@ def _fetch_feature_flag(module, api_instance):
             module.params["flag_key"],
             env=[module.params["environment_key"]],
         )
-        flag_no_id = delete_keys_from_dict(feature_flag, "id")
-        return_flag = AttrDict()
-        return_flag.update(flag_no_id)
         return feature_flag.environments[module.params["environment_key"]]
     except ApiException as e:
         if e.status == 404:
