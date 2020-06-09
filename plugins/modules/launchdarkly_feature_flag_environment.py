@@ -427,7 +427,7 @@ def _configure_feature_flag_env(module, api_instance, feature_flag=None):
             msg="flag environment successfully configured",
             feature_flag_environment=api_response.to_dict(),
             patches=output_patches,
-            clauses=clauses_list.to_dict(),
+            clauses=dict.fromkeys(clauses_list, 1),
         )
 
     module.exit_json(
