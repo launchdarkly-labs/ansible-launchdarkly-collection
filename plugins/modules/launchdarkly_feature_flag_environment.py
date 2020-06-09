@@ -479,7 +479,8 @@ def _process_rules(module, patches, feature_flag, clauses_list):
                     if clause.get("negate") is None:
                         clause["negate"] = False
 
-                flag = feature_flag.rules[new_rule_index].to_dict()
+                orig_flag = feature_flag.rules[new_rule_index].to_dict()
+                flag = delete_keys_from_dict(orig_flag, "id")
                 if list(
                     diff(rule, flag, ignore=set(["id", "rule_state", "track_events"]))
                 ):
@@ -695,11 +696,11 @@ def _fetch_feature_flag(module, api_instance):
             module.params["project_key"],
             module.params["flag_key"],
             env=[module.params["environment_key"]],
-        ).to_dict()
+        )
         flag_no_id = delete_keys_from_dict(feature_flag, "id")
         return_flag = AttrDict()
         return_flag.update(flag_no_id)
-        return return_flag.environments[module.params["environment_key"]]
+        return feature_flag.environments[module.params["environment_key"]]
     except ApiException as e:
         if e.status == 404:
             raise AnsibleError(
