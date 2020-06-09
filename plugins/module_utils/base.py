@@ -4,6 +4,7 @@ from ansible.module_utils._text import to_native
 from ansible.errors import AnsibleError, AnsibleAuthenticationFailure
 from ansible.module_utils.common._json_compat import json
 from ansible.module_utils.basic import env_fallback
+from collections import MutableMapping
 
 VERSION = "0.3.4"
 
@@ -108,3 +109,19 @@ def validate_params(module):
 
     if result.results[0].failures:
         module.exit_json(failed=True, validation=result.results[0].failures)
+
+
+# https://stackoverflow.com/a/49723101
+def delete_keys_from_dict(dictionary, keys):
+    keys_set = set(keys)  # Just an optimization for the "if key in keys" lookup.
+
+    modified_dict = {}
+    for key, value in dictionary.items():
+        if key not in keys_set:
+            if isinstance(value, MutableMapping):
+                modified_dict[key] = delete_keys_from_dict(value, keys_set)
+            else:
+                modified_dict[
+                    key
+                ] = value  # or copy.deepcopy(value) if a copy is desired for non-dicts.
+    return modified_dict
