@@ -481,6 +481,7 @@ def _process_rules(module, patches, feature_flag, clauses_list):
 
                 orig_flag = feature_flag.rules[new_rule_index].to_dict()
                 flag = delete_keys_from_dict(orig_flag, "id")
+                clauses_list.append(flag)
                 if list(
                     diff(rule, flag, ignore=set(["id", "rule_state", "track_events"]))
                 ):
