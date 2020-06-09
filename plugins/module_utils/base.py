@@ -125,3 +125,9 @@ def delete_keys_from_dict(dictionary, keys):
                     key
                 ] = value  # or copy.deepcopy(value) if a copy is desired for non-dicts.
     return modified_dict
+
+
+class AttrDict(dict):
+    def __init__(self, *args, **kwargs):
+        super(AttrDict, self).__init__(*args, **kwargs)
+        self.__dict__ = self

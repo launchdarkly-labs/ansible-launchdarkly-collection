@@ -149,6 +149,7 @@ from ansible_collections.launchdarkly_labs.collection.plugins.module_utils.base 
     ld_common_argument_spec,
     rego_test,
     delete_keys_from_dict,
+    AttrDict,
 )
 from ansible_collections.launchdarkly_labs.collection.plugins.module_utils.rule import (
     rule_argument_spec,
@@ -696,7 +697,9 @@ def _fetch_feature_flag(module, api_instance):
             env=[module.params["environment_key"]],
         ).to_dict()
         flag_no_id = delete_keys_from_dict(feature_flag, "id")
-        return flag_no_id.environments[module.params["environment_key"]]
+        return_flag = AttrDict()
+        return_flag.update(flag_no_id)
+        return return_flag.environments[module.params["environment_key"]]
     except ApiException as e:
         if e.status == 404:
             raise AnsibleError(
