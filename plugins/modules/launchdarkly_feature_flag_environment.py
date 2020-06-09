@@ -256,6 +256,7 @@ def _configure_feature_flag_env(module, api_instance, feature_flag=None):
         rego_test(module)
 
     patches = []
+    clauses_list = []
 
     _toggle_flag(module, patches, feature_flag)
 
@@ -370,7 +371,7 @@ def _configure_feature_flag_env(module, api_instance, feature_flag=None):
 
     # Loop over rules comparing
     if module.params["rules"] is not None:
-        _process_rules(module, patches, feature_flag)
+        _process_rules(module, patches, feature_flag, clauses_list)
 
     # Compare fallthrough
     fallthrough = diff(
@@ -426,6 +427,7 @@ def _configure_feature_flag_env(module, api_instance, feature_flag=None):
             msg="flag environment successfully configured",
             feature_flag_environment=api_response.to_dict(),
             patches=output_patches,
+            clauses=clauses_list,
         )
 
     module.exit_json(
@@ -435,7 +437,7 @@ def _configure_feature_flag_env(module, api_instance, feature_flag=None):
     )
 
 
-def _process_rules(module, patches, feature_flag):
+def _process_rules(module, patches, feature_flag, clauses_list):
     old_rules = max(len(feature_flag.rules) - 1, 0)
     new_index = len(module.params["rules"]) - 1
     # Make copy for next step.
@@ -460,7 +462,7 @@ def _process_rules(module, patches, feature_flag):
                 if not rule.get("rollout"):
                     rule["rollout"] = None
                 else:
-                    # If there's a role and no bucket_by, default to key
+                    # If there's a rule and no bucket_by, default to key
                     rule["rollout"]["bucket_by"] = rule["rollout"].get(
                         "bucket_by", "key"
                     )
@@ -479,6 +481,15 @@ def _process_rules(module, patches, feature_flag):
                 if list(
                     diff(rule, flag, ignore=set(["id", "rule_state", "track_events"]))
                 ):
+                    clauses_list.append(
+                        list(
+                            diff(
+                                rule,
+                                flag,
+                                ignore=set(["id", "rule_state", "track_events"]),
+                            )
+                        )
+                    )
                     path = _patch_path(module, "rules")
                     try:
                         if rule["variation"] is not None:
