@@ -256,7 +256,6 @@ def _configure_feature_flag_env(module, api_instance, feature_flag=None):
         rego_test(module)
 
     patches = []
-    clauses_list = []
 
     _toggle_flag(module, patches, feature_flag)
 
@@ -371,7 +370,7 @@ def _configure_feature_flag_env(module, api_instance, feature_flag=None):
 
     # Loop over rules comparing
     if module.params["rules"] is not None:
-        _process_rules(module, patches, feature_flag, clauses_list)
+        _process_rules(module, patches, feature_flag)
 
     # Compare fallthrough
     fallthrough = diff(
@@ -427,7 +426,6 @@ def _configure_feature_flag_env(module, api_instance, feature_flag=None):
             msg="flag environment successfully configured",
             feature_flag_environment=api_response.to_dict(),
             patches=output_patches,
-            clauses=clauses_list,
         )
 
     module.exit_json(
@@ -437,7 +435,7 @@ def _configure_feature_flag_env(module, api_instance, feature_flag=None):
     )
 
 
-def _process_rules(module, patches, feature_flag, clauses_list):
+def _process_rules(module, patches, feature_flag):
     old_rules = max(len(feature_flag.rules) - 1, 0)
     new_index = len(module.params["rules"]) - 1
     # Make copy for next step.
@@ -462,7 +460,7 @@ def _process_rules(module, patches, feature_flag, clauses_list):
                 if not rule.get("rollout"):
                     rule["rollout"] = None
                 else:
-                    # If there's a rule and no bucket_by, default to key
+                    # If there's a role and no bucket_by, default to key
                     rule["rollout"]["bucket_by"] = rule["rollout"].get(
                         "bucket_by", "key"
                     )
@@ -478,23 +476,9 @@ def _process_rules(module, patches, feature_flag, clauses_list):
                         clause["negate"] = False
 
                 flag = feature_flag.rules[new_rule_index].to_dict()
-                # Deleting in place is not optimal but whole dict is being iterated over before being used.
-                if flag.get("clauses"):
-                    for clause in flag["clauses"]:
-                        del clause["id"]
-
                 if list(
                     diff(rule, flag, ignore=set(["id", "rule_state", "track_events"]))
                 ):
-                    clauses_list.append(
-                        list(
-                            diff(
-                                rule,
-                                flag,
-                                ignore=set(["id", "rule_state", "track_events"]),
-                            )
-                        )
-                    )
                     path = _patch_path(module, "rules")
                     try:
                         if rule["variation"] is not None:
@@ -527,9 +511,7 @@ def _process_rules(module, patches, feature_flag, clauses_list):
                             )
                         )
 
-                    if rule["clauses"] is not None and list(
-                        diff(rule["clauses"], flag["clauses"], ignore=set(["id"]),)
-                    ):
+                    if rule["clauses"] is not None:
                         for clause_idx, clause in enumerate(rule["clauses"]):
                             patches.append(
                                 _patch_op(
@@ -697,7 +679,7 @@ def _fetch_feature_flag(module, api_instance):
         feature_flag = api_instance.get_feature_flag(
             module.params["project_key"],
             module.params["flag_key"],
-            env=[module.params["environment_key"]],
+            env=module.params["environment_key"],
         )
         return feature_flag.environments[module.params["environment_key"]]
     except ApiException as e:
