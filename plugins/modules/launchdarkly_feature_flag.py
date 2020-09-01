@@ -196,24 +196,22 @@ def main():
         _delete_flag(module, api_instance)
 
 
-def _configure_flag(module, api_instance, feature_flag=None):
+def configure_flag(params, feature_flag):
     patches = []
     if feature_flag:
-        if feature_flag.name == module.params["name"]:
-            del module.params["name"]
-        if feature_flag.description == module.params["description"]:
-            del module.params["description"]
-        if feature_flag.include_in_snippet == module.params["include_in_snippet"]:
-            del module.params["include_in_snippet"]
-        if feature_flag.temporary == module.params["temporary"]:
-            del module.params["temporary"]
-        if module.params["tags"] is not None and set(feature_flag.tags) == set(
-            module.params["tags"]
-        ):
-            del module.params["tags"]
+        if feature_flag.name == params["name"]:
+            del params["name"]
+        if feature_flag.description == params["description"]:
+            del params["description"]
+        if feature_flag.include_in_snippet == params["include_in_snippet"]:
+            del params["include_in_snippet"]
+        if feature_flag.temporary == params["temporary"]:
+            del params["temporary"]
+        if params["tags"] is not None and set(feature_flag.tags) == set(params["tags"]):
+            del params["tags"]
         result = diff(
             feature_flag.to_dict(),
-            module.params,
+            params,
             ignore=set(
                 [
                     "kind",
@@ -245,17 +243,17 @@ def _configure_flag(module, api_instance, feature_flag=None):
                 if variation in ["variations"]
             ]
         # TODO fix logic to pass in name and description for bool
-        if len(changed) > 0 and module.params["variations"]:
-            _patch_variations(module, feature_flag.variations, patches)
-            del module.params["variations"]
+        if len(changed) > 0 and params["variations"]:
+            _patch_variations(params["variations"], feature_flag.variations, patches)
+            del params["variations"]
         else:
-            del module.params["variations"]
+            del params["variations"]
         if (
-            feature_flag.maintainer_id == module.params["maintainer_id"]
-            or module.params["maintainer_id"] is None
+            feature_flag.maintainer_id == params["maintainer_id"]
+            or params["maintainer_id"] is None
         ):
-            del module.params["maintainer_id"]
-        for key in module.params:
+            del params["maintainer_id"]
+        for key in params:
             if (
                 key
                 not in [
@@ -270,11 +268,17 @@ def _configure_flag(module, api_instance, feature_flag=None):
                     "variations",
                     "conftest",
                 ]
-                and module.params[key] is not None
+                and params[key] is not None
             ):
-                patches.append(_parse_flag_param(module, key, key))
-        if len(patches) == 0:
-            module.exit_json(changed=False, msg="feature flag unchanged")
+                patches.append(_parse_flag_param(params, key, key))
+        return patches
+
+
+def _configure_flag(module, api_instance, feature_flag=None):
+    patches = configure_flag(module.params, feature_flag)
+
+    if len(patches) == 0:
+        module.exit_json(changed=False, msg="feature flag unchanged")
 
     if module.params["comment"]:
         comment = module.params["comment"]
@@ -293,11 +297,9 @@ def _configure_flag(module, api_instance, feature_flag=None):
         fail_exit(module, e)
 
 
-def _parse_flag_param(module, param_name, key, op="replace"):
+def _parse_flag_param(params, param_name, key, op="replace"):
     path = "/" + launchdarkly_api.FeatureFlagBody.attribute_map[key]
-    return launchdarkly_api.PatchOperation(
-        path=path, op=op, value=module.params[param_name]
-    )
+    return launchdarkly_api.PatchOperation(path=path, op=op, value=params[param_name])
 
 
 def _create_flag(module, api_instance):
@@ -384,49 +386,49 @@ def _build_variations(module):
     return variation_list
 
 
-def _patch_variations(module, variations, patches):
+def _patch_variations(new_variations, variations, patches):
     # subtract 1 for zero indexing
     oldVariations = len(variations) - 1
-    newVariations = len(module.params["variations"])
-    newIndex = newVariations - 1
+    new_variations_len = len(new_variations)
+    newIndex = new_variations_len - 1
     i = 0
     if newIndex < oldVariations:
         # iterating over variations for range to be inclusive
-        for i in range(newVariations, len(variations)):
+        for i in range(new_variations_len, len(variations)):
             patches.append(
                 launchdarkly_api.PatchOperation(
                     op="remove", path="/variations/%d" % i, value="needed_for_call"
                 )
             )
     else:
-        for i in range(newVariations):
+        for i in range(new_variations_len):
             if i <= oldVariations:
                 patches.append(
                     launchdarkly_api.PatchOperation(
                         op="replace",
                         path="/variations/%d/name" % i,
-                        value=module.params["variations"][i]["name"],
+                        value=new_variations[i]["name"],
                     )
                 )
                 patches.append(
                     launchdarkly_api.PatchOperation(
                         op="replace",
                         path="/variations/%d/description" % i,
-                        value=module.params["variations"][i]["description"],
+                        value=new_variations[i]["description"],
                     )
                 )
                 patches.append(
                     launchdarkly_api.PatchOperation(
                         op="replace",
                         path="/variations/%d/value" % i,
-                        value=module.params["variations"][i]["value"],
+                        value=new_variations[i]["value"],
                     )
                 )
             else:
                 variation = launchdarkly_api.Variation(
-                    name=module.params["variations"][i]["name"],
-                    description=module.params["variations"][i]["description"],
-                    value=module.params["variations"][i]["value"],
+                    name=new_variations[i]["name"],
+                    description=new_variations[i]["description"],
+                    value=new_variations[i]["value"],
                 )
                 patches.append(
                     launchdarkly_api.PatchOperation(
