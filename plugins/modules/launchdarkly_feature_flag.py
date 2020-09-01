@@ -243,17 +243,17 @@ def configure_flag(params, feature_flag):
                 if variation in ["variations"]
             ]
         # TODO fix logic to pass in name and description for bool
-        if len(changed) > 0 and module.params["variations"]:
+        if len(changed) > 0 and params["variations"]:
             _patch_variations(module, feature_flag.variations, patches)
-            del module.params["variations"]
+            del params["variations"]
         else:
-            del module.params["variations"]
+            del params["variations"]
         if (
-            feature_flag.maintainer_id == module.params["maintainer_id"]
-            or module.params["maintainer_id"] is None
+            feature_flag.maintainer_id == params["maintainer_id"]
+            or params["maintainer_id"] is None
         ):
-            del module.params["maintainer_id"]
-        for key in module.params:
+            del params["maintainer_id"]
+        for key in params:
             if (
                 key
                 not in [
@@ -268,7 +268,7 @@ def configure_flag(params, feature_flag):
                     "variations",
                     "conftest",
                 ]
-                and module.params[key] is not None
+                and params[key] is not None
             ):
                 patches.append(_parse_flag_param(module, key, key))
         return patches
