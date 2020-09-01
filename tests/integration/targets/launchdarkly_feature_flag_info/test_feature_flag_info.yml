@@ -33,7 +33,7 @@
         msg: "{{ flag_map }}"
 
     - assert:
-        that: '"yellow" in flag_map["example_test_flag"].feature_flags.tags'
+        that: '"yellow" in flag_map["example_test_flag"].tags'
         #that: '"green" in flag.tags'
 
     - name: Delete flag
