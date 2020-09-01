@@ -370,6 +370,7 @@ def configure_feature_flag_env(params, feature_flag):
     # Loop over rules comparing
     if params["rules"] is not None:
         rule_patches, rule_clauses = _process_rules(params["rules"], feature_flag, env)
+        del params["rules"]
         patches.extend(rule_patches)
         clauses_list.extend(rule_clauses)
     # Compare fallthrough
@@ -638,7 +639,6 @@ def _process_rules(rules, feature_flag, env):
                 pos = old_rules + idx
                 path = _patch_path(env, "rules") + "/" + str(pos)
                 patches.append(_patch_op("add", path, rule))
-    del rules
     return patches, clauses_list
 
 
