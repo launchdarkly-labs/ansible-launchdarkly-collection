@@ -389,45 +389,46 @@ def _build_variations(module):
 def _patch_variations(new_variations, variations, patches):
     # subtract 1 for zero indexing
     oldVariations = len(variations) - 1
-    newIndex = len(new_variations) - 1
+    new_variations_len = len(new_variations)
+    newIndex = new_variations_len - 1
     i = 0
     if newIndex < oldVariations:
         # iterating over variations for range to be inclusive
-        for i in range(new_variations, len(variations)):
+        for i in range(new_variations_len, len(variations)):
             patches.append(
                 launchdarkly_api.PatchOperation(
                     op="remove", path="/variations/%d" % i, value="needed_for_call"
                 )
             )
     else:
-        for i in range(new_variations):
+        for i in range(new_variations_len):
             if i <= oldVariations:
                 patches.append(
                     launchdarkly_api.PatchOperation(
                         op="replace",
                         path="/variations/%d/name" % i,
-                        value=module.params["variations"][i]["name"],
+                        value=new_variations[i]["name"],
                     )
                 )
                 patches.append(
                     launchdarkly_api.PatchOperation(
                         op="replace",
                         path="/variations/%d/description" % i,
-                        value=module.params["variations"][i]["description"],
+                        value=new_variations[i]["description"],
                     )
                 )
                 patches.append(
                     launchdarkly_api.PatchOperation(
                         op="replace",
                         path="/variations/%d/value" % i,
-                        value=module.params["variations"][i]["value"],
+                        value=new_variations[i]["value"],
                     )
                 )
             else:
                 variation = launchdarkly_api.Variation(
-                    name=module.params["variations"][i]["name"],
-                    description=module.params["variations"][i]["description"],
-                    value=module.params["variations"][i]["value"],
+                    name=new_variations[i]["name"],
+                    description=new_variations[i]["description"],
+                    value=new_variations[i]["value"],
                 )
                 patches.append(
                     launchdarkly_api.PatchOperation(
