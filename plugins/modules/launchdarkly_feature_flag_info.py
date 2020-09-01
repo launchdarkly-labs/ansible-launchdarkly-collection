@@ -151,9 +151,7 @@ def fetch_flags(params, api_instance):
         else:
             keys = ["project_key", "env", "summary", "archived", "tag"]
             filtered_keys = dict(
-                (k, params[k])
-                for k in keys
-                if k in params and params[k] is not None
+                (k, params[k]) for k in keys if k in params and params[k] is not None
             )
             response = api_instance.get_feature_flags(**filtered_keys)
 
