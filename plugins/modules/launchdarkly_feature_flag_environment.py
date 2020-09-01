@@ -404,14 +404,14 @@ def configure_feature_flag_env(params, feature_flag):
         ):
             patches.append(_parse_flag_param(env, params, key))
 
-    return patches
+    return patches, clauses_list
 
 
 def _configure_feature_flag_env(module, api_instance, feature_flag=None):
     if module.params["conftest"]["enabled"]:
         rego_test(module)
 
-    patches = configure_feature_flag_env(module.params, feature_flag)
+    patches, clauses_list = configure_feature_flag_env(module.params, feature_flag)
 
     if patches:
         comments = dict(comment=_build_comment(module), patch=patches)
