@@ -389,7 +389,7 @@ def _build_variations(module):
 def _patch_variations(new_variations, variations, patches):
     # subtract 1 for zero indexing
     oldVariations = len(variations) - 1
-    newIndex = new_variations - 1
+    newIndex = len(new_variations) - 1
     i = 0
     if newIndex < oldVariations:
         # iterating over variations for range to be inclusive
