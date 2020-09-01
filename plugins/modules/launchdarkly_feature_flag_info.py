@@ -127,7 +127,7 @@ def main():
         flags = feature_flags["items"]
     else:
         flags = feature_flags
-    module.exit_json(changed=True, feature_flags=feature_flags)
+    module.exit_json(changed=True, feature_flags=flags)
 
 
 def _fetch_flags(module, api_instance):

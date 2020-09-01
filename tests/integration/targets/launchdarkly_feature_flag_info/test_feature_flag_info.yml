@@ -1,0 +1,37 @@
+---
+- name: Test Ansible Collection
+  hosts: localhost
+  gather_facts: no
+  module_defaults:
+    launchdarkly_feature_flag:
+      api_key: "{{ ld_api_key }}"
+    launchdarkly_feature_flag_info:
+      api_key: "{{ ld_api_key }}"
+
+  tasks:
+    - name: Create Feature Flag
+      launchdarkly_feature_flag:
+        kind: bool
+        state: present
+        key: example_test_flag
+        project_key: dano-test-project
+        tags: ["yellow", "green"]
+        name: ansible-random-new-name
+        include_in_snippet: true
+        description: "This is an awesome feature that will be implemented."
+
+    - name: Retrieve feature Flag
+      register: flag
+      launchdarkly_labs.collection.launchdarkly_feature_flag_info:
+        project_key: dano-test-project
+        tag: yellow
+
+    - assert:
+        that: '"yellow" in flag.tags'
+        that: '"green" in flag.tags'
+
+    - name: Delete flag
+      launchdarkly_feature_flag:
+        state: absent
+        key: example_test_flag
+        project_key: dano-test-project
