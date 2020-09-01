@@ -270,7 +270,7 @@ def configure_flag(params, feature_flag):
                 ]
                 and params[key] is not None
             ):
-                patches.append(_parse_flag_param(module, key, key))
+                patches.append(_parse_flag_param(params, key, key))
         return patches
 
 
@@ -297,10 +297,10 @@ def _configure_flag(module, api_instance, feature_flag=None):
         fail_exit(module, e)
 
 
-def _parse_flag_param(module, param_name, key, op="replace"):
+def _parse_flag_param(params, param_name, key, op="replace"):
     path = "/" + launchdarkly_api.FeatureFlagBody.attribute_map[key]
     return launchdarkly_api.PatchOperation(
-        path=path, op=op, value=module.params[param_name]
+        path=path, op=op, value=params[param_name]
     )
 
 
