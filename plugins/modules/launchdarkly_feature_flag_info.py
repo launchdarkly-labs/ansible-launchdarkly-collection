@@ -122,7 +122,11 @@ def main():
         launchdarkly_api.ApiClient(configuration)
     )
 
-    feature_flags = _fetch_flags(module, api_instance)
+    try:
+        feature_flags = fetch_flags(module.params, api_instance)
+    except launchdarkly_api.rest.ApiException as e:
+        fail_exit(module, e)
+
     if feature_flags.get("items"):
         flags = feature_flags["items"]
     else:
@@ -130,26 +134,26 @@ def main():
     module.exit_json(changed=True, feature_flags=flags)
 
 
-def _fetch_flags(module, api_instance):
+def fetch_flags(params, api_instance):
     try:
-        if module.params.get("key"):
-            if module.params.get("env"):
+        if params.get("key"):
+            if params.get("env"):
                 response = api_instance.get_feature_flag(
-                    module.params["project_key"],
-                    module.params["key"],
-                    env=module.params["env"],
+                    params["project_key"],
+                    params["key"],
+                    env=params["env"],
                 )
             else:
                 response = api_instance.get_feature_flag(
-                    module.params["project_key"], module.params["key"]
+                    params["project_key"], params["key"]
                 )
 
         else:
             keys = ["project_key", "env", "summary", "archived", "tag"]
             filtered_keys = dict(
-                (k, module.params[k])
+                (k, params[k])
                 for k in keys
-                if k in module.params and module.params[k] is not None
+                if k in params and params[k] is not None
             )
             response = api_instance.get_feature_flags(**filtered_keys)
 
@@ -158,7 +162,7 @@ def _fetch_flags(module, api_instance):
         if e.status == 404:
             return None
         else:
-            fail_exit(module, e)
+            raise
 
 
 if __name__ == "__main__":
