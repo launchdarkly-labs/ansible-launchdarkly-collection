@@ -350,7 +350,7 @@ def configure_feature_flag_env(params, feature_flag):
             elif target["state"] == "absent":
                 try:
                     target_index = str(flag_var_index[target["variation"]]["index"])
-                    path = _patch_path(module, "targets") + "/" + target_index
+                    path = _patch_path(env, "targets") + "/" + target_index
                     patches.append(dict(op="remove", path=path))
                 except KeyError:
                     pass
@@ -458,7 +458,7 @@ def _process_rules(rules, patches, feature_flag, clauses_list, env):
 
         # Trim old rules, if state isn't add
         if new_index < old_rules and state != "add":
-            path = _patch_path(module, "rules") + "/" + str(new_index)
+            path = _patch_path(env, "rules") + "/" + str(new_index)
             # LD Patch requires value, so passing in dictionary
             patches.append(dict(op="remove", path=path))
 
