@@ -299,9 +299,7 @@ def _configure_flag(module, api_instance, feature_flag=None):
 
 def _parse_flag_param(params, param_name, key, op="replace"):
     path = "/" + launchdarkly_api.FeatureFlagBody.attribute_map[key]
-    return launchdarkly_api.PatchOperation(
-        path=path, op=op, value=params[param_name]
-    )
+    return launchdarkly_api.PatchOperation(path=path, op=op, value=params[param_name])
 
 
 def _create_flag(module, api_instance):
