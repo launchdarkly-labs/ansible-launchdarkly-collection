@@ -110,7 +110,6 @@ from ansible_collections.launchdarkly_labs.collection.plugins.module_utils.claus
 )
 from ansible_collections.launchdarkly_labs.collection.plugins.module_utils.base import (
     configure_instance,
-    _patch_path,
     fail_exit,
     ld_common_argument_spec,
 )

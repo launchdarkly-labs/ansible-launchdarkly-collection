@@ -16,8 +16,8 @@ def configure_instance(api_key):
     return configuration
 
 
-def _patch_path(module, op):
-    return "/environments/" + module.params["environment_key"] + "/" + op
+def _patch_path(env, op):
+    return "/environments/" + env + "/" + op
 
 
 def _build_comment(module):
