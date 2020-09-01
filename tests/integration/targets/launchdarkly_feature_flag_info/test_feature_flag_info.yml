@@ -21,14 +21,17 @@
         description: "This is an awesome feature that will be implemented."
 
     - name: Retrieve feature Flag
-      register: flag
+      register: flags
       launchdarkly_feature_flag_info:
         project_key: dano-test-project
         tag: yellow
 
+    - set_fact:
+        - flag_map: flags.feature_flags | map(attribute='key')
+
     - assert:
-        that: '"yellow" in flag.tags'
-        that: '"green" in flag.tags'
+        that: '"yellow" in flag_map["example_test_flag"].feature_flags.tags'
+        #that: '"green" in flag.tags'
 
     - name: Delete flag
       launchdarkly_feature_flag:
