@@ -27,7 +27,7 @@
         tag: yellow
 
     - set_fact:
-        - flag_map: flags.feature_flags | map(attribute='key')
+        flag_map: flags.feature_flags | map(attribute='key')
 
     - assert:
         that: '"yellow" in flag_map["example_test_flag"].feature_flags.tags'
