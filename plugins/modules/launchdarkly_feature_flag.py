@@ -244,7 +244,7 @@ def configure_flag(params, feature_flag):
             ]
         # TODO fix logic to pass in name and description for bool
         if len(changed) > 0 and params["variations"]:
-            _patch_variations(module, feature_flag.variations, patches)
+            _patch_variations(params["variations"], feature_flag.variations, patches)
             del params["variations"]
         else:
             del params["variations"]
@@ -386,22 +386,21 @@ def _build_variations(module):
     return variation_list
 
 
-def _patch_variations(module, variations, patches):
+def _patch_variations(new_variations, variations, patches):
     # subtract 1 for zero indexing
     oldVariations = len(variations) - 1
-    newVariations = len(module.params["variations"])
-    newIndex = newVariations - 1
+    newIndex = new_variations - 1
     i = 0
     if newIndex < oldVariations:
         # iterating over variations for range to be inclusive
-        for i in range(newVariations, len(variations)):
+        for i in range(new_variations, len(variations)):
             patches.append(
                 launchdarkly_api.PatchOperation(
                     op="remove", path="/variations/%d" % i, value="needed_for_call"
                 )
             )
     else:
-        for i in range(newVariations):
+        for i in range(new_variations):
             if i <= oldVariations:
                 patches.append(
                     launchdarkly_api.PatchOperation(
