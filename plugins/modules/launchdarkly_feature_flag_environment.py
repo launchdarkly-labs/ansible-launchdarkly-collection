@@ -245,7 +245,7 @@ def _toggle_flag(state, patches, feature_flag, env):
     return patches
 
 
-def _parse_flag_param(env, params, key, op="replace"):
+def _parse_flag_param(params, env, key, op="replace"):
     path = _patch_path(env, launchdarkly_api.FeatureFlagConfig.attribute_map[key])
 
     return launchdarkly_api.PatchOperation(path=path, op=op, value=params[key])
@@ -369,8 +369,9 @@ def configure_feature_flag_env(params, feature_flag):
 
     # Loop over rules comparing
     if params["rules"] is not None:
-        _process_rules(params["rules"], patches, feature_flag, clauses_list, env)
-
+        rules_patch, rules_clauses = _process_rules(params["rules"], feature_flag, env)
+        patches.append(rules_patches)
+        clauses_list.append(rules_clauses)
     # Compare fallthrough
     fallthrough = diff(
         params["fallthrough"],
@@ -402,7 +403,7 @@ def configure_feature_flag_env(params, feature_flag):
             ]
             and params[key] is not None
         ):
-            patches.append(_parse_flag_param(env, params, key))
+            patches.append(_parse_flag_param(params, env, key))
 
     return patches, clauses_list
 
@@ -444,7 +445,9 @@ def _configure_feature_flag_env(module, api_instance, feature_flag=None):
     )
 
 
-def _process_rules(rules, patches, feature_flag, clauses_list, env):
+def _process_rules(rules, feature_flag, env):
+    patches = []
+    clauses_list = []
     old_rules = max(len(feature_flag.rules) - 1, 0)
     new_index = max(len(rules) - 1, 0)
     # Make copy for next step.
@@ -636,6 +639,7 @@ def _process_rules(rules, patches, feature_flag, clauses_list, env):
                 path = _patch_path(env, "rules") + "/" + str(pos)
                 patches.append(_patch_op("add", path, rule))
     del rules
+    return patches, clauses_list
 
 
 def _build_rules(rule):
