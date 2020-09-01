@@ -446,7 +446,7 @@ def _configure_feature_flag_env(module, api_instance, feature_flag=None):
 
 def _process_rules(rules, patches, feature_flag, clauses_list, env):
     old_rules = max(len(feature_flag.rules) - 1, 0)
-    new_index = len(rules) - 1
+    new_index = max(len(rules) - 1, 0)
     # Make copy for next step.
     new_rules_copy = copy.deepcopy(rules)
     flag_index = 0
