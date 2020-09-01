@@ -195,25 +195,24 @@ def main():
     elif module.params["state"] == "absent":
         _delete_flag(module, api_instance)
 
-
-def _configure_flag(module, api_instance, feature_flag=None):
+def configure_flag(params, feature_flag):
     patches = []
     if feature_flag:
-        if feature_flag.name == module.params["name"]:
-            del module.params["name"]
-        if feature_flag.description == module.params["description"]:
-            del module.params["description"]
-        if feature_flag.include_in_snippet == module.params["include_in_snippet"]:
-            del module.params["include_in_snippet"]
-        if feature_flag.temporary == module.params["temporary"]:
-            del module.params["temporary"]
-        if module.params["tags"] is not None and set(feature_flag.tags) == set(
-            module.params["tags"]
+        if feature_flag.name == params["name"]:
+            del params["name"]
+        if feature_flag.description == params["description"]:
+            del params["description"]
+        if feature_flag.include_in_snippet == params["include_in_snippet"]:
+            del params["include_in_snippet"]
+        if feature_flag.temporary == params["temporary"]:
+            del params["temporary"]
+        if params["tags"] is not None and set(feature_flag.tags) == set(
+            params["tags"]
         ):
-            del module.params["tags"]
+            del params["tags"]
         result = diff(
             feature_flag.to_dict(),
-            module.params,
+            params,
             ignore=set(
                 [
                     "kind",
@@ -273,7 +272,12 @@ def _configure_flag(module, api_instance, feature_flag=None):
                 and module.params[key] is not None
             ):
                 patches.append(_parse_flag_param(module, key, key))
-        if len(patches) == 0:
+        return patches
+
+def _configure_flag(module, api_instance, feature_flag=None):
+    patches = configure_flag(module.params, feature_flag)
+
+    if len(patches) == 0:
             module.exit_json(changed=False, msg="feature flag unchanged")
 
     if module.params["comment"]:
