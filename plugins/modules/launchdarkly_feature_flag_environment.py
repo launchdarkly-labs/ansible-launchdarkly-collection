@@ -228,16 +228,16 @@ def main():
         _configure_feature_flag_env(module, api_instance, feature_flag)
 
 
-def _toggle_flag(module, patches, feature_flag):
-    if module.params["state"] == "enabled":
+def _toggle_flag(state, patches, feature_flag, env):
+    if state == "enabled":
         value = True
-    elif module.params["state"] == "disabled":
+    elif state == "disabled":
         value = False
     else:
         value = feature_flag.on
 
     if feature_flag.on != value:
-        path = _patch_path(module, "on")
+        path = _patch_path(env, "on")
         patches.append(
             launchdarkly_api.PatchOperation(path=path, op="replace", value=value)
         )
@@ -245,37 +245,35 @@ def _toggle_flag(module, patches, feature_flag):
     return patches
 
 
-def _parse_flag_param(module, key, op="replace"):
-    path = _patch_path(module, launchdarkly_api.FeatureFlagConfig.attribute_map[key])
+def _parse_flag_param(env, params, key, op="replace"):
+    path = _patch_path(env, launchdarkly_api.FeatureFlagConfig.attribute_map[key])
 
-    return launchdarkly_api.PatchOperation(path=path, op=op, value=module.params[key])
+    return launchdarkly_api.PatchOperation(path=path, op=op, value=params[key])
 
 
-def _configure_feature_flag_env(module, api_instance, feature_flag=None):
-    if module.params["conftest"]["enabled"]:
-        rego_test(module)
-
+def configure_feature_flag_env(params, feature_flag):
+    env = params["environment_key"]
     patches = []
     clauses_list = []
 
-    _toggle_flag(module, patches, feature_flag)
+    _toggle_flag(params["state"], patches, feature_flag, env)
 
     if (
-        feature_flag.off_variation == module.params["off_variation"]
-        or module.params.get("off_variation") is None
+        feature_flag.off_variation == params["off_variation"]
+        or params.get("off_variation") is None
     ):
-        del module.params["off_variation"]
+        del params["off_variation"]
 
     if (
-        feature_flag.track_events == module.params["track_events"]
-        or module.params.get("track_events") is None
+        feature_flag.track_events == params["track_events"]
+        or params.get("track_events") is None
     ):
-        del module.params["track_events"]
+        del params["track_events"]
 
     # Loop over prerequisites comparing
-    _check_prereqs(module, feature_flag)
+    _check_prereqs(params["prerequisites"], feature_flag)
     # Loop over targets comparing
-    if module.params["targets"] is not None:
+    if params["targets"] is not None:
         flag_var_index = {}
         # Map variation to index flag targets first:
         for idx, target in enumerate(feature_flag.targets):
@@ -290,7 +288,7 @@ def _configure_feature_flag_env(module, api_instance, feature_flag=None):
             }
 
         # Check if targets already exist in variation
-        for target in module.params["targets"]:
+        for target in params["targets"]:
             if target["state"] == "add":
                 if flag_var_index:
                     if set(target["values"]).issubset(
@@ -309,7 +307,7 @@ def _configure_feature_flag_env(module, api_instance, feature_flag=None):
                         for val_idx, val in enumerate(new_targets):
                             new_idx = str(new_targets_idx + val_idx)
                             path = (
-                                _patch_path(module, "targets")
+                                _patch_path(env, "targets")
                                 + "/"
                                 + target_index
                                 + "/values/"
@@ -358,7 +356,7 @@ def _configure_feature_flag_env(module, api_instance, feature_flag=None):
                     pass
                 continue
 
-            path = _patch_path(module, "targets") + "/" + target_index
+            path = _patch_path(env, "targets") + "/" + target_index
             patches.append(
                 _patch_op(
                     target["state"],
@@ -367,29 +365,29 @@ def _configure_feature_flag_env(module, api_instance, feature_flag=None):
                 )
             )
 
-        del module.params["targets"]
+        del params["targets"]
 
     # Loop over rules comparing
-    if module.params["rules"] is not None:
-        _process_rules(module, patches, feature_flag, clauses_list)
+    if params["rules"] is not None:
+        _process_rules(params["rules"], patches, feature_flag, clauses_list, env)
 
     # Compare fallthrough
     fallthrough = diff(
-        module.params["fallthrough"],
+        params["fallthrough"],
         feature_flag.fallthrough.to_dict(),
         ignore=set(["id"]),
     )
     if not list(fallthrough):
-        del module.params["fallthrough"]
+        del params["fallthrough"]
     else:
-        fallthrough = _build_rules(module.params["fallthrough"])
+        fallthrough = _build_rules(params["fallthrough"])
         op = "replace"
-        path = _patch_path(module, "fallthrough")
+        path = _patch_path(env, "fallthrough")
         patches.append(_patch_op(op, path, fallthrough))
         # Delete key so it's not passed through to next loop
-        del module.params["fallthrough"]
+        del params["fallthrough"]
 
-    for key in module.params:
+    for key in params:
         if (
             key
             not in [
@@ -402,9 +400,17 @@ def _configure_feature_flag_env(module, api_instance, feature_flag=None):
                 "salt",
                 "conftest",
             ]
-            and module.params[key] is not None
+            and params[key] is not None
         ):
-            patches.append(_parse_flag_param(module, key))
+            patches.append(_parse_flag_param(env, params, key))
+
+    return patches
+
+def _configure_feature_flag_env(module, api_instance, feature_flag=None):
+    if module.params["conftest"]["enabled"]:
+        rego_test(module)
+
+    patches = configure_feature_flag_env(module.params, feature_flag)
 
     if patches:
         comments = dict(comment=_build_comment(module), patch=patches)
@@ -437,14 +443,14 @@ def _configure_feature_flag_env(module, api_instance, feature_flag=None):
     )
 
 
-def _process_rules(module, patches, feature_flag, clauses_list):
+def _process_rules(rules, patches, feature_flag, clauses_list, env):
     old_rules = max(len(feature_flag.rules) - 1, 0)
-    new_index = len(module.params["rules"]) - 1
+    new_index = len(rules) - 1
     # Make copy for next step.
-    new_rules_copy = copy.deepcopy(module.params["rules"])
+    new_rules_copy = copy.deepcopy(rules)
     flag_index = 0
 
-    for new_rule_index, rule in enumerate(module.params["rules"]):
+    for new_rule_index, rule in enumerate(rules):
         state = rule.get("rule_state", "present")
         if rule.get("rule_state"):
             del rule["rule_state"]
@@ -495,7 +501,7 @@ def _process_rules(module, patches, feature_flag, clauses_list):
                             )
                         )
                     )
-                    path = _patch_path(module, "rules")
+                    path = _patch_path(env, "rules")
                     try:
                         if rule["variation"] is not None:
                             patches.append(
@@ -593,12 +599,12 @@ def _process_rules(module, patches, feature_flag, clauses_list):
         new_flag_index = flag_index + idx
         rule_change["state"] = rule_change.get("state", "present")
         if idx > old_rules:
-            path = _patch_path(module, "rules") + "/" + str(idx)
+            path = _patch_path(env, "rules") + "/" + str(idx)
             patches.append(_patch_op("add", path, rule))
         # Non-idempotent operation - add
         elif rule_change["state"] == "add":
             pos = old_rules + idx
-            path = _patch_path(module, "rules") + "/" + str(pos)
+            path = _patch_path(env, "rules") + "/" + str(pos)
             patches.append(_patch_op("add", path, rule))
         else:
             state = rule_change["state"]
@@ -616,19 +622,19 @@ def _process_rules(module, patches, feature_flag, clauses_list):
                     )
                 )
                 if result:
-                    path = _patch_path(module, "rules") + "/" + str(new_flag_index)
+                    path = _patch_path(env, "rules") + "/" + str(new_flag_index)
                     patches.append(_patch_op("replace", path, rule))
                 elif not result and state == "absent":
-                    path = _patch_path(module, "rules") + "/" + str(new_flag_index)
+                    path = _patch_path(env, "rules") + "/" + str(new_flag_index)
                     patches.append(_patch_op("remove", path, rule))
             else:
                 # If a previous rule exists increment index to add new rule
                 if len(feature_flag.rules) > 0 and old_rules == 0:
                     old_rules = 1
                 pos = old_rules + idx
-                path = _patch_path(module, "rules") + "/" + str(pos)
+                path = _patch_path(env, "rules") + "/" + str(pos)
                 patches.append(_patch_op("add", path, rule))
-    del module.params["rules"]
+    del rules
 
 
 def _build_rules(rule):
@@ -681,18 +687,18 @@ def _build_rules(rule):
         return temp_rule
 
 
-def _check_prereqs(module, feature_flag):
-    if module.params["prerequisites"] is not None:
-        for idx, target in enumerate(module.params["prerequisites"]):
+def _check_prereqs(prereqs, feature_flag):
+    if prereqs is not None:
+        for idx, target in enumerate(prereqs):
             if idx > len(feature_flag.prerequisites) - 1:
                 prereq_result = ["break"]
                 break
             prereq_result = diff(target, feature_flag.prerequisites[idx].to_dict())
 
         if not list(prereq_result):
-            del module.params["prerequisites"]
+            del prereqs
     else:
-        del module.params["prerequisites"]
+        del prereqs
 
 
 def _fetch_feature_flag(module, api_instance):
