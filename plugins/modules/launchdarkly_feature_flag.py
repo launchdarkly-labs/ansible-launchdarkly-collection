@@ -195,6 +195,7 @@ def main():
     elif module.params["state"] == "absent":
         _delete_flag(module, api_instance)
 
+
 def configure_flag(params, feature_flag):
     patches = []
     if feature_flag:
@@ -206,9 +207,7 @@ def configure_flag(params, feature_flag):
             del params["include_in_snippet"]
         if feature_flag.temporary == params["temporary"]:
             del params["temporary"]
-        if params["tags"] is not None and set(feature_flag.tags) == set(
-            params["tags"]
-        ):
+        if params["tags"] is not None and set(feature_flag.tags) == set(params["tags"]):
             del params["tags"]
         result = diff(
             feature_flag.to_dict(),
@@ -274,11 +273,12 @@ def configure_flag(params, feature_flag):
                 patches.append(_parse_flag_param(module, key, key))
         return patches
 
+
 def _configure_flag(module, api_instance, feature_flag=None):
     patches = configure_flag(module.params, feature_flag)
 
     if len(patches) == 0:
-            module.exit_json(changed=False, msg="feature flag unchanged")
+        module.exit_json(changed=False, msg="feature flag unchanged")
 
     if module.params["comment"]:
         comment = module.params["comment"]
