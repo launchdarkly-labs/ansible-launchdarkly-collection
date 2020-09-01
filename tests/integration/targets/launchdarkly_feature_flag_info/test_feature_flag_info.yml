@@ -22,7 +22,7 @@
 
     - name: Retrieve feature Flag
       register: flag
-      launchdarkly_labs.collection.launchdarkly_feature_flag_info:
+      launchdarkly_feature_flag_info:
         project_key: dano-test-project
         tag: yellow
 
