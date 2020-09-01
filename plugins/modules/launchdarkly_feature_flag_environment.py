@@ -369,9 +369,9 @@ def configure_feature_flag_env(params, feature_flag):
 
     # Loop over rules comparing
     if params["rules"] is not None:
-        rules_patch, rules_clauses = _process_rules(params["rules"], feature_flag, env)
-        patches.append(rules_patches)
-        clauses_list.append(rules_clauses)
+        rule_patches, rule_clauses = _process_rules(params["rules"], feature_flag, env)
+        patches.append(rule_patches)
+        clauses_list.append(rule_clauses)
     # Compare fallthrough
     fallthrough = diff(
         params["fallthrough"],
