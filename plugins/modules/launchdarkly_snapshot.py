@@ -12,30 +12,20 @@ ANSIBLE_METADATA = {
 
 DOCUMENTATION = r"""
 ---
-module: launchdarkly_feature_flag_info
-short_description: Return a list of Feature Flags
+module: launchdarkly_snapshot
+short_description: Return a snapshot of your Project
 description:
      - Return value from Feature Flag Evaluation
-version_added: "0.2.8"
+version_added: "0.3.5"
 options:
     project_key:
         description:
             - Project key will group flags together
         default: 'default'
         required: yes
-    key:
-        description:
-            - Unique key for feature flag.
-        required: yes
-        type: str
     env:
         description:
             - Filter for a specific environment.
-        required: no
-        type: str
-    tag:
-        description:
-            - Filter for a specific tag.
         required: no
         type: str
     archived:
@@ -48,16 +38,16 @@ options:
             - Flags will not include their list of prerequisites, targets or rules. Set to false to include these fields for each flag returned
         required: no
         type: bool
+        default: false
 
 extends_documentation_fragment: launchdarkly_labs.collection.launchdarkly
 """
 
 EXAMPLES = r"""
 # Get list of flags filtered to production environment.
-- launchdarkly_feature_flag_info:
+- launchdarkly_snapshot:
     api_key: api-12345
     project_key: dano-test-project
-    env: production
 """
 
 RETURN = r"""
@@ -93,10 +83,16 @@ from ansible.module_utils.six import PY2, iteritems, string_types
 #     fail_exit,
 # )
 
+# from ansible_collections.launchdarkly_labs.collection.plugins.modules.launchdarkly_feature_flag_info import (
+#     fetch_flags
+# )
+
 from base import (
     configure_instance,
     fail_exit,
 )
+
+from launchdarkly_feature_flag_info import fetch_flags
 
 
 def main():
@@ -110,10 +106,8 @@ def main():
             ),
             env=dict(type="str"),
             project_key=dict(type="str", required=True),
-            key=dict(type="str"),
             summary=dict(type="bool"),
             archived=dict(type="bool"),
-            tag=dict(type="str"),
         )
     )
 
@@ -124,12 +118,25 @@ def main():
 
     # Set up API
     configuration = configure_instance(module.params["api_key"])
-    api_instance = launchdarkly_api.FeatureFlagsApi(
+    api_instance_project = launchdarkly_api.ProjectsApi(
+        launchdarkly_api.ApiClient(configuration)
+    )
+    api_instance_flag = launchdarkly_api.FeatureFlagsApi(
+        launchdarkly_api.ApiClient(configuration)
+    )
+    api_instance_segment = launchdarkly_api.UserSegmentsApi(
         launchdarkly_api.ApiClient(configuration)
     )
 
     try:
-        feature_flags = fetch_flags(module.params, api_instance)
+        project = api_instance_project.get_project(module.params["project_key"])
+        feature_flags = fetch_flags(module.params, api_instance_flag)
+        segments = {}
+        for env in project.environments:
+            segment = api_instance_segment.get_user_segments(
+                module.params["project_key"], env.key
+            )
+            segments[env.key] = segment.to_dict()["items"]
     except launchdarkly_api.rest.ApiException as e:
         fail_exit(module, e)
 
@@ -137,36 +144,10 @@ def main():
         flags = feature_flags["items"]
     else:
         flags = feature_flags
-    module.exit_json(changed=True, feature_flags=flags)
 
-
-def fetch_flags(params, api_instance):
-    try:
-        if params.get("key"):
-            if params.get("env"):
-                response = api_instance.get_feature_flag(
-                    params["project_key"],
-                    params["key"],
-                    env=params["env"],
-                )
-            else:
-                response = api_instance.get_feature_flag(
-                    params["project_key"], params["key"]
-                )
-
-        else:
-            keys = ["project_key", "env", "summary", "archived", "tag"]
-            filtered_keys = dict(
-                (k, params[k]) for k in keys if k in params and params[k] is not None
-            )
-            response = api_instance.get_feature_flags(**filtered_keys)
-
-        return response.to_dict()
-    except launchdarkly_api.rest.ApiException as e:
-        if e.status == 404:
-            return None
-        else:
-            raise
+    module.exit_json(
+        changed=True, project=project.to_dict(), feature_flags=flags, segments=segments
+    )
 
 
 if __name__ == "__main__":

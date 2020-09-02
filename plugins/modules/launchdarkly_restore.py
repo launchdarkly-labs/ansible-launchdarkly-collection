@@ -22,41 +22,20 @@ options:
             - LaunchDarkly API Source Key. May be set as LAUNCHDARKLY_ACCESS_TOKEN environment variable.
         type: str
         required: yes
-    api_key_dest:
+    backup_path:
         description:
-            - LaunchDarkly API Destination Key.
+            - Reads in a LaunchDarkly snapshot files and replays against API.
         type: str
         required: yes
-    project_key:
-        description:
-            - Project key source
-        default: 'default'
-        type: str
-    project_key_dest:
-        description:
-            - Project key destination
-        required: yes
-        type: str
-    flag_tag:
-        description:
-            - Copy only flags which have the specified tag
-        required: no
-        type: str
-    environments_copy:
-        description:
-            - C(Bool) flag to determine whether to copy source environments to the new project.
-        default: true
 
 extends_documentation_fragment: launchdarkly_labs.collection.launchdarkly
 """
 
 EXAMPLES = r"""
 # Sync a LaunchDarkly Project
-- launchdarkly_project_copy:
+- launchdarkly_restore:
     api_key: api-12345
-    api_key_dest: api-54321
-    project_key: dev
-    project_key_dest: new-dev
+    backup_path: "./"
 """
 
 RETURN = r"""
@@ -86,7 +65,16 @@ from ansible.module_utils.basic import AnsibleModule, missing_required_lib, env_
 from ansible.module_utils._text import to_native
 from ansible.module_utils.common._json_compat import json
 
-from ansible_collections.launchdarkly_labs.collection.plugins.module_utils.base import (
+# from ansible_collections.launchdarkly_labs.collection.plugins.module_utils.base import (
+#     configure_instance,
+#     parse_env_param,
+#     parse_user_param,
+#     reset_rate,
+#     fail_exit,
+#     ld_common_argument_spec,
+# )
+
+from base import (
     configure_instance,
     parse_env_param,
     parse_user_param,
@@ -105,17 +93,14 @@ def main():
                 no_log=True,
                 fallback=(env_fallback, ["LAUNCHDARKLY_ACCESS_TOKEN"]),
             ),
-            api_key_dest=dict(
+            project_key=dict(
                 required=True,
                 type="str",
-                no_log=True,
-                fallback=(env_fallback, ["LAUNCHDARKLY_DEST_ACCESS_TOKEN"]),
             ),
-            project_key=dict(type="str", required=True),
-            project_key_dest=dict(type="str", required=True),
-            flag_tag=dict(type="list", elements="str"),
-            environments_copy=dict(type="bool", default=True),
-            name=dict(type="str"),
+            backup_path=dict(
+                required=True,
+                type="str",
+            ),
         )
     )
 
@@ -124,68 +109,49 @@ def main():
             msg=missing_required_lib("launchdarkly_api"), exception=LD_IMP_ERR
         )
 
-    # Setup the necessary API clients
-    api_instance_src_user = launchdarkly_api.UserSegmentsApi(
-        launchdarkly_api.ApiClient(configure_instance(module.params["api_key"]))
-    )
-
-    api_instance_src_proj = launchdarkly_api.ProjectsApi(
-        launchdarkly_api.ApiClient(configure_instance(module.params["api_key"]))
-    )
-
-    api_instance_src_fflag = launchdarkly_api.FeatureFlagsApi(
-        launchdarkly_api.ApiClient(configure_instance(module.params["api_key"]))
-    )
-
     api_instance_dest_user = launchdarkly_api.UserSegmentsApi(
-        launchdarkly_api.ApiClient(configure_instance(module.params["api_key_dest"]))
+        launchdarkly_api.ApiClient(configure_instance(module.params["api_key"]))
     )
 
     api_instance_dest_proj = launchdarkly_api.ProjectsApi(
-        launchdarkly_api.ApiClient(configure_instance(module.params["api_key_dest"]))
+        launchdarkly_api.ApiClient(configure_instance(module.params["api_key"]))
     )
 
     api_instance_dest_fflag = launchdarkly_api.FeatureFlagsApi(
-        launchdarkly_api.ApiClient(configure_instance(module.params["api_key_dest"]))
+        launchdarkly_api.ApiClient(configure_instance(module.params["api_key"]))
     )
 
     api_instance_dest_env = launchdarkly_api.EnvironmentsApi(
-        launchdarkly_api.ApiClient(configure_instance(module.params["api_key_dest"]))
+        launchdarkly_api.ApiClient(configure_instance(module.params["api_key"]))
     )
 
-    _project_sync(
+    _project_restore(
         module,
-        api_instance_src_proj,
         api_instance_dest_proj,
         api_instance_dest_env,
-        api_instance_src_user,
-        api_instance_dest_user,
-        api_instance_src_fflag,
         api_instance_dest_fflag,
+        api_instance_dest_user,
     )
 
 
-def _project_sync(
-    module,
-    src_proj,
-    dest_proj,
-    dest_env_api,
-    src_user_sgmt,
-    dest_user_sgmt,
-    src_fflags,
-    dest_fflags,
-):
-    src_project = src_proj.get_project(module.params["project_key"]).to_dict()
-    name = module.params.get("name", src_project["name"])
+def _project_restore(module, dest_proj, dest_env_api, dest_fflags, dest_user_sgmt):
+    with open(module.params["backup_path"]) as reader:
+        backup_json = json.load(reader)
+
+    project = backup_json["project"]
+    feature_flags = backup_json["feature_flags"]
+    segments = backup_json["segments"]
+
+    name = project.get("name", "")
     dest_proj_body = dict(
-        name=name, key=module.params["project_key_dest"], tags=src_project["tags"]
+        name=name, key=module.params["project_key"], tags=project["tags"]
     )
 
     patch_envs = []
     # Build the Environments inside of Project Body
-    if module.params["environments_copy"]:
+    if project["environments"]:
         dest_proj_body["environments"] = []
-        for env in src_project["environments"]:
+        for env in project["environments"]:
             dest_proj_body["environments"].append(
                 dict(
                     name=env["name"],
@@ -233,14 +199,14 @@ def _project_sync(
         if len(patches) > 0:
             try:
                 api_response = dest_env_api.patch_environment(
-                    module.params["project_key_dest"], env["key"], patch_delta=patches
+                    module.params["project_key"], env["key"], patch_delta=patches
                 )
             except ApiException as e:
                 if status == 429:
                     time.sleep(reset_rate(headers["X-RateLimit-Reset"]))
                     # Retry
                     dest_env_api.patch_environment(
-                        module.params["project_key_dest"],
+                        module.params["project_key"],
                         env["key"],
                         patch_delta=patches,
                     )
@@ -249,15 +215,12 @@ def _project_sync(
             # Reset patches
             patches = []
 
-        # User Segment Processing
-    if module.params["environments_copy"]:
-        for env in src_project["environments"]:
-            get_segments = src_user_sgmt.get_user_segments(
-                module.params["project_key"], env["key"]
-            ).to_dict()
-
+    # User Segment Processing
+    if segments:
+        env_keys = segments.keys()
+        for env in env_keys:
             patch_sgmts = []
-            for segment in get_segments["items"]:
+            for segment in segments[env]:
                 new_segment_body = dict(key=segment["key"], name=segment["name"])
 
                 if segment["description"]:
@@ -267,15 +230,15 @@ def _project_sync(
                     new_segment_body["tags"] = segment["tags"]
                 try:
                     dest_user_sgmt.post_user_segment(
-                        module.params["project_key_dest"], env["key"], new_segment_body
+                        module.params["project_key"], env, new_segment_body
                     )
                 except ApiException as e:
                     if status == 429:
                         time.sleep(reset_rate(headers["X-RateLimit-Reset"]))
                         # Retry
                         dest_user_sgmt.post_user_segment(
-                            module.params["project_key_dest"],
-                            env["key"],
+                            module.params["project_key"],
+                            env,
                             new_segment_body,
                         )
                     else:
@@ -315,8 +278,8 @@ def _project_sync(
                             status,
                             headers,
                         ) = dest_user_sgmt.patch_user_segment_with_http_info(
-                            module.params["project_key_dest"],
-                            env["key"],
+                            module.params["project_key"],
+                            env,
                             sgmt["key"],
                             patch_only=patches,
                         )
@@ -326,8 +289,8 @@ def _project_sync(
                             time.sleep(reset_rate(headers["X-RateLimit-Reset"]))
                             # Retry
                             dest_user_sgmt.patch_user_segment_with_http_info(
-                                module.params["project_key_dest"],
-                                env["key"],
+                                module.params["project_key"],
+                                env,
                                 sgmt["key"],
                                 patch_only=patches,
                             )
@@ -336,32 +299,7 @@ def _project_sync(
                 # Reset patches
                 del patches
 
-    tag = module.params.get("flag_tag", None)
-    src_ff = {}
-    try:
-        if tag:
-            tag = ",".join(tag)
-            src_ff = src_fflags.get_feature_flags(
-                module.params["project_key"], summary=0, tag=tag
-            ).to_dict()
-        else:
-            src_ff = src_fflags.get_feature_flags(
-                module.params["project_key"], summary=0
-            ).to_dict()
-    except ApiException as e:
-        if status == 429:
-            time.sleep(reset_rate(headers["X-RateLimit-Reset"]))
-            if tag:
-                tag = ",".join(tag)
-                src_ff = src_fflags.get_feature_flags(
-                    module.params["project_key"], summary=0, tag=tag
-                ).to_dict()
-            else:
-                src_ff = src_fflags.get_feature_flags(
-                    module.params["project_key"], summary=0
-                ).to_dict()
-
-    for flag in src_ff["items"]:
+    for flag in feature_flags:
         fflag_body = dict(
             name=flag["name"],
             key=flag["key"],
@@ -369,11 +307,24 @@ def _project_sync(
             variations=flag["variations"],
             temporary=flag["temporary"],
             tags=flag["tags"],
-            client_side_availability=flag["client_side_availability"],
         )
 
+        if (
+            flag["client_side_availability"]
+            and flag["client_side_availability"] is not None
+        ):
+            fflag_body["client_side_availability"] = dict(
+                (launchdarkly_api.ClientSideAvailability.attribute_map[k], v)
+                for k, v in flag["client_side_availability"].items()
+                if v is not None
+            )
+
         if flag["defaults"] and flag["defaults"] is not None:
-            fflag_body["defaults"] = flag["defaults"]
+            fflag_body["defaults"] = dict(
+                (launchdarkly_api.Defaults.attribute_map[k], v)
+                for k, v in flag["defaults"].items()
+                if v is not None
+            )
 
         fflag_body_mapped = dict(
             (launchdarkly_api.FeatureFlagBody.attribute_map[k], v)
@@ -383,7 +334,7 @@ def _project_sync(
 
         try:
             response, status, headers = dest_fflags.post_feature_flag_with_http_info(
-                module.params["project_key_dest"], fflag_body_mapped
+                module.params["project_key"], fflag_body_mapped
             )
         except ApiException as e:
             if e.status == 429:
@@ -394,38 +345,38 @@ def _project_sync(
                     status,
                     headers,
                 ) = dest_fflags.post_feature_flag_with_http_info(
-                    module.params["project_key_dest"], fflag_body
+                    module.params["project_key"], fflag_body
                 )
             else:
                 fail_exit(module, e)
 
-        if module.params["environments_copy"]:
+        for fenv_key in flag["environments"]:
             patches = []
-            for fenv_key in flag["environments"]:
-                fflag_env = dict(
-                    on=flag["environments"][fenv_key]["on"],
-                    targets=flag["environments"][fenv_key]["targets"],
-                    off_variation=flag["environments"][fenv_key]["off_variation"],
-                    track_events=flag["environments"][fenv_key]["track_events"],
-                    prerequisites=flag["environments"][fenv_key]["prerequisites"],
-                    fallthrough=flag["environments"][fenv_key]["fallthrough"],
-                )
 
-                fflag_env_mapped = dict(
-                    (launchdarkly_api.FeatureFlagConfig.attribute_map[k], v)
-                    for k, v in fflag_env.items()
-                    if v is not None
-                )
-                path = "/environments/" + fenv_key + "/"
-                for key in fflag_env_mapped:
-                    if fflag_env_mapped.get(key) is not None:
-                        patch = dict(
-                            path=path + key, op="replace", value=fflag_env_mapped[key]
-                        )
-                        print(patches)
-                        patches.append(launchdarkly_api.PatchOperation(**patch))
-                        del patch
-                try:
+            fflag_env = dict(
+                on=flag["environments"][fenv_key]["on"],
+                targets=flag["environments"][fenv_key]["targets"],
+                off_variation=flag["environments"][fenv_key]["off_variation"],
+                track_events=flag["environments"][fenv_key]["track_events"],
+                prerequisites=flag["environments"][fenv_key]["prerequisites"],
+                fallthrough=flag["environments"][fenv_key]["fallthrough"],
+            )
+
+            fflag_env_mapped = dict(
+                (launchdarkly_api.FeatureFlagConfig.attribute_map[k], v)
+                for k, v in fflag_env.items()
+                if v is not None
+            )
+            path = "/environments/" + fenv_key + "/"
+            for key in fflag_env_mapped:
+                if fflag_env_mapped.get(key) is not None:
+                    patch = dict(
+                        path=path + key, op="replace", value=fflag_env_mapped[key]
+                    )
+                    patches.append(launchdarkly_api.PatchOperation(**patch))
+                    del patch
+            try:
+                if flag["environments"][fenv_key]["rules"] is not None:
                     for rule in flag["environments"][fenv_key]["rules"]:
                         new_rule = dict(clauses=rule["clauses"])
 
@@ -440,8 +391,8 @@ def _project_sync(
                             value=launchdarkly_api.Rule(**new_rule),
                         )
                         patches.append(launchdarkly_api.PatchOperation(**patch))
-                except KeyError:
-                    pass
+            except KeyError:
+                pass
 
             if len(patches) > 0:
                 try:
@@ -450,7 +401,7 @@ def _project_sync(
                         status,
                         headers,
                     ) = dest_fflags.patch_feature_flag_with_http_info(
-                        module.params["project_key_dest"],
+                        project["key"],
                         flag["key"],
                         patch_comment=patches,
                     )
@@ -469,12 +420,11 @@ def _project_sync(
                 # Reset patches
                 del patches
 
-    new_project = dest_proj.get_project(module.params["project_key_dest"]).to_dict()
+    new_project = dest_proj.get_project(project["key"]).to_dict()
     module.exit_json(
         changed=True,
         project=new_project,
-        msg="Copied project: %s to project: %s"
-        % (module.params["project_key"], module.params["project_key_dest"]),
+        msg="Restored project: %s" % module.params["project_key"],
     )
 
 
