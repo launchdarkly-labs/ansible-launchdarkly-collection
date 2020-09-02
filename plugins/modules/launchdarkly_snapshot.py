@@ -146,7 +146,7 @@ def main():
         flags = feature_flags
 
     module.exit_json(
-        changed=True, project=project.to_dict(), feature_flags=flags, segments=segments
+        changed=True, project=project.to_dict(), feature_flags=flags, segments=segments, version="v1"
     )
 
 

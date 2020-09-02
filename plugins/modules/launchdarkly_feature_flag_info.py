@@ -88,15 +88,15 @@ from ansible.module_utils._text import to_native
 from ansible.module_utils.common._json_compat import json
 from ansible.module_utils.six import PY2, iteritems, string_types
 
-# from ansible_collections.launchdarkly_labs.collection.plugins.module_utils.base import (
-#     configure_instance,
-#     fail_exit,
-# )
-
-from base import (
+from ansible_collections.launchdarkly_labs.collection.plugins.module_utils.base import (
     configure_instance,
     fail_exit,
 )
+
+# from base import (
+#     configure_instance,
+#     fail_exit,
+# )
 
 
 def main():
