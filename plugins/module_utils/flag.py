@@ -11,6 +11,7 @@ except ImportError:
     LD_IMP_ERR = traceback.format_exc()
     HAS_LD = False
 
+
 def defaults_configure(fflag_body, flag):
     if flag["defaults"] and flag["defaults"] is not None:
         fflag_body["defaults"] = dict(
