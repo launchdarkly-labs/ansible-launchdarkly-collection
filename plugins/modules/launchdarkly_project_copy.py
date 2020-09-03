@@ -96,9 +96,9 @@ from ansible_collections.launchdarkly_labs.collection.plugins.module_utils.base 
 )
 
 from ansible_collections.launchdarkly_labs.collection.plugins.module_utils.flag import (
-    defaults_configure,
+    configure_defaults,
+    configure_clientside_avail
 )
-
 
 def main():
     module = AnsibleModule(
@@ -373,10 +373,10 @@ def _project_sync(
             variations=flag["variations"],
             temporary=flag["temporary"],
             tags=flag["tags"],
-            client_side_availability=flag["client_side_availability"],
         )
 
-        fflag_body = defaults_configure(fflag_body, flag)
+        fflag_body = configure_defaults(fflag_body, flag)
+        fflag_body = configure_clientside_avail(fflag_body, flag)
 
         fflag_body_mapped = dict(
             (launchdarkly_api.FeatureFlagBody.attribute_map[k], v)

@@ -83,6 +83,10 @@ from base import (
     ld_common_argument_spec,
 )
 
+from ansible_collections.launchdarkly_labs.collection.plugins.module_utils.flag import (
+    configure_defaults,
+    configure_clientside_avail
+)
 
 def main():
     module = AnsibleModule(
@@ -309,22 +313,9 @@ def _project_restore(module, dest_proj, dest_env_api, dest_fflags, dest_user_sgm
             tags=flag["tags"],
         )
 
-        if (
-            flag["client_side_availability"]
-            and flag["client_side_availability"] is not None
-        ):
-            fflag_body["client_side_availability"] = dict(
-                (launchdarkly_api.ClientSideAvailability.attribute_map[k], v)
-                for k, v in flag["client_side_availability"].items()
-                if v is not None
-            )
+        fflag_body = configure_defaults(fflag_body, flag)
+        fflag_body = configure_clientside_avail(fflag_body, flag)
 
-        if flag["defaults"] and flag["defaults"] is not None:
-            fflag_body["defaults"] = dict(
-                (launchdarkly_api.Defaults.attribute_map[k], v)
-                for k, v in flag["defaults"].items()
-                if v is not None
-            )
 
         fflag_body_mapped = dict(
             (launchdarkly_api.FeatureFlagBody.attribute_map[k], v)
