@@ -95,6 +95,10 @@ from ansible_collections.launchdarkly_labs.collection.plugins.module_utils.base 
     ld_common_argument_spec,
 )
 
+from ansible_collections.launchdarkly_labs.collection.plugins.module_utils.flag import (
+    defaults_configure
+)
+
 
 def main():
     module = AnsibleModule(
@@ -372,8 +376,7 @@ def _project_sync(
             client_side_availability=flag["client_side_availability"],
         )
 
-        if flag["defaults"] and flag["defaults"] is not None:
-            fflag_body["defaults"] = flag["defaults"]
+        fflag_body = defaults_configure(fflag_body, flag)
 
         fflag_body_mapped = dict(
             (launchdarkly_api.FeatureFlagBody.attribute_map[k], v)
