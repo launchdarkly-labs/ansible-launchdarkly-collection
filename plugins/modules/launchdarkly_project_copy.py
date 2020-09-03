@@ -97,8 +97,9 @@ from ansible_collections.launchdarkly_labs.collection.plugins.module_utils.base 
 
 from ansible_collections.launchdarkly_labs.collection.plugins.module_utils.flag import (
     configure_defaults,
-    configure_clientside_avail
+    configure_clientside_avail,
 )
+
 
 def main():
     module = AnsibleModule(

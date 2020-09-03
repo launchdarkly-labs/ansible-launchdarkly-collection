@@ -85,8 +85,9 @@ from base import (
 
 from ansible_collections.launchdarkly_labs.collection.plugins.module_utils.flag import (
     configure_defaults,
-    configure_clientside_avail
+    configure_clientside_avail,
 )
+
 
 def main():
     module = AnsibleModule(
@@ -315,7 +316,6 @@ def _project_restore(module, dest_proj, dest_env_api, dest_fflags, dest_user_sgm
 
         fflag_body = configure_defaults(fflag_body, flag)
         fflag_body = configure_clientside_avail(fflag_body, flag)
-
 
         fflag_body_mapped = dict(
             (launchdarkly_api.FeatureFlagBody.attribute_map[k], v)

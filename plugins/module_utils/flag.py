@@ -21,10 +21,11 @@ def configure_defaults(fflag_body, flag):
         )
     return fflag_body
 
+
 def configure_clientside_avail(fflag_body, flag):
     if (
-    flag["client_side_availability"]
-    and flag["client_side_availability"] is not None
+        flag["client_side_availability"]
+        and flag["client_side_availability"] is not None
     ):
         fflag_body["client_side_availability"] = dict(
             (launchdarkly_api.ClientSideAvailability.attribute_map[k], v)
