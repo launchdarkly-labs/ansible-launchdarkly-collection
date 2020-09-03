@@ -96,7 +96,7 @@ from ansible_collections.launchdarkly_labs.collection.plugins.module_utils.base 
 )
 
 from ansible_collections.launchdarkly_labs.collection.plugins.module_utils.flag import (
-    defaults_configure
+    defaults_configure,
 )
 
 
