@@ -134,6 +134,7 @@ from ansible_collections.launchdarkly_labs.collection.plugins.module_utils.base 
     fail_exit,
     ld_common_argument_spec,
     validate_params,
+    reset_rate
 )
 
 
@@ -294,7 +295,13 @@ def _configure_flag(module, api_instance, feature_flag=None):
             changed=True, msg="feature flag updated", content=response.to_dict()
         )
     except ApiException as e:
-        fail_exit(module, e)
+            if e.status == 429:
+                time.sleep(reset_rate(e.headers["X-RateLimit-Reset"]))
+            api_response = api_instance.patch_feature_flag(
+                module.params["project_key"],
+                module.params["flag_key"],
+                patch_comment=comments,
+            )
 
 
 def _parse_flag_param(params, param_name, key, op="replace"):
