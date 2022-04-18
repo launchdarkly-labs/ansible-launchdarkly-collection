@@ -13,58 +13,58 @@ ANSIBLE_METADATA = {
 DOCUMENTATION = r"""
 ---
 module: launchdarkly_custom_role
-short_description: Manage LaunchDarkly Custom Roles
+short_description: Manage custom roles
 description:
-    - Manager LaunchDarkly Custom Roles
+    - Manage LaunchDarkly custom roles. To learn more about custom roles, read L(Custom roles, https://docs.launchdarkly.com/home/members/custom-roles).
 version_added: "0.1.0"
 options:
     state:
         description:
-            - Indicate desired state of the resource
+            - Indicate desired state of the Ansible resource
         choices: [ absent, present ]
         default: present
     key:
         description:
-            - Unique key to identify Custom Role
+            - A unique key to identify the custom role
         type: str
         required: yes
     name:
         description:
-            - A human-readable name for your webhook
+            - A human-readable name for the custom role
         type: str
         required: no
     description:
         description:
-            - Description of the custom role
+            - A description of the custom role
         type: str
         required: no
     policies:
         description:
-            - Policies to attach to the role
+            - Policies to attach to the custom role
         type: dict
         required: yes
         suboptions:
             resources:
                 description:
-                    - Resource to use in policy
+                    - Resources for the custom role policy
                 type: list
                 required: no
             not_resources:
                 description:
-                    - inverse of Resource to use in policy
+                    - Inverse of resources for the policy. Only one of C(resources) and C(not_resources) may be defined for a given policy statement.
                 type: list
                 required: no
             actions:
                 description:
-                    - Identify actions of policy
+                    - Actions for the custom role policy
                 type: str
             not_actions:
                 description:
-                    - inverse of actions for policy
+                    - Inverse of actions for the policy. Only one of C(actions) and C(not_actions) may be defined for a given policy statement.
                 type: str
             effect:
                 description:
-                    - Defines whether the statement allows or denies access to the named resources and actions.
+                    - Defines whether the policy statement allows or denies access to the named resources and actions.
                 choices: ["allow", "deny"]
                 type: str
 
@@ -76,17 +76,17 @@ EXAMPLES = r"""
     state: present
     name: "My Custom Role"
     policies:
-        resources:
-          - "proj/*:env/*:flag/test_flag"
+        effect: allow
         actions:
           - "*"
-        effect: allow
+        resources:
+          - "proj/*:env/*:flag/test_flag"
 """
 
 RETURN = r"""
 ---
 custom_role:
-    description: Dictionary containing a L(Custom Role, https://github.com/launchdarkly/api-client-python/blob/2.0.30/docs/CustomRole.md)
+    description: Dictionary containing a L(custom role, https://github.com/launchdarkly/api-client-python/blob/2.0.30/docs/CustomRole.md)
     type: dict
     returned: on success
 """

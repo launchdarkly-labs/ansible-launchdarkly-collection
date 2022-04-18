@@ -13,22 +13,22 @@ ANSIBLE_METADATA = {
 DOCUMENTATION = r"""
 ---
 module: launchdarkly_feature_flag
-short_description: Interact with projects, flags of LaunchDarkly
+short_description: Manage feature flags
 description:
-     - Manage LaunchDarkly manage feature flags and account settings.
+     - Manage LaunchDarkly feature flags
 version_added: "0.1.0"
 options:
     state:
         description:
-            - Indicate desired state of the resource
+            - Indicate desired state of the Ansible resource
         choices: [ absent, enabled, disabled, deleted, present ]
         default: present
     name:
         description:
-            - Name of the flag, if not provided and API calls requires it, key value will be used.
+            - The name of the flag. If not provided and the underlying API calls require it, this module uses the flag's key.
     kind:
         description:
-            - Set what type of flag this will be.
+            - The type of flag. Boolean flags have two variations: C(true) or C(false). Multivariate flags can have more than two variations. The allowed variations depend on the type of flag (string, number, JSON).
         choices: [ bool, str, number, json ]
         default: bool
     temporary:
@@ -38,21 +38,21 @@ options:
         default: 'yes'
     project_key:
         description:
-            - Project key will group flags together
+            - The project key
         default: 'default'
         required: yes
     key:
         description:
-            - A unique key that will be used to reference the flag in your code.
+            - The unique key for this flag. Use this to reference the flag in your code.
         required: yes
         type: str
     variations:
         description:
-            - An array of dictionaries containing possible variations for the flag.
+            - An array of dictionaries containing possible variations for the flag
         type: list
     tags:
         description:
-            - An array of tags for this feature flag.
+            - An array of tags for this feature flag
         required: no
         type: str
     include_in_snippet:
@@ -62,7 +62,7 @@ options:
         type: bool
     conftest:
         description:
-            - Compare input against a rego policy
+            - Compare input against a Rego policy
         required: no
         suboptions:
             dir:
@@ -70,7 +70,7 @@ options:
                     - Directory to load the Rego policy from
             enabled:
                 description:
-                    - Run the policy checks
+                    - Whether to run the Conftest policy checks
             namespace:
                 description:
                     - Rego namespace to run the tests against
@@ -102,7 +102,7 @@ EXAMPLES = r"""
 
 RETURN = r"""
 feature_flag:
-    description: Dictionary containing a L(Feature Flag, https://github.com/launchdarkly/api-client-python/blob/2.0.30/docs/FeatureFlag.md)
+    description: Dictionary containing a L(feature flag, https://github.com/launchdarkly/api-client-python/blob/2.0.30/docs/FeatureFlag.md)
     type: dict
     returned: on success
 """

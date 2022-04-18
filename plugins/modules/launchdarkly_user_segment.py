@@ -13,51 +13,51 @@ ANSIBLE_METADATA = {
 DOCUMENTATION = r"""
 ---
 module: launchdarkly_user_segment
-short_description: Manage User Segments
+short_description: Manage user segments
 description:
-     - Manage LaunchDarkly User Segments
+     - Manage LaunchDarkly user segments. To learn more, read L(Users and user segments, https://docs.launchdarkly.com/home/users).
 version_added: "0.1.0"
 options:
     state:
         description:
-            - Indicate desired state of the resource
+            - Indicate desired state of the Ansible resource
         choices: [ absent, present ]
         default: present
     project_key:
         description:
-            - Project key will group flags together
+            - The project key
         default: 'default'
     environment_key:
         description:
-            - A unique key that will be used to reference the environment.
+            - The environment key
         required: yes
         type: str
     user_segment_key:
         description:
-            - A unique key that will be used to reference the user segment in this environment.
+            - The user segment key
     name:
         description:
-            - Display name for the user segment.
+            - A human-readable name for the user segment
         required: yes
         type: str
     description:
         description:
-            - Add a user friendly description for this user segment.
+            - A description for the user segment
         required: no
         type: str
     tags:
         description:
-            - Manage a list of tags associated with the user segment.
+            - Manage a list of tags associated with the user segment
         required: no
         type: list
     included:
         description:
-            - Manage a list of included users for the user segment.
+            - Manage a list of included users for the user segment
         required: no
         type: list
     excluded:
         description:
-            - Manage a list of excluded users for the user segment.
+            - Manage a list of excluded users for the user segment
         required: no
         type: list
 
@@ -65,7 +65,7 @@ extends_documentation_fragment: launchdarkly_labs.collection.launchdarkly
 """
 
 EXAMPLES = r"""
-# Create a new LaunchDarkly User Segment
+# Create a new LaunchDarkly user segment
 - launchdarkly_user_segment:
     state: present
     project_key: test-project-1

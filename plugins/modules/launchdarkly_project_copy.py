@@ -12,29 +12,29 @@ ANSIBLE_METADATA = {
 DOCUMENTATION = r"""
 ---
 module: launchdarkly_project_copy
-short_description: Copy source LaunchDarkly Project in or between accounts.
+short_description: Copy a project
 description:
-     - Copy source LaunchDarkly Project in or between accounts. This can be used to make a clone of an existing project.
+     - Copy a LaunchDarkly project within or between accounts. This can be used to make a clone of an existing project.
 version_added: "0.2.2"
 options:
     api_key:
         description:
-            - LaunchDarkly API Source Key. May be set as LAUNCHDARKLY_ACCESS_TOKEN environment variable.
+            - LaunchDarkly API access key for the source project. May be set as C(LAUNCHDARKLY_ACCESS_TOKEN) environment variable.
         type: str
         required: yes
     api_key_dest:
         description:
-            - LaunchDarkly API Destination Key.
+            - LaunchDarkly API access key for the destination project.
         type: str
         required: yes
     project_key:
         description:
-            - Project key source
+            - The project key for the source project
         default: 'default'
         type: str
     project_key_dest:
         description:
-            - Project key destination
+            - The project key for the destination project
         required: yes
         type: str
     flag_tag:
@@ -44,14 +44,14 @@ options:
         type: str
     environments_copy:
         description:
-            - C(Bool) flag to determine whether to copy source environments to the new project.
+            - C(Bool) flag to determine whether to copy source environments to the new project
         default: true
 
 extends_documentation_fragment: launchdarkly_labs.collection.launchdarkly
 """
 
 EXAMPLES = r"""
-# Sync a LaunchDarkly Project
+# Copy a LaunchDarkly project
 - launchdarkly_project_copy:
     api_key: api-12345
     api_key_dest: api-54321
@@ -61,7 +61,7 @@ EXAMPLES = r"""
 
 RETURN = r"""
 project:
-    description: Dictionary containing a L(Project, https://github.com/launchdarkly/api-client-python/blob/2.0.30/docs/Project.md)
+    description: Dictionary containing a L(project, https://github.com/launchdarkly/api-client-python/blob/2.0.30/docs/Project.md)
     type: dict
     returned: on success
 """

@@ -13,24 +13,24 @@ ANSIBLE_METADATA = {
 DOCUMENTATION = r"""
 ---
 module: launchdarkly_feature_flag_info
-short_description: Return a list of Feature Flags
+short_description: Return a list of feature flags
 description:
-     - Return value from Feature Flag Evaluation
+     - Return a list of LaunchDarkly feature flags
 version_added: "0.2.8"
 options:
     project_key:
         description:
-            - Project key will group flags together
+            - The project key
         default: 'default'
         required: yes
     key:
         description:
-            - Unique key for feature flag.
+            - The feature flag key
         required: yes
         type: str
     env:
         description:
-            - Filter for a specific environment.
+            - The environment key. Used to filter for a specific environment.
         required: no
         type: str
     tag:
@@ -40,12 +40,12 @@ options:
         type: str
     archived:
         description:
-            - Include archived flags.
+            - Whether to include archived flags.
         required: no
         type: bool
     summary:
         description:
-            - Flags will not include their list of prerequisites, targets or rules. Set to false to include these fields for each flag returned
+            - Whether to include or exclude a flag's list of prerequisites, targets, and rules in the response. Set to C(false) to include these fields for each flag returned.
         required: no
         type: bool
 
@@ -53,7 +53,7 @@ extends_documentation_fragment: launchdarkly_labs.collection.launchdarkly
 """
 
 EXAMPLES = r"""
-# Get list of flags filtered to production environment.
+# Get list of flags filtered to production environment
 - launchdarkly_feature_flag_info:
     api_key: api-12345
     project_key: dano-test-project
@@ -66,7 +66,7 @@ type:
     type: string
     returned: always
 results:
-    description: List of Feature Flags.
+    description: List of feature flags.
     returned: always
 """
 

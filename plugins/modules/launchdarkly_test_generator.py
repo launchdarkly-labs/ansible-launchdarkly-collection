@@ -15,24 +15,24 @@ DOCUMENTATION = r"""
 module: launchdarkly_test_generator
 short_description: Create a JSON file for testing
 description:
-     - Create a JSON file for local testing
+     - Create a JSON file for local testing with a LaunchDarkly SDK. To learn more, read L(Reading flags from a file, https://docs.launchdarkly.com/sdk/features/flags-from-files).
 version_added: "0.2.0"
 options:
     sdk_key:
         description:
-            - SDK Key to retrieve flags for an environment.
+            - SDK key to retrieve flags for an environment
         default: 'default'
         required: yes
         type: str
     overrides_flag:
         description:
-            - override specific keys
+            - Override specific flag keys
         required: no
         type: list
 """
 
 EXAMPLES = r"""
-# Create a new LaunchDarkly Project with tags
+# Create a new LaunchDarkly project with tags
   - name: Generate Test JSON
     launchdarkly_test_generator:
       sdk_key: sdk-test-123456
@@ -43,7 +43,7 @@ EXAMPLES = r"""
 
 RETURN = r"""
 content:
-    description: Dictionary containing a JSON object that can be used as a file source.
+    description: Dictionary containing a JSON object that can be used as a file source
     type: json
     returned: on success
 """
