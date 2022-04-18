@@ -72,18 +72,21 @@ Alternatively, you can specify the full namespace and collection name in the `co
 
 The LaunchDarkly Ansible collection supports the following resources:
 
-- `launchdarkly_feature_flag`: Create, update, and delete feature flags
+- `launchdarkly_custom_role`: Manage custom roles
+- `launchdarkly_environment`: Manage environments for a given project
+- `launchdarkly_feature_flag`: Manage feature flags
 - `launchdarkly_feature_flag_environment`: Configure environment-specific flag targeting
+- `launchdarkly_feature_flag_info`: Return a list of feature flags
 - `launchdarkly_feature_flag_sync`: Sync flag settings across environments
-- `launchdarkly_custom_role`: Create, update, and delete custom roles
-- `launchdarkly_environment`: Create, update, and delete environments for a given project
-- `launchdarkly_project`: Create, update, and delete projects
+- `launchdarkly_feature_flag_validator`: Validate feature flags by running a configuration test
+- `launchdarkly_project`: Manage projects
 - `launchdarkly_project_copy`: Copy a project
-- `launchdarkly_test_generator`: Generate a JSON file for local testing with a LaunchDarkly SDK
-- `launchdarkly_user_segment`: Create, update, and delete user segments
+- `launchdarkly_project_info`: Return a list of projects
+- `launchdarkly_test_generator`: Create a JSON file for local testing with a LaunchDarkly SDK
+- `launchdarkly_user_segment`: Manage user segments
 - `launchdarkly_user_segment_sync`: Copy a user segment across environments
 - `launchdarkly_variation_info`: Return the value from a feature flag evaluation
-- `launchdarkly_webhook`: Create, update, and delete a LaunchDarkly webhook
+- `launchdarkly_webhook`: Manage LaunchDarkly webhooks
 
 ## Lookups Support
 
