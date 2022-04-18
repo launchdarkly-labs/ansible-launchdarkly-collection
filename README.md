@@ -1,20 +1,18 @@
+> This project is not officially supported by LaunchDarkly.
+
 # Ansible collection for LaunchDarkly
 
-*This version of the Ansible Collection is a **beta** version and should not be considered ready for production use while this message is visible.*
+*This version of the Ansible collection is a **beta** version and should not be considered ready for production use while this message is visible.*
 
 This collection provides a series of Ansible modules and plugins for interacting with [LaunchDarkly](https://www.launchdarkly.com).
 
-LaunchDarkly overview
--------------------------
-[LaunchDarkly](https://www.launchdarkly.com) is a feature management platform that serves over 100 billion feature flags daily to help teams build better software, faster. [Get started](https://docs.launchdarkly.com/docs/getting-started) using LaunchDarkly today!
-
-[![Twitter Follow](https://img.shields.io/twitter/follow/launchdarkly.svg?style=social&label=Follow&maxAge=2592000)](https://twitter.com/intent/follow?screen_name=launchdarkly)
-
 ## Documentation
 
-Additional Documentation is availabe: [LaunchDarkly Ansible Collection](https://launchdarkly-labs.github.io/ansible-launchdarkly-collection/)
+Additional documentation is available: [LaunchDarkly Ansible collection](https://launchdarkly-labs.github.io/ansible-launchdarkly-collection/).
 
 ## Requirements
+
+To use the modules and plugins in this collection, you need:
 
 - ansible version >= 2.9
 - launchdarkly-api >= 2.0.24
@@ -22,11 +20,15 @@ Additional Documentation is availabe: [LaunchDarkly Ansible Collection](https://
 
 ## Installation
 
+To install this collection, use:
+
 ```
 ansible-galaxy collection install launchdarkly_labs.collection
 ```
 
-You will then need to install the library dependencies. The requirements.txt will be in the directory that Ansible installed your collection to. Default is `~/.ansible/collections`
+Then, install the library dependencies. These are listed in `requirements.txt`, which is in the directory where Ansible installed your collection. By default, this is `~/.ansible/collections`.
+
+To install the library dependencies, use:
 
 ```
 python -m pip install -r ~/.ansible/collections/ansible_collections/launchdarkly_labs/collection/requirements.txt
@@ -34,7 +36,7 @@ python -m pip install -r ~/.ansible/collections/ansible_collections/launchdarkly
 
 ## Usage
 
-To use a module from LaunchDarkly collection, please reference the full namespace, collection name, and modules name that you want to use:
+To use a module from the Ansible collection, reference the full namespace, collection name, and modules name that you want to use. Here's how:
 
 ```yaml
 ---
@@ -49,7 +51,7 @@ To use a module from LaunchDarkly collection, please reference the full namespac
         key: example_flag_creation
 ```
 
-Or you can add full namespace and collection name in the `collections` element:
+Alternatively, you can specify the full namespace and collection name in the `collections` element:
 
 ```yaml
 ---
@@ -66,24 +68,35 @@ Or you can add full namespace and collection name in the `collections` element:
         key: example_flag_creation
 ```
 
-## Resource Supported
+## Resources supported
 
-- launchdarkly_feature_flag - Create, update, delete a LaunchDarkly Feature Flag
-- launchdarkly_feature_flag_environment - Configure an Environment specific LaunchDarkly Feature Flag
-- launchdarkly_feature_flag_sync - Sync flag settings across environments
-- launchdarkly_custom_role - Create, update, delete a LaunchDarkly Custom Role
-- launchdarkly_environment - Create, update, delete a LaunchDarkly Project Environment
-- launchdarkly_project - Create, update, delete a LaunchDarkly Project
-- launchdarkly_project_copy - Copy a LaunchDarkly Project
-- launchdarkly_test_generator - Generate a LaunchDarkly compatible SDK test file
-- launchdarkly_user_segment - Create, update, delete a LaunchDarkly User Segment
-- launchdarkly_user_segment_sync - Copy a LaunchDarkly User Segment across Environments
-- launchdarkly_variation_info - Return a value from a feature flag evaluation
-- launchdarkly_webhook - Create, update, delete a LaunchDarkly Webhook
+The LaunchDarkly Ansible collection supports the following resources:
+
+- `launchdarkly_feature_flag`: Create, update, and delete feature flags
+- `launchdarkly_feature_flag_environment`: Configure environment-specific flag targeting
+- `launchdarkly_feature_flag_sync`: Sync flag settings across environments
+- `launchdarkly_custom_role`: Create, update, and delete custom roles
+- `launchdarkly_environment`: Create, update, and delete environments for a given project
+- `launchdarkly_project`: Create, update, and delete projects
+- `launchdarkly_project_copy`: Copy a project
+- `launchdarkly_test_generator`: Generate a JSON file for local testing with a LaunchDarkly SDK
+- `launchdarkly_user_segment`: Create, update, and delete user segments
+- `launchdarkly_user_segment_sync`: Copy a user segment across environments
+- `launchdarkly_variation_info`: Return the value from a feature flag evaluation
+- `launchdarkly_webhook`: Create, update, and delete a LaunchDarkly webhook
 
 ## Lookups Support
-- launchdarkly_environment - Lookup a specific LaunchDarkly Environment
-- launchdarkly_user_segment - Lookup a specific LaunchDarkly User Segment in an Environment
+
+The LaunchDarkly Ansible collection supports the following lookups:
+
+- `launchdarkly_environment` - Look up a specific environment
+- `launchdarkly_user_segment` - Look up a specific user segment
+
+LaunchDarkly overview
+-------------------------
+[LaunchDarkly](https://www.launchdarkly.com) is a feature management platform that serves over 100 billion feature flags daily to help teams build better software, faster. [Get started](https://docs.launchdarkly.com/docs/getting-started) using LaunchDarkly today!
+
+[![Twitter Follow](https://img.shields.io/twitter/follow/launchdarkly.svg?style=social&label=Follow&maxAge=2592000)](https://twitter.com/intent/follow?screen_name=launchdarkly)
 
 Contributing
 ------------
