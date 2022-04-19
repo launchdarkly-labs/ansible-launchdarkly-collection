@@ -35,7 +35,7 @@ options:
         type: str
     environment_targets:
         description:
-            - A list of environment keys that flag settings will be copied to
+            - A list of environment keys for the destination environments. These are the environments that flag settings will be copied to.
         required: yes
         type: list
     included_actions:
@@ -55,7 +55,7 @@ extends_documentation_fragment: launchdarkly_labs.collection.launchdarkly
 """
 
 EXAMPLES = r"""
-# Sync LaunchDarkly feature flag settings environments
+# Sync LaunchDarkly feature flag settings across environments
 - launchdarkly_feature_flag_sync:
     environment_key: test-environment-1
     environment_targets:

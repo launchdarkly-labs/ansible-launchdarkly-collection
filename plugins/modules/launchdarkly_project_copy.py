@@ -14,7 +14,7 @@ DOCUMENTATION = r"""
 module: launchdarkly_project_copy
 short_description: Copy a project
 description:
-     - Copy a LaunchDarkly project within or between accounts. This can be used to make a clone of an existing project.
+     - Copy a LaunchDarkly project within or between accounts. This can be used to make a clone of an existing project, or to copy data from one account to another.
 version_added: "0.2.2"
 options:
     api_key:

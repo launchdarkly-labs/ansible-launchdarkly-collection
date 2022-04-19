@@ -30,9 +30,9 @@ options:
         default: 'default'
     environment_key:
         description:
-            - The project-unique key for the environment
+            - The environment key. Must be unique within this project.
         required: yes
-        type: str
+        type: str©
     name:
         description:
             - A human-readable name for the environment
@@ -55,7 +55,7 @@ options:
         type: bool
     tags:
         description:
-            - An array of tags to apply to this environment.
+            - An array of tags to apply to this environment
         type: str
     require_comments:
         description:

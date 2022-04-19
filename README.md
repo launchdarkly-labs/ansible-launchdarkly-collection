@@ -92,8 +92,8 @@ The LaunchDarkly Ansible collection supports the following resources:
 
 The LaunchDarkly Ansible collection supports the following lookups:
 
-- `launchdarkly_environment` - Look up a specific environment
-- `launchdarkly_user_segment` - Look up a specific user segment
+- `launchdarkly_environment`: Look up a specific environment
+- `launchdarkly_user_segment`: Look up a specific user segment
 
 LaunchDarkly overview
 -------------------------
