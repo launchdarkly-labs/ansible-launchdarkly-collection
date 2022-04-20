@@ -25,7 +25,7 @@ options:
         default: present
     key:
         description:
-            - A unique key to identify the custom role
+            - A unique key that identifies the custom role
         type: str
         required: yes
     name:

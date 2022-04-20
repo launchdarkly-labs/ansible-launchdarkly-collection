@@ -40,7 +40,7 @@ options:
         type: str
     archived:
         description:
-            - Whether to include archived flags.
+            - Whether to include or exclude archived flags.
         required: no
         type: bool
     summary:

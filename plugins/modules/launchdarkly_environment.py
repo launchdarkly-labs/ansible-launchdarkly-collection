@@ -39,7 +39,7 @@ options:
         type: str
     color:
         description:
-            - The color to indicate this environment in the LaunchDarkly UI
+            - The color that indicates this environment in the LaunchDarkly UI
         required: no
         type: str
     default_ttl:
@@ -48,7 +48,7 @@ options:
         type: int
     secure_mode:
         description:
-            - Ensures that a user of the client-side SDK cannot impersonate another user
+            - Ensures that someone using the client-side SDK cannot impersonate another user
     default_track_events:
         description:
             - Enables tracking detailed information for new flags by default
@@ -59,11 +59,11 @@ options:
         type: str
     require_comments:
         description:
-            - Requires comments for all flag and segment changes through the UI in this environment
+            - Requires comments for all flag and segment changes made through the UI in this environment
         type: bool
     confirm_changes:
         description:
-            - Requires confirmation for all flag and segment changes through the UI in this environment
+            - Requires confirmation for all flag and segment changes made through the UI in this environment
         type: bool
 
 extends_documentation_fragment: launchdarkly_labs.collection.launchdarkly

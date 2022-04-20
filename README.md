@@ -2,7 +2,7 @@
 
 # Ansible collection for LaunchDarkly
 
-*This version of the Ansible collection is a **beta** version and should not be considered ready for production use while this message is visible.*
+*This version of the Ansible collection is a **beta** version and should not be considered ready for production use while this message displays.*
 
 This collection provides a series of Ansible modules and plugins for interacting with [LaunchDarkly](https://www.launchdarkly.com).
 
@@ -36,7 +36,7 @@ python -m pip install -r ~/.ansible/collections/ansible_collections/launchdarkly
 
 ## Usage
 
-To use a module from the Ansible collection, reference the full namespace, collection name, and modules name that you want to use. Here's how:
+To use a module from the Ansible collection, reference the full namespace, collection name, and module name that you want to use. Here's how:
 
 ```yaml
 ---
@@ -99,7 +99,7 @@ LaunchDarkly overview
 -------------------------
 [LaunchDarkly](https://www.launchdarkly.com) is a feature management platform that serves over 100 billion feature flags daily to help teams build better software, faster. [Get started](https://docs.launchdarkly.com/docs/getting-started) using LaunchDarkly today!
 
-[![Twitter Follow](https://img.shields.io/twitter/follow/launchdarkly.svg?style=social&label=Follow&maxAge=2592000)](https://twitter.com/intent/follow?screen_name=launchdarkly)
+[![Follow us on Twitter](https://img.shields.io/twitter/follow/launchdarkly.svg?style=social&label=Follow&maxAge=2592000)](https://twitter.com/intent/follow?screen_name=launchdarkly)
 
 Contributing
 ------------
