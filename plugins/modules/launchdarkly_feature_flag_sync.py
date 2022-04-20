@@ -30,7 +30,7 @@ options:
         required: yes
     environment_key:
         description:
-            - The envionment key for the source environment
+            - The environment key for the source environment
         required: yes
         type: str
     environment_targets:
