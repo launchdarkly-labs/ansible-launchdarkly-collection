@@ -34,7 +34,7 @@ options:
         type: str
     environment_targets:
         description:
-            - A list of environments the user segment will be copied to
+            - A list of environments you will copy the user segment to
         required: yes
         type: list
     includedActions:

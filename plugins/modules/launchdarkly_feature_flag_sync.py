@@ -35,7 +35,7 @@ options:
         type: str
     environment_targets:
         description:
-            - A list of environment keys for the destination environments. These are the environments that flag settings will be copied to.
+            - A list of environment keys for the destination environments. These are the environments you will copy the flag settings to.
         required: yes
         type: list
     included_actions:
