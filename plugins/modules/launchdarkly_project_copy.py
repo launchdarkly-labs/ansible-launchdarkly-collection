@@ -14,12 +14,12 @@ DOCUMENTATION = r"""
 module: launchdarkly_project_copy
 short_description: Copy a project
 description:
-     - Copy a LaunchDarkly project within or between accounts. This can be used to make a clone of an existing project, or to copy data from one account to another.
+     - Copy a LaunchDarkly project within or between accounts. You can use this to make a clone of an existing project, or to copy data from one account to another.
 version_added: "0.2.2"
 options:
     api_key:
         description:
-            - LaunchDarkly API access key for the source project. May be set as C(LAUNCHDARKLY_ACCESS_TOKEN) environment variable.
+            - LaunchDarkly API access key for the source project. You may also set this in the C(LAUNCHDARKLY_ACCESS_TOKEN) environment variable.
         type: str
         required: yes
     api_key_dest:

@@ -26,12 +26,12 @@ options:
         type: str
     tags:
         description:
-            - List of tags to filter projects. Only projects that contain one of the tags are returned.
+            - List of tags to filter projects. Returns only projects that contain one of the tags.
         required: no
         type: list
     environment_tags:
         description:
-            - List of tags to filter environments within the project. Only environments that contain one of the tags are returned.
+            - List of tags to filter environments within the project. Returns only environments that contain one of the tags.
         required: no
         type: list
 

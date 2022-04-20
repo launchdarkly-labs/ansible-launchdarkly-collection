@@ -44,7 +44,7 @@ options:
         type: str
     default_ttl:
         description:
-            - The default time (in minutes) that the PHP SDK can cache feature flag rules locally
+            - The default time in minutes that the PHP SDK can cache feature flag rules locally
         type: int
     secure_mode:
         description:

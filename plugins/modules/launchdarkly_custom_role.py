@@ -60,7 +60,7 @@ options:
                 type: str
             not_actions:
                 description:
-                    - Inverse of actions for the policy. Only one of C(actions) and C(not_actions) may be defined for a given policy statement.
+                    - Inverse of actions for the policy. You can define only one of C(actions) and C(not_actions) for a given policy statement.
                 type: str
             effect:
                 description:

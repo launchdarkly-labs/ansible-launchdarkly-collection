@@ -25,7 +25,7 @@ options:
         default: present
     name:
         description:
-            - The name of the flag. If not provided and the underlying API calls require it, this module uses the flag's key.
+            - The name of the flag. If you do not provide one and the underlying API calls require it, this module uses the flag's key.
     kind:
         description:
             - The type of flag. Boolean flags have two variations: C(true) or C(false). Multivariate flags can have more than two variations. The allowed variations depend on the type of flag (string, number, JSON).

@@ -20,7 +20,7 @@ version_added: "0.2.0"
 options:
     sdk_key:
         description:
-            - The SDK key for the environment where the flag evaluation occurs. May be set as C(LAUNCHDARKLY_SDK_KEY) environment variable.
+            - The SDK key for the environment where the flag evaluation occurs. You may also set this in the C(LAUNCHDARKLY_SDK_KEY) environment variable.
         default: 'default'
         required: yes
         type: str

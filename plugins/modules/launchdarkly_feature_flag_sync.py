@@ -40,7 +40,7 @@ options:
         type: list
     included_actions:
         description:
-            - Manage a list of included actions to copy. If not specified, all actions are included.
+            - Manage a list of included actions to copy. If you do not specify any, all actions are included.
         required: no
         type: list
         choices: ['updateFallthrough', 'updateOn', 'updateOffVariation', 'updatePrerequisites', 'updateRules', 'updateTargets']
