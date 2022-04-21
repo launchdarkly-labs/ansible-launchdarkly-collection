@@ -14,7 +14,7 @@ DOCUMENTATION = r"""
 module: launchdarkly_feature_flag_environment
 short_description: Configure feature flag targeting
 description:
-     - Configure LaunchDarkly feature flag targeting for a given flag, environment, and project. To learn more, read L(Targeting users with flags, https://docs.launchdarkly.com/home/flags/targeting-users).
+     - Configure LaunchDarkly feature flag targeting for a given flag in a specific environment and project. To learn more, read L(Targeting users with flags, https://docs.launchdarkly.com/home/flags/targeting-users).
 version_added: "0.1.0"
 options:
     state:
