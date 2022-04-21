@@ -14,7 +14,7 @@ DOCUMENTATION = r"""
 module: launchdarkly_project_copy
 short_description: Copy a project
 description:
-     - Copy a LaunchDarkly project within or between accounts. You can use this to make a clone of an existing project, or to copy data from one account to another.
+     - Copy a LaunchDarkly project within or between accounts. You can use this to make a clone of an existing project, or to copy data from one account to another. Copying a project copies most, but not all, of the project's data. To learn more, read L(Understanding what you can and cannot transfer, https://docs.launchdarkly.com/guides/tutorials/merge-accounts#understanding-what-you-can-and-cannot-transfer).
 version_added: "0.2.2"
 options:
     api_key:
