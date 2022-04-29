@@ -13,25 +13,25 @@ ANSIBLE_METADATA = {
 DOCUMENTATION = r"""
 ---
 module: launchdarkly_project_info
-short_description: Return a Project or List of Projects
+short_description: Return a project or list of projects
 description:
-     - Return a dictionary of a single LaunchDarkly Project or List of dictionaries containing LaunchDarkly Projects
+     - Return a dictionary of a single LaunchDarkly project or list of dictionaries containing LaunchDarkly projects
 version_added: "0.2.11"
 version_updated: "0.3.32"
 options:
     project_key:
         description:
-            - Project key is used to return a single project matching that key.
+            - The project key, if requesting a single project
         required: no
         type: str
     tags:
         description:
-            - list of tags to filter projects. Only projects that contain one of the tags will be returned
+            - List of tags to filter projects. Returns only projects that contain one of the tags.
         required: no
         type: list
     environment_tags:
         description:
-            - list of tags to filter environments within the project. Only environments that contain one of the tags will be returned.
+            - List of tags to filter environments within the project. Returns only environments that contain one of the tags.
         required: no
         type: list
 
@@ -58,7 +58,7 @@ EXAMPLES = r"""
     environment_tags:
       - prod
 
-# Get list of all projects only return environments tagged "prod"
+# Get list of all projects, only return environments tagged "prod"
 - launchdarkly_project_info:
     api_key: api-12345
     environment_tags:
@@ -67,7 +67,7 @@ EXAMPLES = r"""
 
 RETURN = r"""
 project:
-    description: Dictionary or List of Dictionaries containing a L(Project, https://github.com/launchdarkly/api-client-python/blob/2.0.30/docs/Project.md)
+    description: Dictionary or list of dictionaries containing a L(project, https://github.com/launchdarkly/api-client-python/blob/2.0.30/docs/Project.md)
     type: dict or list
     returned: on success
 """

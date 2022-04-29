@@ -4,7 +4,7 @@ class ModuleDocFragment(object):
     options:
         api_key:
             description:
-                - LaunchDarkly API Key. May be set as C(LAUNCHDARKLY_ACCESS_TOKEN) environment variable.
+                - LaunchDarkly API access token. May be set as C(LAUNCHDARKLY_ACCESS_TOKEN) environment variable.
             type: str
             required: yes
     """

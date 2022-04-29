@@ -13,19 +13,19 @@ ANSIBLE_METADATA = {
 DOCUMENTATION = r"""
 ---
 module: launchdarkly_feature_flag_validator
-short_description: Validate Flags against Conftest OPA Policies written in Rego
+short_description: Validate feature flags by running a configuration test
 description:
-     - Validate Feature Flags in a Project. Conftest 0.18.0 is required as a binary in your PATH.
+     - Validate LaunchDarkly feature flags in a project, using Conftest OPA Policies written in Rego. Conftest 0.18.0 is required as a binary in your C(PATH).
 version_added: "0.3.0"
 options:
     project_key:
         description:
-            - Project key will group flags together
+            - The project key
         default: 'default'
         required: yes
     env:
         description:
-            - Filter for a specific environment.
+            - The environment key
         required: no
         type: str
 
@@ -34,20 +34,13 @@ extends_documentation_fragment:
     - launchdarkly_labs.collection.launchdarkly_conftest
 """
 
-EXAMPLES = r"""
-# Get list of flags filtered to production environment.
-- launchdarkly_feature_flag_info:
-    api_key: api-12345
-    project_key: dano-test-project
-"""
-
 RETURN = r"""
 validated:
-    description: If the policies were all successfully validated.
+    description: Whether all flags were successfully validated using Conftest OPA Policies.
     type: bool
     returned: always
 validation:
-    description: List of Dictionaries, container flag key and list of failures as strings.
+    description: List of dictionaries, containing the flag key and list of failures as strings.
     returned: failure
 """
 

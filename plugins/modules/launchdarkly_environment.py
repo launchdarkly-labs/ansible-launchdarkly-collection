@@ -13,57 +13,57 @@ ANSIBLE_METADATA = {
 DOCUMENTATION = r"""
 ---
 module: launchdarkly_environment
-short_description: Create Launchdarkly Project specific Environment
+short_description: Manage environments
 description:
-     - Manage LaunchDarkly Project specific Environments.
+     - Manage LaunchDarkly environments for a given project. To learn more, read L(Environments, https://docs.launchdarkly.com/home/organize/environments).
 version_added: "0.1.0"
 options:
     state:
         description:
-            - Indicate desired state of the resource
+            - Indicate desired state of the Ansible resource
         choices: [ absent, present ]
         default: present
         type: str
     project_key:
         description:
-            - Project key will group flags together
+            - The project key
         default: 'default'
     environment_key:
         description:
-            - A unique key that will be used to reference the flag in your code.
+            - The environment key. Must be unique within this project.
         required: yes
-        type: str
+        type: str©
     name:
         description:
-            - Display name for the environment.
+            - A human-readable name for the environment
         type: str
     color:
         description:
-            - Color used in dashboard for the environment.
+            - The color that indicates this environment in the LaunchDarkly UI
         required: no
         type: str
     default_ttl:
         description:
-            - TTL is only used in our PHP SDK.
+            - The default time in minutes that the PHP SDK can cache feature flag rules locally
         type: int
     secure_mode:
         description:
-            - Determines if this environment is in safe mode.
+            - Ensures that someone using the client-side SDK cannot impersonate another user
     default_track_events:
         description:
-            - Set to `true` to send detailed event information for new flags.
+            - Enables tracking detailed information for new flags by default
         type: bool
     tags:
         description:
-            - An array of tags for this environment.
+            - An array of tags to apply to this environment
         type: str
     require_comments:
         description:
-            - Determines if this environment requires comments for flag and segment changes.
+            - Requires comments for all flag and segment changes made through the UI in this environment
         type: bool
     confirm_changes:
         description:
-            - Determines if this environment requires confirmation for flag and segment changes.
+            - Requires confirmation for all flag and segment changes made through the UI in this environment
         type: bool
 
 extends_documentation_fragment: launchdarkly_labs.collection.launchdarkly
@@ -71,18 +71,18 @@ extends_documentation_fragment: launchdarkly_labs.collection.launchdarkly
 
 EXAMPLES = r"""
 ---
-# Create a new LaunchDarkly Environment
+# Create a new LaunchDarkly environment
 - launchdarkly_environment:
     state: present
     project_key: test-project-1
-    environment_key: test_environment-1
+    environment_key: test-environment-1
     color: C9C9C9
 
-# Create a new LaunchDarkly Environment and tag it
+# Create a new LaunchDarkly environment and tag it
 - launchdarkly_environment:
     state: present
     project_key: test-project-1
-    environment_key: test_environment-1
+    environment_key: test-environment-1
     color: C9C9C9
     tags:
       - blue
@@ -92,7 +92,7 @@ EXAMPLES = r"""
 
 RETURN = r"""
 environment:
-    description: Returns dictionary containing an L(Environment, https://github.com/launchdarkly/api-client-python/blob/2.0.30/docs/Environment.md)
+    description: Dictionary containing an L(environment, https://github.com/launchdarkly/api-client-python/blob/2.0.30/docs/Environment.md)
     type: dict
     returned: on success
 """

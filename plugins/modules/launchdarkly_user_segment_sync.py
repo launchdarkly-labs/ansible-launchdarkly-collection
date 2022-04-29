@@ -12,40 +12,40 @@ ANSIBLE_METADATA = {
 DOCUMENTATION = r"""
 ---
 module: launchdarkly_user_segment_sync
-short_description: Sync LaunchDarkly User Segments across Environments
+short_description: Copy a user segment across environments
 description:
-     - Sync LaunchDarkly User Segments across Environments
+     - Copy a LaunchDarkly user segment across environments
 version_added: "0.1.0"
 options:
     project_key:
         description:
-            - Project key to look for flag
+            - The project key
         default: 'default'
         type: str
     user_segment_key:
         description:
-            - A unique key that will be used to reference the user segment in this environment.
+            - The user segment key for this environment
         type: str
         required: yes
     environment_key:
         description:
-            - A unique key that will be used to determine source environment.
+            - The environment key for the source environment
         required: yes
         type: str
     environment_targets:
         description:
-            - A list of environments that flag settings will be copied to.
+            - A list of environments you will copy the user segment to
         required: yes
         type: list
     includedActions:
         description:
-            - Manage a list of included actions for copying.
+            - Manage a list of included actions for copying
         required: no
         type: list
         choices: ['updateTargets', 'updateRules']
     excludedActions:
         description:
-            - Manage a list of excluded actions for copying.
+            - Manage a list of excluded actions for copying
         required: no
         type: list
         choices: [updateTargets', 'updateRules']
@@ -54,7 +54,7 @@ extends_documentation_fragment: launchdarkly_labs.collection.launchdarkly
 """
 
 EXAMPLES = r"""
-# Sync a LaunchDarkly User Segment to multiple environments
+# Copy a user segment to multiple environments
 - launchdarkly_user_segment_sync:
     environment_key: test-environment-1
     environment_targets:

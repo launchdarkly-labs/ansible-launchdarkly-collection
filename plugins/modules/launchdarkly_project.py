@@ -13,14 +13,14 @@ ANSIBLE_METADATA = {
 DOCUMENTATION = r"""
 ---
 module: launchdarkly_project
-short_description: Create Project
+short_description: Manage projects
 description:
-     - Manage LaunchDarkly Projects.
+     - Manage LaunchDarkly projects.
 version_added: "0.1.0"
 options:
     state:
         description:
-            - Indicate desired state of the resource.
+            - Indicate desired state of the Ansible resource.
         choices: [ absent, present ]
         default: present
         type: str

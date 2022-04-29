@@ -13,37 +13,37 @@ ANSIBLE_METADATA = {
 DOCUMENTATION = r"""
 ---
 module: launchdarkly_variation_info
-short_description: Return value from Feature Flag Evaluation
+short_description: Return the value from a feature flag evaluation
 description:
-     - Return value from Feature Flag Evaluation
+     - Return the value from a LaunchDarkly feature flag evaluation. To learn more, read L(Evaluating flags, https://docs.launchdarkly.com/sdk/features/evaluating).
 version_added: "0.2.0"
 options:
     sdk_key:
         description:
-            - Environment SDK key for evaluation to run against. May be set as C(LAUNCHDARKLY_SDK_KEY) environment variable.
+            - The SDK key for the environment where the flag evaluation occurs. You may also set this in the C(LAUNCHDARKLY_SDK_KEY) environment variable.
         default: 'default'
         required: yes
         type: str
     start_wait:
         description:
-            - How long to wait for the SDK to connect to LaunchDarkly.
+            - How long to wait for the SDK to connect to LaunchDarkly
         default: 5
         required: yes
         type: int
     flag_key:
         description:
-            - Display name for the environment.
+            - The feature flag key
         required: no
         type: str
     user:
         description:
-            - A list of Environments to create. Cannot be updated with this resource.
+            - The user for whom the flag is being evaluated. Must include the user C(key). May also include a dictionary of C(custom) user attributes, illustrated in the example below.
         required: no
         type: dict
 """
 
 EXAMPLES = r"""
-# Create a new LaunchDarkly Project with tags
+# Return the value from a feature flag evaluation
 - launchdarkly_variation_info:
     sdk_key: sdk-12345
     start_wait: 10
@@ -64,15 +64,15 @@ value:
     description: Value returned from variation. Type is set in C(type) return.
     returned: always
 variation_index:
-    description: Index value of variation.
+    description: Index value of variation
     type: int
     returned: always
 reason:
-    description: Why was that specific value returned.
+    description: Describes why the value was returned. To learn more, read L(Flag evaluation reasons, https://docs.launchdarkly.com/sdk/features/evaluation-reasons).
     type: dict
     returned: always
 is_default_value:
-    description: Is it the default value in code.
+    description: Whether the returned value is the default, or fallback, value provided as part of the evaluation request.
     type: bool
     returned: always
 """

@@ -13,49 +13,49 @@ ANSIBLE_METADATA = {
 DOCUMENTATION = r"""
 ---
 module: launchdarkly_feature_flag_sync
-short_description: Sync LaunchDarkly Feature Flags across Environments
+short_description: Sync flag settings across environments
 description:
-     - Sync LaunchDarkly Feature Flags across Environments
+     - Sync LaunchDarkly feature flag settings across environments. To learn more, read L(Comparing and copying flag settings between two environments, https://docs.launchdarkly.com/home/code/flag-compare-copy#comparing-and-copying-flag-settings-between-two-environments).
 version_added: "0.1.0"
 options:
     project_key:
         description:
-            - Project key to look for flag
+            - The project key
         default: 'default'
         type: str
     flag_key:
         description:
-            - A unique key that will be used to reference the user segment in this environment.
+            - The flag key
         type: str
         required: yes
     environment_key:
         description:
-            - A unique key that will be used to determine source environment.
+            - The environment key for the source environment
         required: yes
         type: str
     environment_targets:
         description:
-            - A list of environments that flag settings will be copied to.
+            - A list of environment keys for the destination environments. These are the environments you will copy the flag settings to.
         required: yes
         type: list
     included_actions:
         description:
-            - Manage a list of included actions for copying. If not specified all actions are included.
+            - Manage a list of included actions to copy. If you do not specify any, all actions are included.
         required: no
         type: list
-        choices: ['updateOn', 'updatePrerequisites', 'updateTargets', 'updateRules', 'updateFallthrough', 'updateOffVariation']
+        choices: ['updateFallthrough', 'updateOn', 'updateOffVariation', 'updatePrerequisites', 'updateRules', 'updateTargets']
     excluded_actions:
         description:
             - Manage a list of excluded actions for copying.
         required: no
         type: list
-        choices: ['updateOn', 'updatePrerequisites', 'updateTargets', 'updateRules', 'updateFallthrough', 'updateOffVariation']
+        choices: ['updateFallthrough', 'updateOn', 'updateOffVariation', 'updatePrerequisites', 'updateRules', 'updateTargets']
 
 extends_documentation_fragment: launchdarkly_labs.collection.launchdarkly
 """
 
 EXAMPLES = r"""
-# Sync a LaunchDarkly Feature Flag Configuration across environments
+# Sync LaunchDarkly feature flag settings across environments
 - launchdarkly_feature_flag_sync:
     environment_key: test-environment-1
     environment_targets:
@@ -71,7 +71,7 @@ EXAMPLES = r"""
 
 RETURN = r"""
 feature_flag:
-    description: Dictionary containing a L(Feature Flag, https://github.com/launchdarkly/api-client-python/blob/2.0.30/docs/FeatureFlag.md)
+    description: Dictionary containing a L(feature flag, https://github.com/launchdarkly/api-client-python/blob/2.0.30/docs/FeatureFlag.md)
     type: dict
     returned: on success
 """

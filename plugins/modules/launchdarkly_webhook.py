@@ -13,23 +13,23 @@ ANSIBLE_METADATA = {
 DOCUMENTATION = r"""
 ---
 module: launchdarkly_webhook
-short_description: Manage LaunchDarkly Webhooks
+short_description: Manage LaunchDarkly webhooks
 description:
-     - Manage LaunchDarkly Webhooks
+     - Manage LaunchDarkly webhooks. To learn more, read L(Webhooks, https://docs.launchdarkly.com/home/connecting/webhooks).
 version_added: "0.1.0"
 options:
     state:
         description:
-            - Indicate desired state of the resource.
+            - Indicate desired state of the Ansible resource
         choices: [ absent, present ]
         default: present
     name:
         description:
-            - A human-readable name for your webhook.
+            - The human-readable name for your webhook
         type: str
     webhook_id:
         description:
-            - Webhook id. Required when updating resource.
+            - The ID for the webhook. Required when updating.
         type: str
     url:
         description:
@@ -37,52 +37,34 @@ options:
         type: str
     secret:
         description:
-            - If sign is true, and the secret attribute is omitted, LaunchDarkly will automatically generate a secret for you.
+            - If C(sign) is true, and the C(secret) attribute is omitted, LaunchDarkly automatically generates a C(secret) for you.
         type: str
     sign:
         description:
-            - If sign is false, the webhook will not include a signature header, and the secret can be omitted.
+            - If C(sign) is false, the webhook does not include a signature header, and the C(secret) can be omitted.
         type: bool
     enabled:
         description:
-            - Whether this webhook is enabled or not.
+            - Whether or not this webhook is enabled.
         type: bool
 
 extends_documentation_fragment: launchdarkly_labs.collection.launchdarkly
 """
 
 EXAMPLES = r"""
-# Create a new LaunchDarkly Webhook
+# Create a new LaunchDarkly webhook
 - launchdarkly_webhook:
     state: present
-    project_key: test-project-1
-    environment_key: test-environment-1
-    user_segment_key: test-key-1
-    name: "Test Segment"
-    description: "This is a testing segment"
-    rules:
-        clauses:
-          - attribute: testAttribute
-            op: contains
-            values:
-              - 2
-              - 3
-            negate: true
-    tags:
-      - blue
-      - green
-    included:
-      - test1
-      - test2
-    excluded:
-      - test3
-      - test4
+    name: "Test Webhook"
+    url: "https://example.com"
+    sign: false
+    enabled: true
 """
 
 RETURN = r"""
 ---
 webhook:
-    description: Dictionary containing a L(Webhook, https://github.com/launchdarkly/api-client-python/blob/2.0.30/docs/Webhook.md)
+    description: Dictionary containing a L(webhook, https://github.com/launchdarkly/api-client-python/blob/2.0.30/docs/Webhook.md)
     type: dict
     returned: on success
 """

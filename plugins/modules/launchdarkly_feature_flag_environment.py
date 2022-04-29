@@ -12,66 +12,68 @@ ANSIBLE_METADATA = {
 
 DOCUMENTATION = r"""
 module: launchdarkly_feature_flag_environment
-short_description: Create Environment specific flag targeting
+short_description: Configure feature flag targeting
 description:
-     - Manage LaunchDarkly manage feature flags and account settings.
+     - Configure LaunchDarkly feature flag targeting for a given flag in a specific environment and project. To learn more, read L(Targeting users with flags, https://docs.launchdarkly.com/home/flags/targeting-users).
 version_added: "0.1.0"
 options:
     state:
         description:
-            - Indicate desired state of the resource
+            - Indicate desired state of the Ansible resource
         choices: [ absent, enabled, disabled, present ]
         default: present
         type: str
     api_key:
         description:
-            - LaunchDarkly API Key. May be set as C(LAUNCHDARKLY_ACCESS_TOKEN) environment variable.
+            - LaunchDarkly API access token. You may also set this in the C(LAUNCHDARKLY_ACCESS_TOKEN) environment variable.
         type: str
         required: yes
     project_key:
         description:
-            - Project key will group flags together
+            - The project key
         default: 'default'
     environment_key:
         description:
-            - A unique key that will be used to reference the environment.
+            - The environment key
         required: yes
         type: str
     off_variation:
         description:
-            - Variation served if flag targeting is turned off.
+            - Variation served if flag targeting is turned off
         type: int
     targets:
         description:
-            - Assign users to a specific variation
+            - Target individual users by assigning them to a specific variation
         type: list
         suboptions:
             variation:
                 description:
-                    - index of variation to serve default. Exclusive of rollout.
+                    - Index of variation to serve default. Exclusive of rollout.
                 type: int
             values:
                 description:
-                    - individual targets to add to variation
+                    - Individual users to target with this variation
             state:
                 choices: [ absent, add, remove, replace ]
                 default: replace
+                description:
+                    - Indicate desired state of the particular variation
     rules:
         description:
-            - Target users based on user attributes
+            - Target users based on user attributes. This is a nested dictionary describing the variations to serve, illustrated in the example below.
         type: list
     fallthrough:
         description:
             - Nested dictionary describing the default variation to serve if no C(prerequisites),
-            - C(targets) or C(rules) apply.
+            - C(targets), or C(rules) apply
         suboptions:
             variation:
                 description:
-                    - index of variation to serve default. Exclusive of rollout.
+                    - Index of variation to serve default. Exclusive of rollout.
                 type: int
             rollout:
                 description:
-                    - rollout value
+                    - Rollout value
                 type: dict
 
 extends_documentation_fragment: launchdarkly_labs.collection.launchdarkly
